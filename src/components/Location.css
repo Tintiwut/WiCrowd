@@ -1,0 +1,37 @@
+body {
+    background-color: white;
+}
+
+.location-head h1{
+    text-align: center;
+
+}
+.location-card {
+    margin-top: 20px;
+    margin-left: 200px;
+    margin-right: 200px;
+    border: 2px solid black;
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+    background-color: #d4d4d4;
+
+}
+
+.location-card img {
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 250px;
+    margin-right: 250px;
+    max-width: 500px;
+    border-radius: 20px; 
+    border: 1px solid black;
+}
+
+.location-info p {
+    margin: 5px 0;
+    font-size: 25px;
+    font-family: 'JasmineUPC', sans-serif;
+}
+
+
