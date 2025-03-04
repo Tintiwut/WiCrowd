@@ -27,7 +27,7 @@ function Navbar() {
   const currentLocation = useLocation();
 
   useEffect(() => {
-    if (currentLocation.pathname === "/" || currentLocation.pathname === "/overall" || currentLocation.pathname === "/about") {
+    if (currentLocation.pathname === "/home" || currentLocation.pathname === "/overall" || currentLocation.pathname === "/about") {
       setLocation("Location");
     }
   }, [currentLocation.pathname]);
@@ -47,7 +47,7 @@ function Navbar() {
         <p1><RealTimeClock /></p1>
 
         <ul className="nav-links">
-          <li><Link to="/" className="no-underline">HOME</Link></li>
+          <li><Link to="/home" className="no-underline">HOME</Link></li>
           <li><Link to="/overall" className="no-underline">OVERALL</Link></li>
           <li>
             <select 
@@ -55,7 +55,7 @@ function Navbar() {
               value={location}
               className="location-select"
             >
-              <option value="/">LOCATION</option>
+              <option value="/home">LOCATION</option>
               <option value="Building A3">Building A3</option>
               <option value="Building A6">Building A6</option>
               <option value="Building B4">Building B4</option>
