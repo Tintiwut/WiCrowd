@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/WiCrowd/static/css/main.a76a7c35.css",
+    "main.js": "/WiCrowd/static/js/main.1a38a51b.js",
+    "static/js/453.80a10c70.chunk.js": "/WiCrowd/static/js/453.80a10c70.chunk.js",
+    "static/media/BUMAP4.jpg": "/WiCrowd/static/media/BUMAP4.10020aff441f77161edd.jpg",
+    "static/media/Building_A3.jpg": "/WiCrowd/static/media/Building_A3.e2dd05ad7add4dddf16e.jpg",
+    "static/media/nuthtawat.png": "/WiCrowd/static/media/nuthtawat.d9bf9cf871cb1064bae3.png",
+    "static/media/Building_B4.jpg": "/WiCrowd/static/media/Building_B4.493a7fe5c2f9eb22ddba.jpg",
+    "static/media/Building_A6.jpg": "/WiCrowd/static/media/Building_A6.691ff5ea6b90ab064c76.jpg",
+    "static/media/WiCrowd_Logo_PNG.png": "/WiCrowd/static/media/WiCrowd_Logo_PNG.f9fdf3480d21c8578023.png",
+    "static/media/Tintiwut.png": "/WiCrowd/static/media/Tintiwut.51cd0628cbe8b2630ef9.png",
+    "static/media/jaruphat.png": "/WiCrowd/static/media/jaruphat.346da89cc4aee675f885.png",
+    "static/media/phettae.png": "/WiCrowd/static/media/phettae.346da89cc4aee675f885.png",
+    "index.html": "/WiCrowd/index.html",
+    "main.a76a7c35.css.map": "/WiCrowd/static/css/main.a76a7c35.css.map",
+    "main.1a38a51b.js.map": "/WiCrowd/static/js/main.1a38a51b.js.map",
+    "453.80a10c70.chunk.js.map": "/WiCrowd/static/js/453.80a10c70.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a76a7c35.css",
+    "static/js/main.1a38a51b.js"
+  ]
+}
