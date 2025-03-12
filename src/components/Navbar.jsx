@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import logo from "./WiCrowd_Logo_PNG.png";
+import logo from "../images/WiCrowd_Logo_PNG.png";
 import "./Home&navbar.css";
 
 const RealTimeClock = () => {

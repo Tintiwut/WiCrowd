@@ -22,8 +22,8 @@ const Location = () => {
 
     const apiUrls = {
       "Building A3": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
-      "Building A6": "",
-      "Building B4": "",
+      "Building A6": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
+      "Building B4": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
     };
 
     const fetchData = async () => {
