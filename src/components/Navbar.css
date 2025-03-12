@@ -81,39 +81,39 @@ option:hover {
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 10px 0;
-  }
+.navbar {
+  padding: 10px 0;
+}
 
-  .nav-container {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
+.nav-container {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
 
-  .logo img {
-    height: 80px;
-    margin-left: 0;
-  }
+.logo img {
+  height: 80px;
+  margin-left: 0;
+}
 
-  .nav-links {
-    flex-direction: column;
-    gap: 20px;
-    padding-left: 0;
-    padding-right: 0;
-    margin-right: 0;
-    font-size: 22px;
-  }
+.nav-links {
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-right: 0;
+  font-size: 22px;
+}
 
-  .time-display {
-    margin-left: 0;
-    font-size: 14px;
-  }
+.time-display {
+  margin-left: 0;
+  font-size: 14px;
+}
 
-  select {
-    font-size: 22px;
-    padding: 6px 10px;
-  }
+select {
+  font-size: 22px;
+  padding: 6px 10px;
+}
 }
 
 .no-underline {
