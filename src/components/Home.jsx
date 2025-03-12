@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import mapImage from '../images/BUMAP4.jpg';
-import "./Home&navbar.css";
+import "./Home.css";
 
 export default function Dashboard() {
   const [data, setData] = useState({

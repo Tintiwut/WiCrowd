@@ -1,0 +1,59 @@
+body{
+  background-color: #d4d4d4;
+}
+
+.mapImage {
+  position: relative;
+  display: inline-block; /* ให้ขนาด container เท่ากับรูป */
+  width: 100%;
+  height: auto;
+}
+
+.mapImage img {
+  width: 100%; /* ปรับให้ขนาดภาพ responsive */
+  height: auto;
+}
+
+.marker-container-line {
+  position: fixed;
+  transform: translate(-50%, -50%);
+}
+
+.map-line {
+  position: absolute;
+  width: 2.5px; 
+  height: 130px;
+  background-color: black;
+  transform: translate(-50%);
+  margin-top: 21px;
+}
+
+.map-marker {
+  position: absolute;
+  width: 45px; /* ขนาดของ Marker */
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.map-dot {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid black;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes blink {
+  0% { opacity: 1; }  
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.map-marker {
+  animation: blink 3s infinite;
+}
+
+

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from "../images/WiCrowd_Logo_PNG.png";
-import "./Home&navbar.css";
+import "./Navbar.css";
 
 const RealTimeClock = () => {
   const [dateTimeString, setDateTimeString] = useState('');

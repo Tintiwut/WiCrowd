@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Building_A3 from "../images/Building_A3.jpg";
 import Building_A6 from "../images/Building_A6.jpg";
 import Building_B4 from "../images/Building_B4.jpg";
+import ChartComponent from "./ChartComponent"; // import Chart.js component
 import "./Location.css";
 
 const Location = () => {
@@ -12,6 +13,7 @@ const Location = () => {
   const [maxToday, setMaxToday] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [feeds, setFeeds] = useState([]); // สำหรับเก็บข้อมูลจาก ThingSpeak
   const selectedLocation = state?.location;
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const Location = () => {
 
     const fetchData = async () => {
       try {
-        console.log("Fetching data..."); // เช็คว่าฟังก์ชันทำงานหรือไม่
+        console.log("Fetching data...");
         const response = await fetch(apiUrls[selectedLocation] + `&t=${new Date().getTime()}`); // ป้องกัน Cache
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -39,6 +41,7 @@ const Location = () => {
         setCount(currentCount);
         setMaxToday((prevMax) => Math.max(prevMax, currentCount));
         setLoading(false);
+        setFeeds(data.feeds); // เก็บข้อมูลของ ThingSpeak
       } catch (error) {
         setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
         setLoading(false);
@@ -89,6 +92,9 @@ const Location = () => {
       )}
 
       {count === null && !loading && <p>กรุณาเลือกสถานที่จาก Dropdown ใน Navbar</p>}
+
+      <h2>กราฟข้อมูลจาก ThingSpeak</h2>
+      <ChartComponent feeds={feeds} /> {/* ใช้ ChartComponent แทนการสร้างกราฟตรงนี้ */}
     </div>
   );
 };
