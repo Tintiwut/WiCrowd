@@ -28,7 +28,8 @@ const Location = () => {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(apiUrls[selectedLocation]);
+        console.log("Fetching data..."); // เช็คว่าฟังก์ชันทำงานหรือไม่
+        const response = await fetch(apiUrls[selectedLocation] + `&t=${new Date().getTime()}`); // ป้องกัน Cache
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -44,10 +45,10 @@ const Location = () => {
       }
     };
 
-    fetchData();
-    const interval = setInterval(fetchData, 1000); // อัปเดตทุก 10 วินาที
+    fetchData(); // โหลดข้อมูลทันทีเมื่อ Component mount
+    const interval = setInterval(fetchData, 10000); // อัปเดตข้อมูลทุก 10 วินาที
 
-    return () => clearInterval(interval); // ล้าง interval เมื่อ component ถูก unmount
+    return () => clearInterval(interval); // ล้าง interval เมื่อออกจากหน้านี้
   }, [selectedLocation, navigate]);
 
   const getDensityLevel = (count) => {

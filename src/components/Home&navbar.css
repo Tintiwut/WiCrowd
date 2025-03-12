@@ -92,5 +92,27 @@ option:hover {
   color: black;
 }
   
+.mapImage {
+  position: relative;
+  display: inline-block; /* ให้ขนาด container เท่ากับรูป */
+}
+
+.mapImage img {
+  width: 100%; /* ปรับให้ขนาดภาพ responsive */
+  height: auto;
+}
+
+.map-marker {
+  position: absolute;
+  width: 15px; /* ขนาดของ Marker */
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translate(-50%, -50%); /* ทำให้ marker อยู่ตรงจุดที่กำหนดพิกัด */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
 
   

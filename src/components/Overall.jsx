@@ -6,7 +6,9 @@ import "./Overall.css";
 
 const Overall = () => {
   const [data, setData] = useState([]);
-  const [maxToday, setMaxToday] = useState(0);
+  const [maxToday, setMaxToday] = useState(() => {
+    return parseInt(localStorage.getItem("maxToday") || "0", 10);
+  });
 
   const fetchData = async () => {
     try {
@@ -28,13 +30,18 @@ const Overall = () => {
       const count2 = parseInt(data2.feeds[0]?.field1 || 0, 10);
       const count3 = parseInt(data3.feeds[0]?.field1 || 0, 10);
 
-      setMaxToday((prevMax) => Math.max(prevMax, count1, count2, count3));
-
       setData([
         { name: "Building A3", count: count1 },
         { name: "Building A6", count: count2 },
         { name: "Building B4", count: count3 },
       ]);
+
+      // ตรวจสอบว่ามีค่าที่สูงกว่าค่าเดิมหรือไม่
+      const newMax = Math.max(maxToday, count1, count2, count3);
+      if (newMax > maxToday) {
+        setMaxToday(newMax);
+        localStorage.setItem("maxToday", newMax); // บันทึกค่า maxToday ลง localStorage
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -42,8 +49,7 @@ const Overall = () => {
 
   useEffect(() => {
     fetchData(); // ดึงข้อมูลครั้งแรก
-
-    const interval = setInterval(fetchData, 1000); // อัปเดตข้อมูลทุก 10 วินาที
+    const interval = setInterval(fetchData, 10000); // อัปเดตข้อมูลทุก 10 วินาที
 
     return () => clearInterval(interval); // ล้าง interval เมื่อ component ถูก unmount
   }, []);
