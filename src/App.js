@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Navbar setSelectedLocation={setSelectedLocation} />
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="" element={<Home />} />
         <Route path="/overall" element={<Overall />} />
         <Route path="/location" element={<Location selectedLocation={selectedLocation} />} />
         <Route path="/about" element={<About />} />
