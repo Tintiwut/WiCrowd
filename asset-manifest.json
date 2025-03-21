@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/home/static/css/main.d0d44459.css",
-    "main.js": "/home/static/js/main.f7af549d.js",
+    "main.css": "/home/static/css/main.476a558f.css",
+    "main.js": "/home/static/js/main.936bb692.js",
     "static/js/453.80a10c70.chunk.js": "/home/static/js/453.80a10c70.chunk.js",
     "static/media/BUMAP4.jpg": "/home/static/media/BUMAP4.10020aff441f77161edd.jpg",
     "static/media/Building_A3.jpg": "/home/static/media/Building_A3.e2dd05ad7add4dddf16e.jpg",
@@ -9,16 +9,16 @@
     "static/media/Building_B4.jpg": "/home/static/media/Building_B4.493a7fe5c2f9eb22ddba.jpg",
     "static/media/Building_A6.jpg": "/home/static/media/Building_A6.691ff5ea6b90ab064c76.jpg",
     "static/media/WiCrowd_Logo_PNG.png": "/home/static/media/WiCrowd_Logo_PNG.f9fdf3480d21c8578023.png",
+    "static/media/phettae.jpg": "/home/static/media/phettae.9c563daf6b425a3f5a72.jpg",
     "static/media/Tintiwut.png": "/home/static/media/Tintiwut.51cd0628cbe8b2630ef9.png",
     "static/media/jaruphat.png": "/home/static/media/jaruphat.346da89cc4aee675f885.png",
-    "static/media/phettae.png": "/home/static/media/phettae.346da89cc4aee675f885.png",
     "index.html": "/home/index.html",
-    "main.d0d44459.css.map": "/home/static/css/main.d0d44459.css.map",
-    "main.f7af549d.js.map": "/home/static/js/main.f7af549d.js.map",
+    "main.476a558f.css.map": "/home/static/css/main.476a558f.css.map",
+    "main.936bb692.js.map": "/home/static/js/main.936bb692.js.map",
     "453.80a10c70.chunk.js.map": "/home/static/js/453.80a10c70.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d0d44459.css",
-    "static/js/main.f7af549d.js"
+    "static/css/main.476a558f.css",
+    "static/js/main.936bb692.js"
   ]
 }
