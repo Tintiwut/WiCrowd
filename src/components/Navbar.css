@@ -79,6 +79,11 @@ option:hover {
   margin-right: -100px;
 }
 
+.location-select {
+  padding: 5px;
+  border-radius: 5px;
+}
+
 /* Mobile view adjustments */
 @media (max-width: 768px) {
 .navbar {
