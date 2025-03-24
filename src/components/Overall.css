@@ -70,8 +70,8 @@ body {
   }
 
   .overall-card img {
-    max-width: 80%;
-    width: 60%;
+    max-width: 100%;
+    width: 100%;
   }
 
   .overall-info {
@@ -81,10 +81,10 @@ body {
   }
 
   .overall-info h2 {
-    font-size: 24px;
+    font-size: 16px;
   }
 
   .overall-info p {
-    font-size: 20px;
+    font-size: 12px;
   }
 }
