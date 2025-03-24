@@ -68,3 +68,47 @@ body {
     height: auto !important;
   }
   
+  @media (max-width: 768px) {
+    .location-card {
+        margin-left: 20px;
+        margin-right: 20px;
+        height: auto;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .location-content {
+        flex-direction: column; /* ให้เนื้อหาตัวอื่นแสดงเป็นคอลัมน์ */
+        gap: 20px;
+    }
+
+    .location-image img {
+        width: 350px; /* ปรับขนาดรูปให้พอดีกับหน้าจอ */
+        height: auto;
+        margin: auto;
+    }
+
+    .location-info {
+        text-align: center;
+        margin-left: 0;
+    }
+
+    .location-info p {
+        font-size: 20px; /* ขนาดตัวอักษรเล็กลง */
+        margin-left: 0;
+    }
+
+    .location-chart {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .location-chart canvas {
+        width: 95% !important; /* ขยายกราฟให้เต็มหน้าจอ */
+        height: auto !important;
+        margin-left: -5px;
+    }
+
+    .location-head h1 {
+        font-size: 22px; /* ขนาดข้อความในหัวข้อเล็กลง */
+    }
+}

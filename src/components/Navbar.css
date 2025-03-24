@@ -86,40 +86,53 @@ option:hover {
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
-.navbar {
-  padding: 10px 0;
+  .nav-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    height: 10px;
+    justify-content: space-between; /* ให้เมนูและปุ่มเมนูอยู่ห่างกัน */
+  }
+
+  .logo img {
+    margin-top: -20px;
+    margin-left: 0px;
+    height: 60px;
+  }
+
+  .nav-links {
+    display: none; 
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 35px;
+    margin-left: 300px;
+    font-size: 22px;
+    position: absolute;
+    z-index: 9999;
+    background-color: rgba(212, 212, 212, 0.9); /* จาง 50% */
+    border-radius: 20px;
+  }
+
+  .menu-icon {
+    display: block; /* แสดงปุ่มเมนู */
+    margin-right: 20px;
+    
+  }
+
+  .nav-links.active {
+    display: flex; /* เมื่อคลิกเมนูแล้วจะแสดง */
+  }
+
+  .time-display {
+    display: none;
+    
+  }
 }
 
-.nav-container {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-}
 
-.logo img {
-  height: 80px;
-  margin-left: 0;
-}
-
-.nav-links {
-  flex-direction: column;
-  gap: 20px;
-  padding-left: 0;
-  padding-right: 0;
-  margin-right: 0;
-  font-size: 22px;
-}
-
-.time-display {
-  margin-left: 0;
-  font-size: 14px;
-}
-
-select {
-  font-size: 22px;
-  padding: 6px 10px;
-}
-}
 
 .no-underline {
 text-decoration: none;

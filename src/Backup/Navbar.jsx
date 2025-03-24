@@ -24,7 +24,6 @@ const RealTimeClock = () => {
 function Navbar({ setSelectedLocation, selectedLocation }) {
   const navigate = useNavigate();
   const currentLocation = useLocation();
-  const [menuActive, setMenuActive] = useState(false); // state สำหรับเปิดปิดเมนู
 
   useEffect(() => {
     if (currentLocation.pathname === "/home" || currentLocation.pathname === "/overall" || currentLocation.pathname === "/about") {
@@ -43,11 +42,6 @@ function Navbar({ setSelectedLocation, selectedLocation }) {
     }
   };
 
-  // ฟังก์ชันสำหรับเปิด/ปิดเมนู
-  const toggleMenu = () => {
-    setMenuActive(!menuActive);
-  };
-
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -56,13 +50,7 @@ function Navbar({ setSelectedLocation, selectedLocation }) {
         </div>
         <p1><RealTimeClock /></p1>
 
-        {/* ปุ่มเมนูสำหรับมือถือ */}
-        <div className="menu-icon" onClick={toggleMenu}>
-          ☰ {/* ไอคอนเมนู */}
-        </div>
-
-        {/* เมนู Dropdown */}
-        <ul className={`nav-links ${menuActive ? 'active' : ''}`}>
+        <ul className="nav-links">
           <li><Link to="/home" className="no-underline">HOME</Link></li>
           <li><Link to="/overall" className="no-underline">OVERALL</Link></li>
           <li>
