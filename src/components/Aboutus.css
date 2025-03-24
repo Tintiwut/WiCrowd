@@ -6,7 +6,7 @@
   
 .about-us-header {
   text-align: center;
-  padding: 50px;
+  padding: 20px;
   background-color: #f5f5f5;
 }
 
@@ -56,4 +56,47 @@
 .about-us-footer p {
   margin: 0;
 }
-  
+
+
+@media (max-width: 768px) {
+  .about-us-container {
+    width: 90%; /* ลดความกว้างของ container */
+  }
+
+  .about-us-header {
+    padding: 30px; /* ลด padding */
+  }
+
+  .about-us-header h1 {
+    font-size: 28px; /* ลดขนาดตัวอักษรของ header */
+  }
+
+  .about-us-team {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* แสดง 2 คอลัมน์บนหน้าจอโทรศัพท์ */
+    gap: 15px;
+    margin: 20px 0;
+    padding: 0 15px;
+  }
+
+  .team-member-img {
+    width: 120px; /* ลดขนาดรูปภาพ */
+    height: 120px;
+  }
+
+  .team-member h2 {
+    font-size: 14px; /* ลดขนาดตัวอักษรชื่อ */
+  }
+
+  .team-member p {
+    font-size: 10px; /* ลดขนาดตัวอักษรบทบาท */
+  }
+
+  .about-us-footer {
+    padding: 15px; /* ลด padding */
+  }
+
+  .about-us-footer p {
+    font-size: 14px; /* ลดขนาดตัวอักษรใน footer */
+  }
+}

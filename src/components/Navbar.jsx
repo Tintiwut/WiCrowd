@@ -36,11 +36,19 @@ function Navbar({ setSelectedLocation, selectedLocation }) {
     const selectedLocation = event.target.value;
     setSelectedLocation(selectedLocation);
 
+    // ปิดเมนูหลังจากเลือก
+    setMenuActive(false);
+
     if (selectedLocation === "Location") {
       navigate('/home'); // กลับไปที่หน้า Home เมื่อเลือก Location
     } else {
       navigate('/location', { state: { location: selectedLocation } });
     }
+  };
+
+  const handleLinkClick = () => {
+    // ปิดเมนูเมื่อคลิกที่เมนู
+    setMenuActive(false);
   };
 
   // ฟังก์ชันสำหรับเปิด/ปิดเมนู
@@ -63,8 +71,8 @@ function Navbar({ setSelectedLocation, selectedLocation }) {
 
         {/* เมนู Dropdown */}
         <ul className={`nav-links ${menuActive ? 'active' : ''}`}>
-          <li><Link to="/home" className="no-underline">HOME</Link></li>
-          <li><Link to="/overall" className="no-underline">OVERALL</Link></li>
+          <li><Link to="/home" className="no-underline" onClick={handleLinkClick}>HOME</Link></li>
+          <li><Link to="/overall" className="no-underline" onClick={handleLinkClick}>OVERALL</Link></li>
           <li>
             <select 
               onChange={handleLocationChange} 
@@ -77,7 +85,7 @@ function Navbar({ setSelectedLocation, selectedLocation }) {
               <option value="Building B4">Building B4</option>
             </select>
           </li>
-          <li><Link to="/about" className="no-underline">ABOUT US</Link></li>
+          <li><Link to="/about" className="no-underline" onClick={handleLinkClick}>ABOUT US</Link></li>
         </ul>
       </div>
     </nav>

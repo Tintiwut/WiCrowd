@@ -57,4 +57,59 @@ body{
   animation: blink 3s infinite;
 }
 
+/* Mobile View - ปรับแต่งสำหรับโทรศัพท์ */
+@media (max-width: 768px) {
+  .mapImage {
+    width: 100%; /* ใช้ความกว้างเต็มหน้าจอ */
+  }
 
+  .marker-container-line {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  .map-line {
+    height: 100px; /* ลดความสูงของเส้น */
+  }
+
+  .map-marker {
+    width: 35px; /* ลดขนาด marker */
+    height: 35px;
+  }
+
+  .map-dot {
+    width: 35px; /* ลดขนาดของ dot */
+    height: 35px;
+  }
+
+  /* ปรับการตั้งตำแหน่งของ Marker และ Dot ให้เข้ากับหน้าจอโทรศัพท์ */
+  .marker-container-line {
+    top: 20%; /* ปรับตำแหน่ง */
+    left: 20%; /* ปรับตำแหน่ง */
+  }
+
+  .marker-container-line:nth-child(2) {
+    top: 40%; /* ปรับตำแหน่ง */
+    left: 30%;
+  }
+
+  .marker-container-line:nth-child(3) {
+    top: 60%; /* ปรับตำแหน่ง */
+    left: 50%;
+  }
+
+  /* ปรับขนาดและการแสดงผลของเส้นและ markers */
+  .map-line {
+    height: 80px; /* ปรับความสูงของเส้น */
+  }
+
+  .map-dot {
+    width: 30px;
+    height: 30px;
+  }
+
+  .map-marker {
+    width: 30px;
+    height: 30px;
+  }
+}

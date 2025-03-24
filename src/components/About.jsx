@@ -7,10 +7,10 @@ import tintiwut from '../images/Tintiwut.png';
 
 const About = () => {
   const teamMembers = [
-    { name: 'Mr.Jaruphat Dechsri', role: 'Buuffolo', image: jaruphat },
-    { name: 'Mr.Phettae Kradangnga', role: 'คนหลายใจ', image: phettae },
-    { name: 'Mr.Nuthtawat Siltusaichol', role: 'คนไม่เที่ยวกับเพื่อน', image: nuthtawat },
-    { name: 'Mr.Tintiwut Yenphet', role: 'คนหล่อ', image: tintiwut },
+    { name: 'Mr.Jaruphat Dechsri', role: 'QA', No: '1640900427', image: jaruphat },
+    { name: 'Mr.Phettae Kradangnga', role: 'PO', No: '1640900500', image: phettae },
+    { name: 'Mr.Nuthtawat Siltusaichol', role: 'QA', No: '1640901177', image: nuthtawat },
+    { name: 'Mr.Tintiwut Yenphet', role: 'DEV', No: '1640902373', image: tintiwut },
   ];
 
   return (
@@ -25,12 +25,13 @@ const About = () => {
             <img src={member.image} alt={member.name} className="team-member-img" />
             <h2>{member.name}</h2>
             <p>{member.role}</p>
+            <p>{member.No}</p>
           </div>
         ))}
       </section>
 
       <footer className="about-us-footer">
-        <p>&copy; 2025 บริษัทของเรา</p>
+        <p>&copy; มหาวิทยาลัยกรุงเทพ สาขาวิชา วิศวกรรมศาสตร์ คอมพิวเตอร์ และหุ่นยนต์</p>
       </footer>
     </div>
   );

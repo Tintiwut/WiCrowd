@@ -84,6 +84,10 @@ option:hover {
   border-radius: 5px;
 }
 
+.menu-icon {
+  display: none;
+}
+
 /* Mobile view adjustments */
 @media (max-width: 768px) {
   .nav-container {
@@ -102,18 +106,30 @@ option:hover {
   }
 
   .nav-links {
-    display: none; 
+    display: none;
     flex-direction: column;
     gap: 20px;
     padding-left: 0;
     padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
     margin-top: 35px;
-    margin-left: 300px;
-    font-size: 22px;
-    position: absolute;
+    position: fixed;
+    right: 0px;
+    margin: auto;
+    margin-top: 31px;
     z-index: 9999;
     background-color: rgba(212, 212, 212, 0.9); /* จาง 50% */
-    border-radius: 20px;
+}
+
+
+  .nav-links.active {
+    display: flex;
+    font-size: 12px;
+  }
+
+  .nav-links li {
+    position: relative;
   }
 
   .menu-icon {
@@ -122,13 +138,19 @@ option:hover {
     
   }
 
-  .nav-links.active {
-    display: flex; /* เมื่อคลิกเมนูแล้วจะแสดง */
-  }
-
   .time-display {
     display: none;
     
+  }
+
+  .location-select {
+    font-size: 12px;
+  }
+
+  select option {
+    font-size: 12px;
+    margin: auto;
+    align-items: center;
   }
 }
 
