@@ -1,73 +1,72 @@
 body {
-    background-color: white;
+  background-color: white;
+}
+
+.overall-container {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
+  grid-template-rows: repeat(2, auto); /* 2 แถว */
+  gap: 40px;
+  padding: 20px;
+  justify-items: center;
+}
+
+.overall-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+  border: 2px solid black;
+  border-radius: 15px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #d4d4d4;
+  width: 100%;
+  max-width: 600px; /* จำกัดขนาด */
+  max-height: 350px;
+}
+
+.overall-card img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.overall-info {
+  font-family: 'JasmineUPC', sans-serif;
+  margin-top: 10px;
+  text-align: start;
+  margin-left: 40px;
+}
+
+.overall-info h2 {
+  margin: 0;
+  font-size: 40px;
+}
+
+.overall-info p {
+  margin: 5px 0;
+  font-size: 24px;
+}
+
+/* ทำให้แสดง 1 คอลัมน์ในจอมือถือ */
+@media (max-width: 768px) {
+  .overall-container {
+    grid-template-columns: 1fr; /* เปลี่ยนเป็น 1 คอลัมน์ */
   }
-  
+
   .overall-card {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 2px solid black;
-    border-radius: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-    height: fit-content;
-    background-color: #d4d4d4;
-    flex-direction: row;
+    max-width: 100%;
   }
-  
-  .overall-card img {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    width: 100%;
-    height: auto;
-    max-width: 300px;
-    border-radius: 20px;
-    border: 1px solid black;
-  }
-  
-  .overall-info {
-    flex: 1;
-    margin-left: 100px;
-    font-family: 'JasmineUPC', sans-serif;
-  }
-  
+
   .overall-info h2 {
-    margin: 0;
-    font-size: 30px;
+    font-size: 18px;
   }
-  
+
   .overall-info p {
-    margin: 5px 0;
-    font-size: 25px;
+    font-size: 16px;
   }
-  
-  /* Mobile view adjustments */
-  @media (max-width: 768px) {
-    .overall-card {
-      flex-direction: column;
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-  
-    .overall-info {
-      margin-left: 0;
-      text-align: center;
-    }
-  
-    .overall-info h2 {
-      font-size: 24px;
-    }
-  
-    .overall-info p {
-      font-size: 20px;
-    }
-  
-    .overall-card img {
-      max-width: 100%;
-    }
-  }
-  
+}

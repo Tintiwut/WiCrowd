@@ -1,20 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 
-// ลงทะเบียนส่วนประกอบที่จำเป็น
 ChartJS.register(...registerables);
 
 const ChartComponent = ({ feeds }) => {
-  const chartRef = useRef(null); // ใช้ useRef สำหรับเก็บ chart instance
-  const [allFeeds, setAllFeeds] = useState([]); // เก็บข้อมูลทั้งหมดจาก ThingSpeak
+  const chartRef = useRef(null);
+  const [allFeeds, setAllFeeds] = useState([]);
 
+  // โหลดข้อมูลจาก localStorage เมื่อ Component เริ่มทำงาน
   useEffect(() => {
-    // หากมีข้อมูลใหม่เข้ามา ให้เก็บข้อมูลเก่าไว้
-    if (feeds.length > 0) {
-      // ต่อข้อมูลเก่าเข้ากับข้อมูลใหม่
-      setAllFeeds((prevFeeds) => [...prevFeeds, ...feeds]);
+    const storedFeeds = localStorage.getItem("chartFeeds");
+    if (storedFeeds) {
+      setAllFeeds(JSON.parse(storedFeeds));
     }
-  }, [feeds]); // ทำการอัปเดตเมื่อ feeds เปลี่ยน
+  }, []);
+
+  // อัปเดตข้อมูลเมื่อ feeds เปลี่ยน
+  useEffect(() => {
+    if (feeds.length > 0) {
+      setAllFeeds((prevFeeds) => {
+        const updatedFeeds = [...prevFeeds, ...feeds].slice(-10); // เก็บแค่ 10 ข้อมูลล่าสุด
+        localStorage.setItem("chartFeeds", JSON.stringify(updatedFeeds)); // บันทึกข้อมูลลง localStorage
+        return updatedFeeds;
+      });
+    }
+  }, [feeds]);
 
   useEffect(() => {
     if (allFeeds.length > 0) {
@@ -23,7 +33,7 @@ const ChartComponent = ({ feeds }) => {
 
       const ctx = chartRef.current.getContext("2d");
 
-      // หากกราฟเก่ามีอยู่แล้ว ให้ทำลายมันก่อน
+      // ทำลายกราฟเก่าถ้ามีอยู่
       if (chartRef.current.chartInstance) {
         chartRef.current.chartInstance.destroy();
       }
@@ -37,7 +47,7 @@ const ChartComponent = ({ feeds }) => {
             {
               label: "จำนวนอุปกรณ์",
               data: values,
-              borderColor: "blue",
+              borderColor: "green",
               borderWidth: 2,
               fill: false,
             },
@@ -53,9 +63,9 @@ const ChartComponent = ({ feeds }) => {
         },
       });
     }
-  }, [allFeeds]); // ใช้ allFeeds ที่เก็บข้อมูลทั้งหมด
+  }, [allFeeds]);
 
-  return <canvas ref={chartRef} id="myChart"></canvas>; // ใช้ ref แทนการใช้ id
+  return <canvas ref={chartRef}></canvas>;
 };
 
 export default ChartComponent;

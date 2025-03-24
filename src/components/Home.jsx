@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import mapImage from '../images/BUMAP4.jpg';
 import "./Home.css";
 
-export default function Dashboard() {
+export default function Dashboard({ setSelectedLocation }) {
   const [data, setData] = useState({
     "Building A3": null,
     "Building A6": null,
@@ -60,8 +60,9 @@ export default function Dashboard() {
     return "rgb(255, 0, 0)";
   };
 
-  // ฟังก์ชันนำทางไปยังหน้า Location
+  // ฟังก์ชันนำทางไปยังหน้า Location และเปลี่ยนแปลง selectedLocation
   const handleNavigate = (location) => {
+    setSelectedLocation(location); // เปลี่ยนค่า selectedLocation
     navigate('/location', { state: { location } });
   };
 

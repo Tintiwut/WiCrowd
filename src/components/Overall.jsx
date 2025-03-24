@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Building_A3 from "../images/Building_A3.jpg";
 import Building_A6 from "../images/Building_A6.jpg";
 import Building_B4 from "../images/Building_B4.jpg";
+// import Building_B5 from "../images/Building_B5.jpg"; // เพิ่มตึกที่ 4
 import "./Overall.css";
 
 const Overall = () => {
@@ -12,35 +13,32 @@ const Overall = () => {
 
   const fetchData = async () => {
     try {
-      const response1 = await fetch(
-        "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"
-      );
-      const response2 = await fetch(
-        "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"
-      );
-      const response3 = await fetch(
-        "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"
-      );
+      const response1 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1");
+      const response2 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1");
+      const response3 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1");
+      // const response4 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"); // เพิ่มตึกที่ 4
 
       const data1 = await response1.json();
       const data2 = await response2.json();
       const data3 = await response3.json();
+      // const data4 = await response4.json(); // ตึกที่ 4
 
       const count1 = parseInt(data1.feeds[0]?.field1 || 0, 10);
       const count2 = parseInt(data2.feeds[0]?.field1 || 0, 10);
       const count3 = parseInt(data3.feeds[0]?.field1 || 0, 10);
+      // const count4 = parseInt(data4.feeds[0]?.field1 || 0, 10); // ตึกที่ 4
 
       setData([
         { name: "Building A3", count: count1 },
         { name: "Building A6", count: count2 },
         { name: "Building B4", count: count3 },
+        // { name: "Building B5", count: count4 }, // ตึกที่ 4
       ]);
 
-      // ตรวจสอบว่ามีค่าที่สูงกว่าค่าเดิมหรือไม่
       const newMax = Math.max(maxToday, count1, count2, count3);
       if (newMax > maxToday) {
         setMaxToday(newMax);
-        localStorage.setItem("maxToday", newMax); // บันทึกค่า maxToday ลง localStorage
+        localStorage.setItem("maxToday", newMax);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -48,10 +46,9 @@ const Overall = () => {
   };
 
   useEffect(() => {
-    fetchData(); // ดึงข้อมูลครั้งแรก
-    const interval = setInterval(fetchData, 10000); // อัปเดตข้อมูลทุก 10 วินาที
-
-    return () => clearInterval(interval); // ล้าง interval เมื่อ component ถูก unmount
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const getDensityLevel = (count) => {
@@ -61,10 +58,10 @@ const Overall = () => {
   };
 
   return (
-    <div>
+    <div className="overall-container">
       {data.map((location, index) => (
         <div key={index} className="overall-card">
-          <img src={[Building_A3, Building_A6, Building_B4][index]} alt={`Location ${index + 1}`} />
+          <img src={[Building_A3, Building_A6, Building_B4][index]} alt={location.name} />
           <div className="overall-info">
             <h2>{location.name}</h2>
             <p>จำนวนคน: {location.count}</p>

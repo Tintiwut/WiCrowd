@@ -21,21 +21,25 @@ const RealTimeClock = () => {
   return <div className="time-display">{dateTimeString}</div>;
 };
 
-function Navbar() {
-  const [location, setLocation] = useState("Building_A3"); 
+function Navbar({ setSelectedLocation, selectedLocation }) {
   const navigate = useNavigate();
   const currentLocation = useLocation();
 
   useEffect(() => {
-    if (currentLocation.pathname === "/" || currentLocation.pathname === "/overall" || currentLocation.pathname === "/about") {
-      setLocation("Location");
+    if (currentLocation.pathname === "/home" || currentLocation.pathname === "/overall" || currentLocation.pathname === "/about") {
+      setSelectedLocation("Location");
     }
-  }, [currentLocation.pathname]);
+  }, [currentLocation.pathname, setSelectedLocation]);
 
   const handleLocationChange = (event) => {
     const selectedLocation = event.target.value;
-    setLocation(selectedLocation);
-    navigate('/location', { state: { location: selectedLocation } });
+    setSelectedLocation(selectedLocation);
+
+    if (selectedLocation === "Location") {
+      navigate('/home'); // กลับไปที่หน้า Home เมื่อเลือก Location
+    } else {
+      navigate('/location', { state: { location: selectedLocation } });
+    }
   };
 
   return (
@@ -47,15 +51,15 @@ function Navbar() {
         <p1><RealTimeClock /></p1>
 
         <ul className="nav-links">
-          <li><Link to="/" className="no-underline">HOME</Link></li>
+          <li><Link to="/home" className="no-underline">HOME</Link></li>
           <li><Link to="/overall" className="no-underline">OVERALL</Link></li>
           <li>
             <select 
               onChange={handleLocationChange} 
-              value={location}
+              value={selectedLocation}
               className="location-select"
             >
-              <option value="/">LOCATION</option>
+              <option value="Location">LOCATION</option>
               <option value="Building A3">Building A3</option>
               <option value="Building A6">Building A6</option>
               <option value="Building B4">Building B4</option>
