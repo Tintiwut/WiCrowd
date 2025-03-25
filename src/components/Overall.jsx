@@ -18,6 +18,7 @@ const Overall = ({ language }) => {
       peopleCount: "Number of People",
       density: "Density",
       maxToday: "Maximum Today",
+      status: "Status",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
     },
     th: {
@@ -27,6 +28,7 @@ const Overall = ({ language }) => {
       peopleCount: "จำนวนคน",
       density: "ความหนาแน่น",
       maxToday: "จำนวนสูงสุดของวันนี้",
+      status: "การทำงานของเครื่อง",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
     },
   };
@@ -85,10 +87,11 @@ const Overall = ({ language }) => {
         <div key={index} className="overall-card">
           <img src={location.image} alt={translations[language][location.key]} />
           <div className="overall-info">
-            <h2>{translations[language][location.key]}</h2>
+          <h2>{translations[language][location.key]}</h2>
             <p>{translations[language].peopleCount}: {data[index]?.count || 0}</p>
             <p>{translations[language].density}: {getDensityLevel(data[index]?.count || 0)}</p>
             <p>{translations[language].maxToday}: {maxToday}</p>
+            <p>{translations[language].status}: </p>
           </div>
         </div>
       ))}

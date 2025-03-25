@@ -4,141 +4,255 @@ body {
 
 .location-head h1{
     text-align: center;
-
+    margin-bottom: 0%;
+    font-size: 28px;
+    font-family: 'Inter', sans-serif;
 }
+
 .location-card {
-    margin-top: 40px;
+    margin-top: 100px;
     margin-left: 200px;
     margin-right: 200px;
-    height: 500px;
+    height: 790px;
+    max-width: 1920px;
+    max-height: 800px;
     border: 2px solid black;
     border-radius: 20px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
-    background-color: #d4d4d4;
-
+    background-color: #F5F5F5;
 }
 
 .location-content {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
     justify-content: space-between; /* ให้มีช่องว่างระหว่างรูปกับกราฟ */
     align-items: center;
-    gap: 20px; /* เว้นระยะห่าง */
   }
-  
-
-
-.location-card img {
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 250px;
-    margin-right: 250px;
-    max-width: 500px;
-    border-radius: 20px; 
-    border: 1px solid black;
-}
 
 .location-image img {
-    margin-left: 30px;
-    width: 500px; /* ปรับขนาดรูป */
-    height: 350px;
+    margin: auto;
+    margin-top: 5%;
+    margin-left: 25%;
+    width: 400px; /* ปรับขนาดรูป */
+    height: 190px;
     border-radius: 10px;
     max-width: 100%;
     max-height: 100%;
-  }
-
-.location-info p {
-    margin-left: -200px;
-    font-size: 18px;
-    font-family: 'JasmineUPC', sans-serif;
+    border: solid black;
 }
 
-.location-info-chart {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1; /* ให้พื้นที่เท่ากับรูป */
-}
-
-.location-chart {
-    margin-left: -230px;
+.location-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
+    grid-template-rows: repeat(2, auto); /* 2 แถว */
+    column-gap: 50px;
+    align-items: center;
+    font-size: 26px;
+    font-family: 'Inter', sans-serif;
+    margin: auto;
+    margin-top: 5%;
+    margin-left: 0%;
 }
 
 .location-chart canvas {
+    margin: auto;
+    margin-top: 20px;
     width: 95% !important; /* บังคับให้แผนภูมิขยายเต็มพื้นที่ */
-    height: auto !important;
+    height: 450px !important;
+    max-width: 1368px;
   }
 
 .density-low {
-    color: green;
-    padding: 4px 4px;
+    color: #000000;
+    padding: 10px 10px;
     font-size: 30px;
+    background: 10px rgb(40, 204, 40);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
 
 .density-medium {
-    color: yellow;
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 30px;
+    background: 10px yellow;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
 
 .density-high {
-    color: red;
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 30px;
+    background: 10px red;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
 
 .count-low {
-    color: green;
-    background-color: transparent;
-    padding: 4px 4px;
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
     font-size: 30px;
+    background: 10px rgb(40, 204, 40);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
   
 .count-medium {
-    color: yellow;
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 30px;
+    background: 10px rgb(255, 242, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
   
 .count-high {
-    color: red;
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 30px;
+    background: 10px rgb(255, 0, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
   
-  @media (max-width: 768px) {
-    .location-card {
-        margin-left: 20px;
-        margin-right: 20px;
-        height: auto;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+@media (max-width: 768px) {
+.location-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     }
 
-    .location-content {
-        flex-direction: column; /* ให้เนื้อหาตัวอื่นแสดงเป็นคอลัมน์ */
-        gap: 20px;
-    }
+.location-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 80px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
 
-    .location-image img {
-        width: 350px; /* ปรับขนาดรูปให้พอดีกับหน้าจอ */
-        height: auto;
-        margin: auto;
-    }
+.location-head {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
 
-    .location-info {
-        text-align: center;
-        margin-left: 0;
-    }
+.location-image {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
 
-    .location-info p {
-        font-size: 20px; /* ขนาดตัวอักษรเล็กลง */
-        margin-left: 0;
-    }
-
-    .location-chart {
-        margin-left: 0;
-        margin-top: 20px;
-    }
-
-    .location-chart canvas {
-        width: 95% !important; /* ขยายกราฟให้เต็มหน้าจอ */
-        height: auto !important;
-        margin-left: -5px;
-    }
-
-    .location-head h1 {
-        font-size: 22px; /* ขนาดข้อความในหัวข้อเล็กลง */
-    }
+.location-image img {
+    width: 180px;
+    height: auto;
 }
+
+.location-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+.location-info p {
+    margin-top: 100px;
+}
+
+
+.location-chart {
+width: 100%;
+display: flex;
+justify-content: center;
+}
+
+.location-chart canvas {
+width: 100% !important;
+max-width: 300px;
+height: auto !important;
+}
+
+
+.density-low {
+    color: #000000;
+    padding: 10px 10px;
+    font-size: 10px;
+    background: 10px rgb(40, 204, 40);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}
+
+.density-medium {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 10px;
+    background: 10px yellow;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}
+
+.density-high {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 10px;
+    background: 10px red;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}
+
+.count-low {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 10px;
+    background: 10px rgb(40, 204, 40);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}
+  
+.count-medium {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 10px;
+    background: 10px rgb(255, 242, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}
+  
+.count-high {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 10px;
+    background: 10px rgb(255, 0, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+}
+}
+

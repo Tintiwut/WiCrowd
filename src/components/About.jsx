@@ -9,25 +9,25 @@ const About = ({ language }) => {
   const teamMembers = [
     { 
       name: { en: 'Mr.Jaruphat Dechsri', th: 'นายจารุภัทร เดชศรี' }, 
-      role: 'QA', 
+      role: 'QA | DEV Team', 
       No: '1640900427', 
       image: jaruphat 
     },
     { 
       name: { en: 'Mr.Phettae Kradangnga', th: 'นายเพชรแท้ กระดังงา' }, 
-      role: 'PO', 
+      role: 'PO | Hardware', 
       No: '1640900500', 
       image: phettae 
     },
     { 
       name: { en: 'Mr.Nuthtawat Siltusaichol', th: 'นายณัฐฏวัฒน์ สินธุสายชล' }, 
-      role: 'QA', 
+      role: 'QA | Call center', 
       No: '1640901177', 
       image: nuthtawat 
     },
     { 
       name: { en: 'Mr.Tintiwut Yenphet', th: 'นายติณณ์ติวุฒิ เย็นเพชร' }, 
-      role: 'DEV', 
+      role: 'DEV Lead', 
       No: '1640902373', 
       image: tintiwut 
     }

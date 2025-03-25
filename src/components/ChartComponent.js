@@ -3,7 +3,7 @@ import { Chart as ChartJS, registerables } from "chart.js";
 
 ChartJS.register(...registerables);
 
-const ChartComponent = ({ feeds }) => {
+const ChartComponent = ({ feeds, devicesCount}) => {
   const chartRef = useRef(null);
   const [allFeeds, setAllFeeds] = useState([]);
 
@@ -30,14 +30,14 @@ const ChartComponent = ({ feeds }) => {
     if (allFeeds.length > 0) {
       const labels = allFeeds.map(feed => new Date(feed.created_at).toLocaleTimeString());
       const values = allFeeds.map(feed => parseFloat(feed.field1));
-
+  
       const ctx = chartRef.current.getContext("2d");
-
+  
       // ทำลายกราฟเก่าถ้ามีอยู่
       if (chartRef.current.chartInstance) {
         chartRef.current.chartInstance.destroy();
       }
-
+  
       // สร้างกราฟใหม่
       chartRef.current.chartInstance = new ChartJS(ctx, {
         type: "line",
@@ -45,6 +45,7 @@ const ChartComponent = ({ feeds }) => {
           labels: labels,
           datasets: [
             {
+              label: devicesCount,
               data: values,
               borderColor: "green",
               borderWidth: 2,
@@ -57,12 +58,20 @@ const ChartComponent = ({ feeds }) => {
           scales: {
             y: {
               beginAtZero: true,
+              ticks: {
+                // กำหนดให้ค่าบนแกน Y เป็นจำนวนเต็ม
+                callback: function(value) {
+                  return value % 1 === 0 ? value : ''; // แสดงเฉพาะจำนวนเต็ม
+                },
+                stepSize: 1, // กำหนดระยะห่างของแต่ละขั้น
+              },
             },
           },
         },
       });
     }
-  }, [allFeeds]); 
+  }, [allFeeds]);
+  
 
   return <canvas ref={chartRef}></canvas>;
 };

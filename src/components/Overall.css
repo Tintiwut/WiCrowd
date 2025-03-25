@@ -3,13 +3,14 @@ body {
 }
 
 .overall-container {
-  margin-top: 40px;
+  margin-top: 100px;
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
   grid-template-rows: repeat(2, auto); /* 2 แถว */
   gap: 40px;
   padding: 20px;
   justify-items: center;
+  max-width: 1920px;
 }
 
 .overall-card {
@@ -22,34 +23,37 @@ body {
   border-radius: 15px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   background-color: #F5F5F5;
-  width: 100%;
-  max-width: 600px; /* จำกัดขนาด */
+  width: 700px;
+  height: 300px;
+  max-width: 750px; /* จำกัดขนาด */
   max-height: 350px;
 }
 
 .overall-card img {
-  width: 100%;
-  max-width: 300px;
-  height: auto;
+  width: 404;
+  max-width: 404px;
+  height: 270px;
   border-radius: 10px;
-  border: 1px solid black;
+  border: 2px solid black;
+  margin-left: 15px;
 }
 
 .overall-info {
-  font-family: 'JasmineUPC', sans-serif;
+  font-family: 'Inter', sans-serif;
   margin-top: 10px;
   text-align: start;
-  margin-left: 40px;
+  margin-left: 53.455px;
+
 }
 
 .overall-info h2 {
   margin: 0;
-  font-size: 40px;
+  font-size: 24px;
 }
 
 .overall-info p {
   margin: 5px 0;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 /* ทำให้แสดง 1 คอลัมน์ในจอมือถือ */
@@ -63,28 +67,53 @@ body {
   .overall-card {
     flex-direction: column;
     text-align: center;
-    width: 80%;
-    max-width: 100%;
+    width: fit-content;
+    max-width: auto;
     height: auto;
-    padding: 10px;
+    margin: auto;
+    margin-top: -40px;
+    margin-bottom: 30px;
   }
 
   .overall-card img {
-    max-width: 100%;
-    width: 100%;
+    margin: auto;
+    width: 300px;
+    max-width: fit-content;
+    height: 200px;
   }
 
   .overall-info {
     text-align: center;
     margin-left: 0;
     margin-top: 10px;
+    font-family: 'Inter', sans-serif;
   }
 
   .overall-info h2 {
-    font-size: 16px;
+    font-size: 12px;
+    padding-bottom: 10px;
   }
 
   .overall-info p {
-    font-size: 12px;
+    margin: auto;
+    margin-top: 4px;
+    font-size: 10px;
   }
 }
+
+/* @media (max-height: 400px) {
+  .overall-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .overall-card {
+    flex-direction: column;
+    text-align: center;
+    width: 700px;
+    max-width: 400px;
+    height: auto;
+    padding: 10px;
+  }
+} */

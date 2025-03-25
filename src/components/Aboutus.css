@@ -1,18 +1,20 @@
 .about-us-container {
     width: 80%;
     margin: 0 auto;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
   }
   
 .about-us-header {
+  margin-top: 100px;
   text-align: center;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: transparent;
 }
 
 .about-us-header h1 {
   font-size: 36px;
   color: #333;
+  font-family: 'Inter', sans-serif;
 }
 
 .about-us-team {

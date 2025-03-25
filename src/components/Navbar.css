@@ -2,31 +2,27 @@ body {
   background-color: #ffffff;
 }
 
-.time-display {
-  position: absolute;
-  left: 15%;
-  transform: translateX(-50%);
-  top: 35px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  white-space: nowrap; /* ป้องกันการขึ้นบรรทัดใหม่ */
-}
-
 .navbar {
+  position: fixed; 
   border-bottom: 2px solid #d4d4d4;
   background-color: #F5F5F5;
   padding: 20px 0;
   border-bottom: 1px solid black;
+  max-width: 1920px;
+  width: 100%;
+  top: 0;
+  z-index: 1000; 
+  
 }
 
 .nav-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
+  max-width: 1920px;
   margin: 0 auto;
-  height: 30px;
+  height: 20px;
+  max-height: 1080px;
 }
 
 .logo {
@@ -34,39 +30,76 @@ body {
 }
 
 .logo img {
+  margin: auto;
   margin-top: 10px;
   height: 100px;
-  margin-left: -150px;
-}
-
-select {
-  background-color: transparent;
-  padding: 8px 12px; /* ทำให้ padding เท่ากับ li */
   cursor: pointer;
-  font-family: 'JasmineUPC', sans-serif;
-  border: none;
-  font-size: 27px;
+}
+
+.time-display {
+  text-align: center;
+  position: absolute;
+  left: 200px;
+  margin-top: -20px;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: bolder;
+  color: #333;
+  white-space: nowrap; /* ป้องกันการขึ้นบรรทัดใหม่ */
+  font-family: 'Inter', sans-serif;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-btn {
+  border: transparent;
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
   font-weight: bold;
-  border-radius: 5px; /* เพิ่ม border-radius ให้ select */
-  width: auto; /* ใช้ขนาดอัตโนมัติ */
+  size: bold;
+  background-color: transparent;
 }
 
-select:hover {
-  background-color: #DCDCDC;
+.dropdown-btn :hover {
+  background-color: #F5F5F5;
 }
 
-select option {
-  background-color: rgb(245, 245, 245);
-  color: black;
-  padding: 8px 12px; /* เพิ่ม padding ให้เท่ากับ select */
-  font-size: 20px;
-  font-family: 'JasmineUPC', sans-serif;
-  border-radius: 5px;
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #F5F5F5;
+  padding: 0;
+  margin: 0;
+  min-width: 100px;
+  text-align: center;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  z-index: 9999;
+  visibility: hidden;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
-option:hover {
-  background-color: #DCDCDC;
+.dropdown-item {
+  border: transparent;
+  background-color: transparent;
+  font-weight: bold;
 }
+
+.dropdown-item :hover {
+  border: transparent;
+}
+
+
 
 .nav-links {
   list-style: none;
@@ -74,11 +107,11 @@ option:hover {
   gap: 10px;
   padding-left: 10px;
   padding-right: 10px;
-  font-family: 'JasmineUPC', sans-serif;
-  font-size: 27px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
   align-items: center;
   font-weight: bold;
-  margin-right: -100px;
+  margin-right: 100px;
 }
 
 .nav-links li {
@@ -96,42 +129,44 @@ option:hover {
   display: none;
 }
 
+.no-underline {
+  text-decoration: none;
+  color: black;
+  }
+
 .toggle-lang-btn {
   position: absolute; /* เปลี่ยนจาก fixed เป็น absolute */
-  left: 57%; /* ปรับตำแหน่งให้อยู่มุมขวา */
-  top: 20px;
+  right: 2%; /* ปรับตำแหน่งให้อยู่มุมขวา */  
   padding: 5px 10px;
   font-size: 16px;
   cursor: pointer;
   background-color: #fff;
   border: 1px solid black;
   border-radius: 5px;
+  max-width: 1920px;
 }
-
-.no-underline {
-  text-decoration: none;
-  color: black;
-  }
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
   .nav-container {
     display: flex;
-    flex-direction: row;
     align-items: flex-start;
-    gap: 10px;
     height: 10px;
     justify-content: space-between; /* ให้เมนูและปุ่มเมนูอยู่ห่างกัน */
-    background-color: rgba(245, 245, 245); /* จาง 50% */
+    max-width: 768px;
+    max-height: 10px;
   }
 
   .logo img {
+    margin: auto;
     margin-top: -20px;
-    margin-left: 0px;
+    margin-left: -10px;
     height: 60px;
   }
 
   .nav-links {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
     display: none;
     flex-direction: column;
     gap: 5px;
@@ -140,54 +175,71 @@ option:hover {
     padding-top: 5px;
     padding-bottom: 5px;
     position: fixed;
-    right: 0px;
+    right: 5px;
     margin: auto;
     margin-top: 31px;
     z-index: 9999;
     background-color: rgba(245, 245, 245, 0.9); /* จาง 50% */
 }
 
-
   .nav-links.active {
     display: flex;
-    font-size: 12px;
+    font-size: px;
+    font-family: 'Inter', sans-serif;
   }
 
   .nav-links li {
     position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
   }
 
   .menu-icon {
     display: block; /* แสดงปุ่มเมนู */
-    margin-top: -5px;
+    margin: auto;
+    margin-top: -10px;
     margin-right: 10px;
     padding: 2px 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
   }
 
-  .time-display {
-    display: none;
-    
+  .dropdown {
+    position: relative;
   }
 
-  .location-select {
-    font-size: 12px;
+  .dropdown-btn {
+    width: 100%;
+    text-align: left;
+    font-size: 10px;
   }
 
-  .location-select option {
-    font-size: 12px;
-    margin: auto;
-    align-items: center;
+  .dropdown-menu {
+    position: static;  /* เปลี่ยนจาก absolute เป็น static */
+    width: 100%;
+    background-color: #f9f9f9;
+    box-shadow: none;
+    border: none;
+    display: block;
   }
 
   .toggle-lang-btn {
     position: absolute; /* เปลี่ยนจาก fixed เป็น absolute */
-    left: 86%; /* ปรับตำแหน่งให้อยู่มุมขวา */
-    margin-top: 0px;
+    margin: auto;
+    margin-right: 50px;
+    margin-top: -3px;
     padding: 2px 4px;
     font-size: 10px;
-    cursor: pointer;
     background-color: transparent;
     border: 0px solid #000000;
+    max-width: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .time-display {
+    display: none;
   }
 
 }

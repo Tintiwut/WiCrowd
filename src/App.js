@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Overall from './components/Overall';
@@ -7,8 +7,14 @@ import About from './components/About';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(() => {
+    return sessionStorage.getItem("selectedOption") || '';
+  });
   const [language, setLanguage] = useState('en'); // 🟢 เพิ่ม state สำหรับภาษา
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedOption", selectedLocation);
+  }, [selectedLocation]);
 
   return (
     <Router>

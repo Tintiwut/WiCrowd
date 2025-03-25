@@ -1,113 +1,41 @@
-body{
-  background-color: #d4d4d4;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* ป้องกันการเลื่อน */
 }
 
-.mapImage {
-  position: relative;
-  display: inline-block; /* ให้ขนาด container เท่ากับรูป */
+#root {
+  height: 100%;
 }
 
-.mapImage img {
-  position: relative;
-  width: 99%; /* ปรับให้ขนาดภาพ responsive */
-  max-height:max-content;
-}
-
-.marker-container-line {
-  position: fixed;
-  transform: translate(-50%, -50%);
-}
-
-.map-line {
-  position: absolute;
-  width: 2.5px; 
-  height: 130px;
-  background-color: black;
-  transform: translate(-50%);
-  margin-top: 21px;
-}
-
-.map-marker {
-  position: absolute;
-  width: 45px; /* ขนาดของ Marker */
-  height: 45px;
-  border-radius: 50%;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-}
-
-.map-dot {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 3px solid black;
-  transform: translate(-50%, -50%);
+.MapContainer {
+  height: 100vh;
+  width: 100vw;
 }
 
 @keyframes blink {
-  0% { opacity: 1; }  
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.map-marker {
-  animation: blink 3s infinite;
-}
-
-/* Mobile View - ปรับแต่งสำหรับโทรศัพท์ */
-@media (max-width: 768px) {
-  .mapImage {
-    width: 100%; /* ใช้ความกว้างเต็มหน้าจอ */
-  }
-
-  .marker-container-line {
-    position: absolute;
-    transform: translate(-50%, -50%);
-  }
-
-  .map-line {
-    height: 100px; /* ลดความสูงของเส้น */
-  }
-
-  .map-marker {
-    width: 35px; /* ลดขนาด marker */
-    height: 35px;
-  }
-
-  .map-dot {
-    width: 35px; /* ลดขนาดของ dot */
-    height: 35px;
-  }
-
-  /* ปรับการตั้งตำแหน่งของ Marker และ Dot ให้เข้ากับหน้าจอโทรศัพท์ */
-  .marker-container-line {
-    top: 20%; /* ปรับตำแหน่ง */
-    left: 20%; /* ปรับตำแหน่ง */
-  }
-
-  .marker-container-line:nth-child(2) {
-    top: 40%; /* ปรับตำแหน่ง */
-    left: 30%;
-  }
-
-  .marker-container-line:nth-child(3) {
-    top: 60%; /* ปรับตำแหน่ง */
-    left: 50%;
-  }
-
-  /* ปรับขนาดและการแสดงผลของเส้นและ markers */
-  .map-line {
-    height: 80px; /* ปรับความสูงของเส้น */
-  }
-
-  .map-dot {
-    width: 30px;
-    height: 30px;
-  }
-
-  .map-marker {
-    width: 30px;
-    height: 30px;
-  }
+.custom-marker div {
+  background-color: red;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid black; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
 }

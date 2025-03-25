@@ -24,6 +24,7 @@ const Location = ({ language }) => {
       density: "Density",
       devicesCount: "Number of Devices", 
       maxToday: "Maximum Today",
+      status: "Status",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
       selectLocation: "Please select a location from the dropdown in the Navbar",
       buildingNames: {
@@ -39,6 +40,7 @@ const Location = ({ language }) => {
       density: "ความหนาแน่น",
       devicesCount: "จำนวนอุปกรณ์",
       maxToday: "จำนวนสูงสุดของวันนี้",
+      status: "สถานะ",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
       selectLocation: "กรุณาเลือกสถานที่จาก Dropdown ใน Navbar",
       buildingNames: {
@@ -113,7 +115,7 @@ const Location = ({ language }) => {
   };
 
   return (
-    <div>
+    <div className="location-container">
       {loading && <p>{translations[language].loading}</p>}
       {error && <p>{error}</p>}
       {count !== null && !loading && (
@@ -130,19 +132,18 @@ const Location = ({ language }) => {
             </div>
   
             {/* กล่องข้อมูลและกราฟ */}
-            <div className="location-info-chart">
               <div className="location-info">
-                <p>{translations[language].devicesCount}: <span className={getCountColor(count)}>{count}</span></p>
-                <p>{translations[language].density}: {getDensityLevel(count)}</p>
-                <p>{translations[language].maxToday}: {maxToday}</p>
+                <p>{translations[language].devicesCount} : <span className={getCountColor(count)}>{count}</span></p>
+                <p>{translations[language].density} : {getDensityLevel(count)}</p>
+                <p>{translations[language].maxToday} : {maxToday}</p>
+                <p>{translations[language].status} : </p>
               </div>
+          </div>
   
               {/* กราฟ */}
               <div className="location-chart">
-              <ChartComponent feeds={feeds} language={language} />
+              <ChartComponent feeds={feeds} language={language} devicesCount={translations[language].devicesCount} />
               </div>
-            </div>
-          </div>
         </div>
       )}
   
