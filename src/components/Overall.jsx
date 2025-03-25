@@ -2,37 +2,53 @@ import React, { useEffect, useState } from "react";
 import Building_A3 from "../images/Building_A3.jpg";
 import Building_A6 from "../images/Building_A6.jpg";
 import Building_B4 from "../images/Building_B4.jpg";
-// import Building_B5 from "../images/Building_B5.jpg"; // เพิ่มตึกที่ 4
 import "./Overall.css";
 
-const Overall = () => {
+const Overall = ({ language }) => {
   const [data, setData] = useState([]);
   const [maxToday, setMaxToday] = useState(() => {
     return parseInt(localStorage.getItem("maxToday") || "0", 10);
   });
+
+  const translations = {
+    en: {
+      buildingA3: "Building A3",
+      buildingA6: "Building A6",
+      buildingB4: "Building B4",
+      peopleCount: "Number of People",
+      density: "Density",
+      maxToday: "Maximum Today",
+      densityLevels: { low: "Low", medium: "Medium", high: "High" },
+    },
+    th: {
+      buildingA3: "อาคาร A3",
+      buildingA6: "อาคาร A6",
+      buildingB4: "อาคาร B4",
+      peopleCount: "จำนวนคน",
+      density: "ความหนาแน่น",
+      maxToday: "จำนวนสูงสุดของวันนี้",
+      densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+    },
+  };
 
   const fetchData = async () => {
     try {
       const response1 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1");
       const response2 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1");
       const response3 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1");
-      // const response4 = await fetch("https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"); // เพิ่มตึกที่ 4
 
       const data1 = await response1.json();
       const data2 = await response2.json();
       const data3 = await response3.json();
-      // const data4 = await response4.json(); // ตึกที่ 4
 
       const count1 = parseInt(data1.feeds[0]?.field1 || 0, 10);
       const count2 = parseInt(data2.feeds[0]?.field1 || 0, 10);
       const count3 = parseInt(data3.feeds[0]?.field1 || 0, 10);
-      // const count4 = parseInt(data4.feeds[0]?.field1 || 0, 10); // ตึกที่ 4
 
       setData([
-        { name: "Building A3", count: count1 },
-        { name: "Building A6", count: count2 },
-        { name: "Building B4", count: count3 },
-        // { name: "Building B5", count: count4 }, // ตึกที่ 4
+        { key: "buildingA3", count: count1 },
+        { key: "buildingA6", count: count2 },
+        { key: "buildingB4", count: count3 },
       ]);
 
       const newMax = Math.max(maxToday, count1, count2, count3);
@@ -52,21 +68,27 @@ const Overall = () => {
   }, []);
 
   const getDensityLevel = (count) => {
-    if (count < 20) return "น้อย";
-    if (count < 35) return "ปานกลาง";
-    return "มาก";
+    if (count < 20) return translations[language].densityLevels.low;
+    if (count < 35) return translations[language].densityLevels.medium;
+    return translations[language].densityLevels.high;
   };
+
+  const locations = [
+    { key: "buildingA3", image: Building_A3 },
+    { key: "buildingA6", image: Building_A6 },
+    { key: "buildingB4", image: Building_B4 },
+  ];
 
   return (
     <div className="overall-container">
-      {data.map((location, index) => (
+      {locations.map((location, index) => (
         <div key={index} className="overall-card">
-          <img src={[Building_A3, Building_A6, Building_B4][index]} alt={location.name} />
+          <img src={location.image} alt={translations[language][location.key]} />
           <div className="overall-info">
-            <h2>{location.name}</h2>
-            <p>จำนวนคน: {location.count}</p>
-            <p>ความหนาแน่น: {getDensityLevel(location.count)}</p>
-            <p>จำนวนสูงสุดของวันนี้: {maxToday}</p>
+            <h2>{translations[language][location.key]}</h2>
+            <p>{translations[language].peopleCount}: {data[index]?.count || 0}</p>
+            <p>{translations[language].density}: {getDensityLevel(data[index]?.count || 0)}</p>
+            <p>{translations[language].maxToday}: {maxToday}</p>
           </div>
         </div>
       ))}

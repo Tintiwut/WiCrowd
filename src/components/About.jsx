@@ -5,25 +5,56 @@ import phettae from '../images/phettae.png';
 import nuthtawat from '../images/nuthtawat.png'; 
 import tintiwut from '../images/Tintiwut.png'; 
 
-const About = () => {
+const About = ({ language }) => {
   const teamMembers = [
-    { name: 'Mr.Jaruphat Dechsri', role: 'QA', No: '1640900427', image: jaruphat },
-    { name: 'Mr.Phettae Kradangnga', role: 'PO', No: '1640900500', image: phettae },
-    { name: 'Mr.Nuthtawat Siltusaichol', role: 'QA', No: '1640901177', image: nuthtawat },
-    { name: 'Mr.Tintiwut Yenphet', role: 'DEV', No: '1640902373', image: tintiwut },
+    { 
+      name: { en: 'Mr.Jaruphat Dechsri', th: 'นายจารุภัทร เดชศรี' }, 
+      role: 'QA', 
+      No: '1640900427', 
+      image: jaruphat 
+    },
+    { 
+      name: { en: 'Mr.Phettae Kradangnga', th: 'นายเพชรแท้ กระดังงา' }, 
+      role: 'PO', 
+      No: '1640900500', 
+      image: phettae 
+    },
+    { 
+      name: { en: 'Mr.Nuthtawat Siltusaichol', th: 'นายณัฐฏวัฒน์ สินธุสายชล' }, 
+      role: 'QA', 
+      No: '1640901177', 
+      image: nuthtawat 
+    },
+    { 
+      name: { en: 'Mr.Tintiwut Yenphet', th: 'นายติณณ์ติวุฒิ เย็นเพชร' }, 
+      role: 'DEV', 
+      No: '1640902373', 
+      image: tintiwut 
+    }
   ];
+
+  const translations = {
+    en: {
+      title: "About Us",
+      footer: "© Bangkok University, Department of Computer Engineering and Robotics",
+    },
+    th: {
+      title: "เกี่ยวกับเรา",
+      footer: "© มหาวิทยาลัยกรุงเทพ สาขาวิชาวิศวกรรมคอมพิวเตอร์และหุ่นยนต์",
+    },
+  };
 
   return (
     <div className="about-us-container">
       <header className="about-us-header">
-        <h1>About Us</h1>
+        <h1>{translations[language].title}</h1>
       </header>
 
       <section className="about-us-team">
         {teamMembers.map((member, index) => (
           <div key={index} className="team-member">
             <img src={member.image} alt={member.name} className="team-member-img" />
-            <h2>{member.name}</h2>
+            <h2>{member.name[language]}</h2>
             <p>{member.role}</p>
             <p>{member.No}</p>
           </div>
@@ -31,7 +62,7 @@ const About = () => {
       </section>
 
       <footer className="about-us-footer">
-        <p>&copy; มหาวิทยาลัยกรุงเทพ สาขาวิชา วิศวกรรมศาสตร์ คอมพิวเตอร์ และหุ่นยนต์</p>
+        <p>&copy; {translations[language].footer}</p>
       </footer>
     </div>
   );

@@ -6,7 +6,7 @@ import Building_B4 from "../images/Building_B4.jpg";
 import ChartComponent from "./ChartComponent";
 import "./Location.css";
 
-const Location = () => {
+const Location = ({ language }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [count, setCount] = useState(null);
@@ -15,6 +15,39 @@ const Location = () => {
   const [error, setError] = useState(null);
   const [feeds, setFeeds] = useState([]);
   const selectedLocation = state?.location;
+
+  const translations = {
+    en: {
+      loading: "Loading data...",
+      error: "There was an error loading the data.",
+      peopleCount: "Number of People",
+      density: "Density",
+      devicesCount: "Number of Devices", 
+      maxToday: "Maximum Today",
+      densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      selectLocation: "Please select a location from the dropdown in the Navbar",
+      buildingNames: {
+        "Building A3": "Building A3",
+        "Building A6": "Building A6",
+        "Building B4": "Building B4",
+      },
+    },
+    th: {
+      loading: "กำลังโหลดข้อมูล...",
+      error: "เกิดข้อผิดพลาดในการโหลดข้อมูล",
+      peopleCount: "จำนวนคน",
+      density: "ความหนาแน่น",
+      devicesCount: "จำนวนอุปกรณ์",
+      maxToday: "จำนวนสูงสุดของวันนี้",
+      densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+      selectLocation: "กรุณาเลือกสถานที่จาก Dropdown ใน Navbar",
+      buildingNames: {
+        "Building A3": "อาคาร A3",
+        "Building A6": "อาคาร A6",
+        "Building B4": "อาคาร B4",
+      },
+    },
+  };
 
   useEffect(() => {
     if (!selectedLocation) {
@@ -43,7 +76,7 @@ const Location = () => {
         setLoading(false);
         setFeeds(data.feeds);
       } catch (error) {
-        setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
+        setError(translations[language].error);
         setLoading(false);
       }
     };
@@ -52,12 +85,18 @@ const Location = () => {
     const interval = setInterval(fetchData, 10000); 
 
     return () => clearInterval(interval);
-  }, [selectedLocation, navigate]);
+  }, [selectedLocation, navigate, language]);
 
   const getDensityLevel = (count) => {
-    if (count < 20) return "น้อย";
-    if (count < 35) return "ปานกลาง";
-    return "มาก";
+    if (count < 20) return <span className="density-low">{translations[language].densityLevels.low}</span>;
+    if (count < 35) return <span className="density-medium">{translations[language].densityLevels.medium}</span>;
+    return <span className="density-high">{translations[language].densityLevels.high}</span>;
+  };
+
+  const getCountColor = (count) => {
+    if (count < 20) return 'count-low'; 
+    if (count < 35) return 'count-medium'; 
+    return 'count-high'; 
   };
 
   const getImage = () => {
@@ -75,12 +114,12 @@ const Location = () => {
 
   return (
     <div>
-      {loading && <p>กำลังโหลดข้อมูล...</p>}
+      {loading && <p>{translations[language].loading}</p>}
       {error && <p>{error}</p>}
       {count !== null && !loading && (
         <div className="location-card">
           <div className="location-head">
-            <h1>{selectedLocation}</h1>
+            <h1>{translations[language].buildingNames[selectedLocation]}</h1>
           </div>
           
           {/* กล่องหลักที่แบ่งรูปและกราฟ */}
@@ -93,24 +132,23 @@ const Location = () => {
             {/* กล่องข้อมูลและกราฟ */}
             <div className="location-info-chart">
               <div className="location-info">
-                <p>จำนวนคน: {count}</p>
-                <p>ความหนาแน่น: {getDensityLevel(count)}</p>
-                <p>จำนวนสูงสุดของวันนี้: {maxToday}</p>
+                <p>{translations[language].devicesCount}: <span className={getCountColor(count)}>{count}</span></p>
+                <p>{translations[language].density}: {getDensityLevel(count)}</p>
+                <p>{translations[language].maxToday}: {maxToday}</p>
               </div>
   
               {/* กราฟ */}
               <div className="location-chart">
-                <ChartComponent feeds={feeds} />
+              <ChartComponent feeds={feeds} language={language} />
               </div>
             </div>
           </div>
         </div>
       )}
   
-      {count === null && !loading && <p>กรุณาเลือกสถานที่จาก Dropdown ใน Navbar</p>}
+      {count === null && !loading && <p>{translations[language].selectLocation}</p>}
     </div>
   );
-  
 };
 
 export default Location;

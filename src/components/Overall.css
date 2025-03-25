@@ -21,7 +21,7 @@ body {
   border: 2px solid black;
   border-radius: 15px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  background-color: #d4d4d4;
+  background-color: #F5F5F5;
   width: 100%;
   max-width: 600px; /* จำกัดขนาด */
   max-height: 350px;

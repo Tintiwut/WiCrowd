@@ -45,7 +45,6 @@ const ChartComponent = ({ feeds }) => {
           labels: labels,
           datasets: [
             {
-              label: "จำนวนอุปกรณ์",
               data: values,
               borderColor: "green",
               borderWidth: 2,
@@ -63,7 +62,7 @@ const ChartComponent = ({ feeds }) => {
         },
       });
     }
-  }, [allFeeds]);
+  }, [allFeeds]); 
 
   return <canvas ref={chartRef}></canvas>;
 };

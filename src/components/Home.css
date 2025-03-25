@@ -5,14 +5,12 @@ body{
 .mapImage {
   position: relative;
   display: inline-block; /* ให้ขนาด container เท่ากับรูป */
-  width: 100%;
-  height: auto;
 }
 
 .mapImage img {
   position: relative;
-  width: 100%; /* ปรับให้ขนาดภาพ responsive */
-  height: auto;
+  width: 99%; /* ปรับให้ขนาดภาพ responsive */
+  max-height:max-content;
 }
 
 .marker-container-line {

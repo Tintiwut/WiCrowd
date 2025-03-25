@@ -1,19 +1,21 @@
 body {
-  background-color: #d4d4d4;
+  background-color: #ffffff;
 }
 
 .time-display {
+  position: absolute;
+  left: 15%;
+  transform: translateX(-50%);
+  top: 35px;
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  margin-left: -750px;
-  text-align: left;
-  margin-top: 20px;
+  white-space: nowrap; /* ป้องกันการขึ้นบรรทัดใหม่ */
 }
 
 .navbar {
   border-bottom: 2px solid #d4d4d4;
-  background-color: #d4d4d4;
+  background-color: #F5F5F5;
   padding: 20px 0;
   border-bottom: 1px solid black;
 }
@@ -38,38 +40,38 @@ body {
 }
 
 select {
-  background-color: #d4d4d4;
-  padding: 8px 12px;
+  background-color: transparent;
+  padding: 8px 12px; /* ทำให้ padding เท่ากับ li */
   cursor: pointer;
   font-family: 'JasmineUPC', sans-serif;
   border: none;
   font-size: 27px;
   font-weight: bold;
+  border-radius: 5px; /* เพิ่ม border-radius ให้ select */
+  width: auto; /* ใช้ขนาดอัตโนมัติ */
 }
 
 select:hover {
-  background-color: #b8b7b7d7;
-  border-radius: 5px;
+  background-color: #DCDCDC;
 }
 
 select option {
-  background-color: #d4d4d4;
+  background-color: rgb(245, 245, 245);
   color: black;
-  padding: 5px;
+  padding: 8px 12px; /* เพิ่ม padding ให้เท่ากับ select */
   font-size: 20px;
   font-family: 'JasmineUPC', sans-serif;
   border-radius: 5px;
 }
 
 option:hover {
-  background-color: #b8b7b7d7;
-  border-radius: 5px;
+  background-color: #DCDCDC;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 50px;
+  gap: 10px;
   padding-left: 10px;
   padding-right: 10px;
   font-family: 'JasmineUPC', sans-serif;
@@ -79,14 +81,37 @@ option:hover {
   margin-right: -100px;
 }
 
-.location-select {
-  padding: 5px;
-  border-radius: 5px;
+.nav-links li {
+  padding: 8px 12px; /* ทำให้ padding เท่ากับ select */
+  display: flex;
+  align-items: center;
+}
+
+.nav-links li:hover {
+  background-color: #DCDCDC; /* เปลี่ยนสีเมื่อ hover */
+  border-radius: 10px;
 }
 
 .menu-icon {
   display: none;
 }
+
+.toggle-lang-btn {
+  position: absolute; /* เปลี่ยนจาก fixed เป็น absolute */
+  left: 57%; /* ปรับตำแหน่งให้อยู่มุมขวา */
+  top: 20px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.no-underline {
+  text-decoration: none;
+  color: black;
+  }
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
@@ -97,6 +122,7 @@ option:hover {
     gap: 10px;
     height: 10px;
     justify-content: space-between; /* ให้เมนูและปุ่มเมนูอยู่ห่างกัน */
+    background-color: rgba(245, 245, 245); /* จาง 50% */
   }
 
   .logo img {
@@ -108,18 +134,17 @@ option:hover {
   .nav-links {
     display: none;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px;
     padding-left: 0;
     padding-right: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 35px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     position: fixed;
     right: 0px;
     margin: auto;
     margin-top: 31px;
     z-index: 9999;
-    background-color: rgba(212, 212, 212, 0.9); /* จาง 50% */
+    background-color: rgba(245, 245, 245, 0.9); /* จาง 50% */
 }
 
 
@@ -134,8 +159,9 @@ option:hover {
 
   .menu-icon {
     display: block; /* แสดงปุ่มเมนู */
-    margin-right: 20px;
-    
+    margin-top: -5px;
+    margin-right: 10px;
+    padding: 2px 4px;
   }
 
   .time-display {
@@ -147,16 +173,24 @@ option:hover {
     font-size: 12px;
   }
 
-  select option {
+  .location-select option {
     font-size: 12px;
     margin: auto;
     align-items: center;
   }
+
+  .toggle-lang-btn {
+    position: absolute; /* เปลี่ยนจาก fixed เป็น absolute */
+    left: 86%; /* ปรับตำแหน่งให้อยู่มุมขวา */
+    margin-top: 0px;
+    padding: 2px 4px;
+    font-size: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0px solid #000000;
+  }
+
 }
 
 
 
-.no-underline {
-text-decoration: none;
-color: black;
-}

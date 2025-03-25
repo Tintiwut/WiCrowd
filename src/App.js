@@ -8,16 +8,22 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 function App() {
   const [selectedLocation, setSelectedLocation] = useState('');
+  const [language, setLanguage] = useState('en'); // 🟢 เพิ่ม state สำหรับภาษา
 
   return (
     <Router>
-      <Navbar setSelectedLocation={setSelectedLocation} selectedLocation={selectedLocation} />
+      <Navbar 
+        setSelectedLocation={setSelectedLocation} 
+        selectedLocation={selectedLocation} 
+        language={language} 
+        setLanguage={setLanguage} 
+      />
       <Routes>
         <Route path="/" element={<Home setSelectedLocation={setSelectedLocation} />} />
         <Route path="/home" element={<Navigate to="/" />} />
-        <Route path="/overall" element={<Overall />} />
-        <Route path="/location" element={<Location selectedLocation={selectedLocation} />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/overall" element={<Overall language={language}/>} />
+        <Route path="/location" element={<Location selectedLocation={selectedLocation} language={language}/>} />
+        <Route path="/about" element={<About language={language} />} />
       </Routes>
     </Router>
   );
