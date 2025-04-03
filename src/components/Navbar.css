@@ -27,6 +27,7 @@ body {
 
 .logo {
   flex: 1;
+  max-width: 10px;
 }
 
 .logo img {
@@ -137,7 +138,9 @@ body {
 .toggle-lang-btn {
   position: absolute; /* เปลี่ยนจาก fixed เป็น absolute */
   right: 2%; /* ปรับตำแหน่งให้อยู่มุมขวา */  
-  padding: 5px 10px;
+  padding: 10px 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   font-size: 16px;
   cursor: pointer;
   background-color: #fff;
