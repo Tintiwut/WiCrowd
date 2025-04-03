@@ -90,15 +90,15 @@ const Location = ({ language }) => {
   }, [selectedLocation, navigate, language]);
 
   const getDensityLevel = (count) => {
-    if (count < 20) return <span className="density-low">{translations[language].densityLevels.low}</span>;
-    if (count < 35) return <span className="density-medium">{translations[language].densityLevels.medium}</span>;
-    return <span className="density-high">{translations[language].densityLevels.high}</span>;
+    if (count < 20) return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
+    if (count < 35) return <span className="Location-density-medium">{translations[language].densityLevels.medium}</span>;
+    return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
   };
 
   const getCountColor = (count) => {
-    if (count < 20) return 'count-low'; 
-    if (count < 35) return 'count-medium'; 
-    return 'count-high'; 
+    if (count < 20) return 'Location-count-low'; 
+    if (count < 35) return 'Location-count-medium'; 
+    return 'Location-count-high'; 
   };
 
   const getImage = () => {

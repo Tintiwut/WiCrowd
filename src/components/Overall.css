@@ -74,6 +74,7 @@ body {
   padding-top: 2px;
   padding-bottom: 2px;
   font-weight: bold;
+  border-radius: 15px;
 }
 
 .Overall-count-medium,
@@ -86,6 +87,7 @@ body {
   padding-top: 2px;
   padding-bottom: 2px;
   font-weight: bold;
+  border-radius: 15px;
 }
 
 .Overall-count-high,
@@ -98,6 +100,7 @@ body {
   padding-top: 2px;
   padding-bottom: 2px;
   font-weight: bold;
+  border-radius: 15px;
 }
 
 /* ทำให้แสดง 1 คอลัมน์ในจอมือถือ */
@@ -153,48 +156,51 @@ body {
     margin-bottom: 5px;
     font-size: 13px;
     justify-content: space-between;
-}
+  }
 
   .overall-info p span:first-child {
-      min-width: 130px; /* ปรับขนาดให้เท่ากัน */
-      display: inline-block;
+    min-width: 130px; /* ปรับขนาดให้เท่ากัน */
+    display: inline-block;
   }
 
   .Overall-count-low,
-.Overall-density-low {
-  color: #000000;
-  font-weight: 500;
-  padding: 10px 10px;
-  font-size: 13px;
-  background: 10px rgb(40, 204, 40);
-  padding-top: 2px;
-  padding-bottom: 2px;
-  font-weight: bold;
-}
+  .Overall-density-low {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(40, 204, 40);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
 
-.Overall-count-medium,
-.Overall-density-medium {
-  color: #000000;
-  font-weight: 500;
-  padding: 10px 10px;
-  font-size: 13px;
-  background: 10px rgb(255, 242, 0);
-  padding-top: 2px;
-  padding-bottom: 2px;
-  font-weight: bold;
-}
+  .Overall-count-medium,
+  .Overall-density-medium {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(255, 242, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
 
-.Overall-count-high,
-.Overall-density-high {
-  color: #000000;
-  font-weight: 500;
-  padding: 10px 10px;
-  font-size: 13px;
-  background: 10px rgb(255, 0, 0);
-  padding-top: 2px;
-  padding-bottom: 2px;
-  font-weight: bold;
-}
+  .Overall-count-high,
+  .Overall-density-high {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(255, 0, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
 }
 
 /* @media (max-height: 400px) {
