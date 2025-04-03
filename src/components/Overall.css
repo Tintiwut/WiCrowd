@@ -23,7 +23,7 @@ body {
   border-radius: 15px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   background-color: #F5F5F5;
-  width: 700px;
+  width: fit-content;
   height: 300px;
   max-width: 750px; /* จำกัดขนาด */
   max-height: 350px;
@@ -43,17 +43,61 @@ body {
   margin-top: 10px;
   text-align: start;
   margin-left: 53.455px;
-
 }
 
 .overall-info h2 {
   margin: 0;
   font-size: 24px;
+  text-align: center;
+  padding-bottom: 10px;
 }
 
 .overall-info p {
-  margin: 5px 0;
+  margin-top: 10px;
+  margin-bottom: 5px;
   font-size: 18px;
+  justify-content: space-between;
+}
+
+.overall-info p span:first-child {
+    min-width: 160px; /* ปรับขนาดให้เท่ากัน */
+    display: inline-block;
+}
+
+.Overall-count-low,
+.Overall-density-low {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 18px;
+  background: 10px rgb(40, 204, 40);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+
+.Overall-count-medium,
+.Overall-density-medium {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 18px;
+  background: 10px rgb(255, 242, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+
+.Overall-count-high,
+.Overall-density-high {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 30px;
+  background: 10px rgb(255, 0, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
 }
 
 /* ทำให้แสดง 1 คอลัมน์ในจอมือถือ */
@@ -75,6 +119,11 @@ body {
     margin-bottom: 30px;
   }
 
+  .overall-card h2 {
+    font-size: 16px;
+    padding: 0%;
+  }
+
   .overall-card img {
     margin: auto;
     width: 300px;
@@ -83,22 +132,65 @@ body {
   }
 
   .overall-info {
-    text-align: center;
+    text-align: left;
     margin-left: 0;
-    margin-top: 10px;
+    margin-top: -10px;
     font-family: 'Inter', sans-serif;
   }
 
-  .overall-info h2 {
-    font-size: 12px;
-    padding-bottom: 10px;
+  .overall-info h2{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
   }
 
   .overall-info p {
-    margin: auto;
-    margin-top: 4px;
-    font-size: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    justify-content: space-between;
+}
+
+  .overall-info p span:first-child {
+      min-width: 130px; /* ปรับขนาดให้เท่ากัน */
+      display: inline-block;
   }
+
+  .Overall-count-low,
+.Overall-density-low {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 13px;
+  background: 10px rgb(40, 204, 40);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+
+.Overall-count-medium,
+.Overall-density-medium {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 13px;
+  background: 10px rgb(255, 242, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
+
+.Overall-count-high,
+.Overall-density-high {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 13px;
+  background: 10px rgb(255, 0, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+}
 }
 
 /* @media (max-height: 400px) {

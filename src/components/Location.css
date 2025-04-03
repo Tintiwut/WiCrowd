@@ -45,13 +45,22 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
     grid-template-rows: repeat(2, auto); /* 2 แถว */
-    column-gap: 50px;
+    column-gap: 60px;
     align-items: center;
     font-size: 26px;
     font-family: 'Inter', sans-serif;
     margin: auto;
     margin-top: 5%;
     margin-left: 0%;
+}
+
+.location-info p {
+    justify-content: space-between;
+}
+
+.location-info p span:first-child {
+    min-width: 160px; /* ปรับขนาดให้เท่ากัน */
+    display: inline-block;
 }
 
 .location-chart canvas {
@@ -131,62 +140,86 @@ body {
 .location-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     }
 
 .location-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 400px;
+    width: 368px;
+    max-width: auto;
+    height: auto;
+    margin: auto;
     margin-top: 80px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 30px;
   }
 
-.location-head {
+.location-head h1{
+    align-items: start;
     text-align: center;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: bold;
+    margin: auto;
+    margin-top: 20px;
     margin-bottom: 10px;
   }
 
 .location-image {
+    align-items: center;
     display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
+    height: auto;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
 .location-image img {
-    width: 180px;
-    height: auto;
+    margin: auto;
+    width: 300px;
+    max-width: fit-content;
+    height: 200px;
+    border: 2px solid black;
+    border-radius: 15px;
 }
+
+.location-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* ให้มีช่องว่างระหว่างรูปกับกราฟ */
+    align-items: center;
+  }
 
 .location-info {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    font-size: 10px;
-    margin-bottom: 15px;
-    text-align: center;
+    margin: 0 auto;
+    align-items: flex-start;
+    text-align: left;
   }
 
 .location-info p {
-    margin-top: 100px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    justify-content: space-between;
+}
+
+.location-info p span:first-child {
+    min-width: 130px; /* ปรับขนาดให้เท่ากัน */
+    display: inline-block;
 }
 
 
 .location-chart {
-width: 100%;
-display: flex;
-justify-content: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .location-chart canvas {
-width: 100% !important;
-max-width: 300px;
-height: auto !important;
+    width: 100% !important;
+    max-width: 300px;
+    height: auto !important;
 }
 
 

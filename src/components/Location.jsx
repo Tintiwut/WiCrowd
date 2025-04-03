@@ -21,8 +21,8 @@ const Location = ({ language }) => {
       loading: "Loading data...",
       error: "There was an error loading the data.",
       peopleCount: "Number of People",
-      density: "Density",
-      devicesCount: "Number of Devices", 
+      densityLevelsText: "Density Levels",
+      density: "Density", 
       maxToday: "Maximum Today",
       status: "Status",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
@@ -37,8 +37,8 @@ const Location = ({ language }) => {
       loading: "กำลังโหลดข้อมูล...",
       error: "เกิดข้อผิดพลาดในการโหลดข้อมูล",
       peopleCount: "จำนวนคน",
+      densityLevelsText: " ระดับความหนาแน่น",
       density: "ความหนาแน่น",
-      devicesCount: "จำนวนอุปกรณ์",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
@@ -132,17 +132,17 @@ const Location = ({ language }) => {
             </div>
   
             {/* กล่องข้อมูลและกราฟ */}
-              <div className="location-info">
-                <p>{translations[language].devicesCount} : <span className={getCountColor(count)}>{count}</span></p>
-                <p>{translations[language].density} : {getDensityLevel(count)}</p>
-                <p>{translations[language].maxToday} : {maxToday}</p>
-                <p>{translations[language].status} : </p>
-              </div>
+            <div className="location-info">
+              <p><span>{translations[language].densityLevelsText}</span> : {getDensityLevel(count)}</p>
+              <p><span>{translations[language].density}</span> : <span className={getCountColor(count)}>{count}</span></p>
+              <p><span>{translations[language].maxToday}</span> : <span style={{ marginLeft: "8px" }}>{maxToday}</span></p>
+              <p><span>{translations[language].status}</span> : </p>
+            </div>
           </div>
   
               {/* กราฟ */}
               <div className="location-chart">
-              <ChartComponent feeds={feeds} language={language} devicesCount={translations[language].devicesCount} />
+              <ChartComponent feeds={feeds} language={language} density={translations[language].density} />
               </div>
         </div>
       )}

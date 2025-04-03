@@ -3,7 +3,7 @@ import { Chart as ChartJS, registerables } from "chart.js";
 
 ChartJS.register(...registerables);
 
-const ChartComponent = ({ feeds, devicesCount}) => {
+const ChartComponent = ({ feeds, density}) => {
   const chartRef = useRef(null);
   const [allFeeds, setAllFeeds] = useState([]);
 
@@ -45,7 +45,7 @@ const ChartComponent = ({ feeds, devicesCount}) => {
           labels: labels,
           datasets: [
             {
-              label: devicesCount,
+              label: density,
               data: values,
               borderColor: "green",
               borderWidth: 2,

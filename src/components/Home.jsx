@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MapContainer, ImageOverlay, Marker, Popup } from "react-leaflet";
 import { CRS, LatLngBounds } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import mapImage from "../images/BUMAP4.jpg";
+import mapImage from "../images/BUMAP.jpg";
 import "./Home.css";
 import L from "leaflet";
 

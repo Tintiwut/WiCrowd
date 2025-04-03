@@ -15,8 +15,8 @@ const Overall = ({ language }) => {
       buildingA3: "Building A3",
       buildingA6: "Building A6",
       buildingB4: "Building B4",
-      peopleCount: "Number of People",
-      density: "Density",
+      densityLevelsText: "Density Levels",
+      density: "Density", 
       maxToday: "Maximum Today",
       status: "Status",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
@@ -25,10 +25,10 @@ const Overall = ({ language }) => {
       buildingA3: "อาคาร A3",
       buildingA6: "อาคาร A6",
       buildingB4: "อาคาร B4",
-      peopleCount: "จำนวนคน",
+      densityLevelsText: " ระดับความหนาแน่น",
       density: "ความหนาแน่น",
       maxToday: "จำนวนสูงสุดของวันนี้",
-      status: "การทำงานของเครื่อง",
+      status: "สถานะ",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
     },
   };
@@ -69,17 +69,24 @@ const Overall = ({ language }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const getDensityLevel = (count) => {
-    if (count < 20) return translations[language].densityLevels.low;
-    if (count < 35) return translations[language].densityLevels.medium;
-    return translations[language].densityLevels.high;
-  };
 
   const locations = [
     { key: "buildingA3", image: Building_A3 },
     { key: "buildingA6", image: Building_A6 },
     { key: "buildingB4", image: Building_B4 },
   ];
+
+  const getDensityLevel = (count) => {
+    if (count < 20) return <span className="Overall-density-low">{translations[language].densityLevels.low}</span>;
+    if (count < 35) return <span className="Overall-density-medium">{translations[language].densityLevels.medium}</span>;
+    return <span className="Overall-density-high">{translations[language].densityLevels.high}</span>;
+  };
+
+  const getCountColor = (count) => {
+    if (count < 20) return 'Overall-count-low'; 
+    if (count < 35) return 'Overall-count-medium'; 
+    return 'Overall-count-high'; 
+  };
 
   return (
     <div className="overall-container">
@@ -88,10 +95,10 @@ const Overall = ({ language }) => {
           <img src={location.image} alt={translations[language][location.key]} />
           <div className="overall-info">
           <h2>{translations[language][location.key]}</h2>
-            <p>{translations[language].peopleCount}: {data[index]?.count || 0}</p>
-            <p>{translations[language].density}: {getDensityLevel(data[index]?.count || 0)}</p>
-            <p>{translations[language].maxToday}: {maxToday}</p>
-            <p>{translations[language].status}: </p>
+          <p><span>{translations[language].densityLevelsText}</span> : <span style={{ marginLeft: "8px" }}></span>{getDensityLevel(data[index]?.count || 0)}</p>
+            <p><span>{translations[language].density}</span> : <span style={{ marginLeft: "8px" }}></span><span className={getCountColor(data[index]?.count || 0)}>{data[index]?.count || 0}</span></p>
+            <p><span>{translations[language].maxToday}</span> : <span style={{ marginLeft: "17px" }}></span>{maxToday}</p>
+            <p><span>{translations[language].status}</span> : <span style={{ marginLeft: "8px" }}></span></p>
           </div>
         </div>
       ))}
