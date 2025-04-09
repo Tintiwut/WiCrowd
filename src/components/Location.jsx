@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Building_A3 from "../images/Building_A3.jpg";
 import Building_A6 from "../images/Building_A6.jpg";
 import Building_B4 from "../images/Building_B4.jpg";
-import ChartComponent from "./ChartComponent";
+import ChartComponent1 from "./ChartComponent1";
 import "./Location.css";
 
 const Location = ({ language }) => {
@@ -23,6 +23,9 @@ const Location = ({ language }) => {
       peopleCount: "Number of People",
       densityLevelsText: "Density Levels",
       density: "Density", 
+      filter: "Filter",
+      minute: "Minute",
+      hours: "Hours",
       maxToday: "Maximum Today",
       status: "Status",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
@@ -39,6 +42,9 @@ const Location = ({ language }) => {
       peopleCount: "จำนวนคน",
       densityLevelsText: " ระดับความหนาแน่น",
       density: "ความหนาแน่น",
+      filter: "ฟิลเตอร์",
+      minute: "นาที",
+      hours: "ชั่วโมง",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
@@ -142,7 +148,13 @@ const Location = ({ language }) => {
   
               {/* กราฟ */}
               <div className="location-chart">
-              <ChartComponent feeds={feeds} language={language} density={translations[language].density} />
+              <ChartComponent1
+                csvUrl="/data/08_04_2025_BuildingX.csv"
+                density={translations[language].density}
+                filter={translations[language].filter}
+                hours={translations[language].hours}
+                minute={translations[language].minute}
+              />
               </div>
         </div>
       )}
