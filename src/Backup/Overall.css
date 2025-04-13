@@ -1,0 +1,221 @@
+body {
+  background-color: white;
+}
+
+.overall-container {
+  margin-top: 100px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
+  grid-template-rows: repeat(2, auto); /* 2 แถว */
+  gap: 40px;
+  padding: 20px;
+  justify-items: center;
+  max-width: 1920px;
+}
+
+.overall-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+  border: 2px solid black;
+  border-radius: 15px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #F5F5F5;
+  width: fit-content;
+  height: 300px;
+  max-width: 750px; /* จำกัดขนาด */
+  max-height: 350px;
+}
+
+.overall-card img {
+  width: 404;
+  max-width: 404px;
+  height: 270px;
+  border-radius: 10px;
+  border: 2px solid black;
+  margin-left: 15px;
+}
+
+.overall-info {
+  font-family: 'Inter', sans-serif;
+  margin-top: 10px;
+  text-align: start;
+  margin-left: 53.455px;
+}
+
+.overall-info h2 {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.overall-info p {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  justify-content: space-between;
+}
+
+.overall-info p span:first-child {
+    min-width: 160px; /* ปรับขนาดให้เท่ากัน */
+    display: inline-block;
+}
+
+.Overall-count-low,
+.Overall-density-low {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 18px;
+  background: 10px rgb(40, 204, 40);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  border-radius: 15px;
+}
+
+.Overall-count-medium,
+.Overall-density-medium {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 18px;
+  background: 10px rgb(255, 242, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  border-radius: 15px;
+}
+
+.Overall-count-high,
+.Overall-density-high {
+  color: #000000;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 30px;
+  background: 10px rgb(255, 0, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  border-radius: 15px;
+}
+
+/* ทำให้แสดง 1 คอลัมน์ในจอมือถือ */
+@media (max-width: 768px) {
+  .overall-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overall-card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 368px;
+    max-width: auto;
+    height: auto;
+    margin: auto;
+    margin-top: -40px;
+    margin-bottom: 30px;
+    padding: 0%;
+    padding-bottom: 20px;
+    padding-top: 10px;
+  }
+
+  .overall-card h2 {
+    font-size: 16px;
+    padding: 0%;
+  }
+
+  .overall-card img {
+    margin: auto;
+    width: 300px;
+    max-width: fit-content;
+    height: 200px;
+    margin-top: 20px;
+  }
+
+  .overall-info {
+    text-align: left;
+    margin-left: 0;
+    margin-top: -10px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .overall-info h2{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .overall-info p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    justify-content: space-between;
+  }
+
+  .overall-info p span:first-child {
+    min-width: 130px; /* ปรับขนาดให้เท่ากัน */
+    display: inline-block;
+  }
+
+  .Overall-count-low,
+  .Overall-density-low {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(40, 204, 40);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
+
+  .Overall-count-medium,
+  .Overall-density-medium {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(255, 242, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
+
+  .Overall-count-high,
+  .Overall-density-high {
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(255, 0, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
+}
+
+/* @media (max-height: 400px) {
+  .overall-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .overall-card {
+    flex-direction: column;
+    text-align: center;
+    width: 700px;
+    max-width: 400px;
+    height: auto;
+    padding: 10px;
+  }
+} */
