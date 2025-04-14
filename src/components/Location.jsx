@@ -9,12 +9,24 @@ import "./Location.css";
 const Location = ({ language }) => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const selectedLocation = state?.location;
+
+  const getTodayDateString = () => new Date().toISOString().split("T")[0];
+
   const [count, setCount] = useState(null);
-  const [maxToday, setMaxToday] = useState(0);
+  const [maxToday, setMaxToday] = useState(() => {
+    const savedDate = localStorage.getItem("maxTodayDate");
+    const today = getTodayDateString();
+    if (savedDate !== today) {
+      localStorage.setItem("maxToday", "0");
+      localStorage.setItem("maxTodayDate", today);
+      return 0;
+    }
+    return parseInt(localStorage.getItem("maxToday") || "0", 10);
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [feeds, setFeeds] = useState([]);
-  const selectedLocation = state?.location;
 
   const translations = {
     en: {
@@ -71,19 +83,32 @@ const Location = ({ language }) => {
 
     const fetchData = async () => {
       try {
-        console.log("Fetching data...");
-        const response = await fetch(apiUrls[selectedLocation] + `&t=${new Date().getTime()}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        const currentCount = parseInt(data.feeds[0]?.field1 || 0, 10);
+        const response = await fetch(apiUrls[selectedLocation] + `&t=${Date.now()}`);
+        if (!response.ok) throw new Error("Network response was not ok");
 
+        const data = await response.json();
+        const currentCount = parseInt(data.feeds[0]?.field1 || "0", 10);
         setCount(currentCount);
-        setMaxToday((prevMax) => Math.max(prevMax, currentCount));
-        setLoading(false);
         setFeeds(data.feeds);
-      } catch (error) {
+
+        const today = getTodayDateString();
+        const savedDate = localStorage.getItem("maxTodayDate");
+        const savedMax = parseInt(localStorage.getItem("maxToday") || "0", 10);
+
+        let newMax = savedMax;
+
+        if (savedDate !== today) {
+          newMax = currentCount;
+          localStorage.setItem("maxTodayDate", today);
+        } else {
+          newMax = Math.max(savedMax, currentCount);
+        }
+
+        setMaxToday(newMax);
+        localStorage.setItem("maxToday", newMax);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
         setError(translations[language].error);
         setLoading(false);
       }

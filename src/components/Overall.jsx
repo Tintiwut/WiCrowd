@@ -5,9 +5,22 @@ import Building_B4 from "../images/Building_B4.jpg";
 import "./Overall.css";
 
 const Overall = ({ language }) => {
+  const getTodayDateString = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  };
+
   const [data, setData] = useState([]);
   const [maxToday, setMaxToday] = useState(() => {
-    return parseInt(localStorage.getItem("maxToday") || "0", 10);
+    const savedDate = localStorage.getItem("maxTodayDate");
+    const savedMax = parseInt(localStorage.getItem("maxToday") || "0", 10);
+    const today = getTodayDateString();
+    if (savedDate !== today) {
+      localStorage.setItem("maxTodayDate", today);
+      localStorage.setItem("maxToday", "0");
+      return 0;
+    }
+    return savedMax;
   });
 
   const translations = {
@@ -57,6 +70,7 @@ const Overall = ({ language }) => {
       if (newMax > maxToday) {
         setMaxToday(newMax);
         localStorage.setItem("maxToday", newMax);
+        localStorage.setItem("maxTodayDate", getTodayDateString());
       }
     } catch (error) {
       console.error("Error fetching data:", error);
