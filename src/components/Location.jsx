@@ -74,51 +74,53 @@ const Location = ({ language }) => {
       navigate("/");
       return;
     }
-
-    const apiUrls = {
-      "Building A3": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
-      "Building A6": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
-      "Building B4": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
-    };
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(apiUrls[selectedLocation] + `&t=${Date.now()}`);
-        if (!response.ok) throw new Error("Network response was not ok");
-
-        const data = await response.json();
-        const currentCount = parseInt(data.feeds[0]?.field1 || "0", 10);
-        setCount(currentCount);
-        setFeeds(data.feeds);
-
-        const today = getTodayDateString();
-        const savedDate = localStorage.getItem("maxTodayDate");
-        const savedMax = parseInt(localStorage.getItem("maxToday") || "0", 10);
-
-        let newMax = savedMax;
-
-        if (savedDate !== today) {
-          newMax = currentCount;
-          localStorage.setItem("maxTodayDate", today);
-        } else {
-          newMax = Math.max(savedMax, currentCount);
+  
+    if (selectedLocation === "Building B4") {
+      const apiUrl = "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1";
+  
+      const fetchData = async () => {
+        try {
+          const response = await fetch(apiUrl + `&t=${Date.now()}`);
+          if (!response.ok) throw new Error("Network response was not ok");
+  
+          const data = await response.json();
+          const currentCount = parseInt(data.feeds[0]?.field1 || "0", 10);
+          setCount(currentCount);
+          setFeeds(data.feeds);
+  
+          const today = getTodayDateString();
+          const savedDate = localStorage.getItem("maxTodayDate");
+          const savedMax = parseInt(localStorage.getItem("maxToday") || "0", 10);
+  
+          let newMax = savedMax;
+  
+          if (savedDate !== today) {
+            newMax = currentCount;
+            localStorage.setItem("maxTodayDate", today);
+          } else {
+            newMax = Math.max(savedMax, currentCount);
+          }
+  
+          setMaxToday(newMax);
+          localStorage.setItem("maxToday", newMax);
+          setLoading(false);
+        } catch (err) {
+          console.error(err);
+          setError(translations[language].error);
+          setLoading(false);
         }
-
-        setMaxToday(newMax);
-        localStorage.setItem("maxToday", newMax);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setError(translations[language].error);
-        setLoading(false);
-      }
-    };
-
-    fetchData(); 
-    const interval = setInterval(fetchData, 10000); 
-
-    return () => clearInterval(interval);
+      };
+  
+      fetchData();
+      const interval = setInterval(fetchData, 10000);
+  
+      return () => clearInterval(interval);
+    } else {
+      // สำหรับ A3 และ A6 ไม่ต้อง fetch ข้อมูล realtime
+      setLoading(false);
+    }
   }, [selectedLocation, navigate, language]);
+  
 
   const getDensityLevel = (count) => {
     if (count < 20) return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
@@ -145,44 +147,54 @@ const Location = ({ language }) => {
     }
   };
 
+  const getCSVUrl = () => {
+    switch (selectedLocation) {
+      case "Building A3":
+        return "/data/15_04_2025_BuildingX.csv";
+      case "Building A6":
+        return "/data/14_04_2025_BuildingX.csv";
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="location-container">
-      {loading && <p>{translations[language].loading}</p>}
-      {error && <p>{error}</p>}
-      {count !== null && !loading && (
-        <div className="location-card">
-          <div className="location-head">
-            <h1>{translations[language].buildingNames[selectedLocation]}</h1>
-          </div>
-          
-          {/* กล่องหลักที่แบ่งรูปและกราฟ */}
-          <div className="location-content">
-            {/* รูปภาพ */}
-            <div className="location-image">
-              <img src={getImage()} alt={selectedLocation} />
-            </div>
-  
-            {/* กล่องข้อมูลและกราฟ */}
-            <div className="location-info">
-              <p><span>{translations[language].densityLevelsText}</span> : {getDensityLevel(count)}</p>
-              <p><span>{translations[language].density}</span> : <span className={getCountColor(count)}>{count}</span></p>
-              <p><span>{translations[language].maxToday}</span> : <span style={{ marginLeft: "8px" }}>{maxToday}</span></p>
-              <p><span>{translations[language].status}</span> : </p>
-            </div>
-          </div>
-  
-              {/* กราฟ */}
-              <div className="location-chart">
-              <ChartComponent1
-                csvUrl="/data/08_04_2025_BuildingX.csv"
-                density={translations[language].density}
-                filter={translations[language].filter}
-                hours={translations[language].hours}
-                minute={translations[language].minute}
-              />
-              </div>
-        </div>
-      )}
+      {!loading && (
+  <div className="location-card">
+    <div className="location-head">
+      <h1>{translations[language].buildingNames[selectedLocation]}</h1>
+    </div>
+
+    <div className="location-content">
+      <div className="location-image">
+        <img src={getImage()} alt={selectedLocation} />
+      </div>
+
+      <div className="location-info">
+        
+          <>
+            <p><span>{translations[language].densityLevelsText}</span> : {getDensityLevel(count)}</p>
+            <p><span>{translations[language].density}</span> : <span className={getCountColor(count)}>{count}</span></p>
+            <p><span>{translations[language].maxToday}</span> : <span style={{ marginLeft: "8px" }}>{maxToday}</span></p>
+            <p><span>{translations[language].status}</span> : </p>
+          </>
+        
+      </div>
+    </div>
+
+    <div className="location-chart">
+      <ChartComponent1
+        csvUrl={getCSVUrl()}
+        density={translations[language].density}
+        filter={translations[language].filter}
+        hours={translations[language].hours}
+        minute={translations[language].minute}
+      />
+    </div>
+  </div>
+)}
+
   
       {count === null && !loading && <p>{translations[language].selectLocation}</p>}
     </div>

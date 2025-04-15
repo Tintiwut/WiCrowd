@@ -8,7 +8,7 @@ body {
   background-color: #F5F5F5;
   padding: 20px 0;
   border-bottom: 1px solid black;
-  max-width: 1920px;
+  max-width: 100%;
   width: 100%;
   top: 0;
   z-index: 1000; 
@@ -246,6 +246,3 @@ body {
   }
 
 }
-
-
-

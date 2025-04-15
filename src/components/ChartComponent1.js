@@ -29,7 +29,8 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
         });
 
         const processedData = parsed.data.map((row) => {
-          const timestamp = new Date(`${row.Date} ${row.Time}`);
+          const [day, month, year] = row.Date.split("/");
+          const timestamp = new Date(`${year}-${month}-${day}T${row.Time}`);
           return {
             time: timestamp,
             value: parseInt(row.Device),
@@ -40,7 +41,6 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
       });
   }, [csvUrl]);
 
-  // ฟิลเตอร์ตามช่วงเวลา
   useEffect(() => {
     if (dataFromCSV.length === 0) return;
 
@@ -58,7 +58,6 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
     setFilteredData(result);
   }, [dataFromCSV, interval]);
 
-  // วาดกราฟ
   useEffect(() => {
     if (filteredData.length === 0) return;
 
@@ -82,6 +81,7 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
             borderColor: "green",
             borderWidth: 2,
             fill: false,
+            pointRadius: 0,
           },
         ],
       },
@@ -102,9 +102,8 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
 
   return (
     <div>
-      <div style={{ marginBottom: "10px" }}>
-        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", marginRight: "50px" }}>
-        <label htmlFor="intervalSelect" style={{ marginRight: "8px" }}>{filter}:</label>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", marginRight: "50px", gap: "8px" }}>
+        <label htmlFor="intervalSelect">{filter}:</label>
         <select
           id="intervalSelect"
           value={interval}
@@ -115,7 +114,6 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
           <option value="30min">30 {minute}</option>
           <option value="1hr">1 {hours}</option>
         </select>
-        </div>
       </div>
 
       <canvas ref={chartRef}></canvas>

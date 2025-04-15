@@ -1,238 +1,140 @@
 body {
     background-color: white;
-}
-
-.location-head h1{
-    text-align: center;
-    margin-bottom: 0%;
-    font-size: 28px;
-    font-family: 'Inter', sans-serif;
-}
-
-.location-card {
-    margin-top: 100px;
-    margin-left: 200px;
-    margin-right: 200px;
-    height: 790px;
-    max-width: 1920px;
-    max-height: 800px;
-    border: 2px solid black;
-    border-radius: 20px;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
-    background-color: #F5F5F5;
-}
-
-.location-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
-    justify-content: space-between; /* ให้มีช่องว่างระหว่างรูปกับกราฟ */
-    align-items: center;
-  }
-
-.location-image img {
-    margin: auto;
-    margin-top: 5%;
-    margin-left: 25%;
-    width: 400px; /* ปรับขนาดรูป */
-    height: 190px;
-    border-radius: 10px;
-    max-width: 100%;
-    max-height: 100%;
-    border: solid black;
-}
-
-.location-info {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
-    grid-template-rows: repeat(2, auto); /* 2 แถว */
-    column-gap: 60px;
-    align-items: center;
-    font-size: 26px;
-    font-family: 'Inter', sans-serif;
-    margin: auto;
-    margin-top: 5%;
-    margin-left: 0%;
-}
-
-.location-info p {
-    justify-content: space-between;
-}
-
-.location-info p span:first-child {
-    min-width: 160px; /* ปรับขนาดให้เท่ากัน */
-    display: inline-block;
-}
-
-.location-chart canvas {
-    margin: auto;
-    margin-top: 20px;
-    width: 95% !important; /* บังคับให้แผนภูมิขยายเต็มพื้นที่ */
-    height: 450px !important;
-    max-width: 1368px;
-  }
-
-  .Location-count-low,
-  .Location-density-low {
-      color: #000000;
-      font-weight: 500;
-      padding: 10px 10px;
-      font-size: 26px;
-      background: 10px rgb(40, 204, 40);
-      padding-top: 2px;
-      padding-bottom: 2px;
-      font-weight: bold;
-      border-radius: 15px;
-  }
-
-  .Location-count-medium,
-  .Location-density-medium {
-      color: #000000;
-      font-weight: 500;
-      padding: 10px 10px;
-      font-size: 26px;
-      background: 10px rgb(255, 242, 0);
-      padding-top: 2px;
-      padding-bottom: 2px;
-      font-weight: bold;
-      border-radius: 15px;
-  }
-
-  .Location-count-high,
-  .Location-density-high {
-      color: #000000;
-      font-weight: 500;
-      padding: 10px 10px;
-      font-size: 26px;
-      background: 10px rgb(255, 0, 0);
-      padding-top: 2px;
-      padding-bottom: 2px;
-      font-weight: bold;
-      border-radius: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
   }
   
-@media (max-width: 768px) {
-    .location-container {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .location-card {
-        display: flex;
-        flex-direction: column;
-        width: 368px;
-        max-width: auto;
-        height: auto;
-        margin: auto;
-        margin-top: 80px;
-        margin-bottom: 30px;
-        border-radius: 30px;
-    }
-
-    .location-head h1{
-        align-items: start;
-        text-align: center;
-        font-size: 15px;
-        font-weight: bold;
-        margin: auto;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-
-    .location-image {
-        align-items: center;
-        display: flex;
-        height: auto;
-        margin: auto;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .location-image img {
-        margin: auto;
-        width: 300px;
-        max-width: fit-content;
-        height: 200px;
-        border: 2px solid black;
-        border-radius: 15px;
-    }
-
+  .location-head h1 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    margin-top: -0.5rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .location-card {
+    margin: 5rem auto;
+    padding: 2rem;
+    width: 90%;
+    max-width: 1200px;
+    border: 2px solid black;
+    border-radius: 1.25rem;
+    box-shadow: 0.625rem 0.625rem 0.625rem rgba(0, 0, 0, 0.2);
+    background-color: #F5F5F5;
+  }
+  
+  .location-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  
+  .location-image img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 0.625rem;
+    border: solid black;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .location-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    font-size: 1.25rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .location-info p span:first-child {
+    min-width: 160px;
+    display: inline-block;
+  }
+  
+  .location-chart canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 28rem;
+  }
+  
+  .Location-count-low,
+  .Location-density-low,
+  .Location-count-medium,
+  .Location-density-medium,
+  .Location-count-high,
+  .Location-density-high {
+    color: #000;
+    font-weight: bold;
+    padding: 0.25rem 0.625rem;
+    font-size: 1.25rem;
+    border-radius: 0.9375rem;
+    display: inline-block;
+  }
+  
+  .Location-count-low,
+  .Location-density-low {
+    background-color: rgb(40, 204, 40);
+  }
+  
+  .Location-count-medium,
+  .Location-density-medium {
+    background-color: rgb(255, 242, 0);
+  }
+  
+  .Location-count-high,
+  .Location-density-high {
+    background-color: rgb(255, 0, 0);
+  }
+  
+  @media (max-width: 768px) {
     .location-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* ให้มีช่องว่างระหว่างรูปกับกราฟ */
-        align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
-
+  
+    .location-card {
+      padding: 1.5rem;
+      width: 90%;
+      margin: 4rem auto 2rem;
+    }
+  
+    .location-head h1 {
+      font-size: 1rem;
+      margin: 1rem 0;
+    }
+  
+    .location-image img {
+      max-width: 100%;
+      height: auto;
+    }
+  
     .location-info {
-        display: flex;
-        flex-direction: column;
-        margin: 0 auto;
-        align-items: flex-start;
-        text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.875rem;
     }
-
-    .location-info p {
-        margin-top: 5px;
-        margin-bottom: 5px;
-        font-size: 13px;
-        justify-content: space-between;
-    }
-
+  
     .location-info p span:first-child {
-        min-width: 130px; /* ปรับขนาดให้เท่ากัน */
-        display: inline-block;
+      min-width: 130px;
     }
-
-
-    .location-chart {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
+  
     .location-chart canvas {
-        width: 100% !important;
-        max-width: 300px;
-        height: auto !important;
+      max-width: 100%;
+      height: auto !important;
     }
-
+  
     .Location-count-low,
-    .Location-density-low {
-        color: #000000;
-        font-weight: 500;
-        padding: 10px 10px;
-        font-size: 13px;
-        background: 10px rgb(40, 204, 40);
-        padding-top: 2px;
-        padding-bottom: 2px;
-        font-weight: bold;
-        border-radius: 15px;
-    }
-
+    .Location-density-low,
     .Location-count-medium,
-    .Location-density-medium {
-        color: #000000;
-        font-weight: 500;
-        padding: 10px 10px;
-        font-size: 13px;
-        background: 10px rgb(255, 242, 0);
-        padding-top: 2px;
-        padding-bottom: 2px;
-        font-weight: bold;
-        border-radius: 15px;
-    }
-
+    .Location-density-medium,
     .Location-count-high,
     .Location-density-high {
-        color: #000000;
-        font-weight: 500;
-        padding: 10px 10px;
-        font-size: 13px;
-        background: 10px rgb(255, 0, 0);
-        padding-top: 2px;
-        padding-bottom: 2px;
-        font-weight: bold;
-        border-radius: 15px;
+      font-size: 0.875rem;
+      padding: 0.25rem 0.5rem;
     }
-}
-
+  }
