@@ -196,7 +196,7 @@ const Location = ({ language }) => {
 )}
 
   
-      {count === null && !loading && <p>{translations[language].selectLocation}</p>}
+      {/* {count === null && !loading && <p>{translations[language].selectLocation}</p>} */}
     </div>
   );
 };

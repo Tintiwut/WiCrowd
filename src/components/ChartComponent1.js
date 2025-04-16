@@ -1,11 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Chart as ChartJS, registerables } from "chart.js";
+import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-
-ChartJS.register(...registerables);
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+  Brush,
+} from "recharts";
 
 const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
-  const chartRef = useRef(null);
   const [dataFromCSV, setDataFromCSV] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [interval, setInterval] = useState("1min");
@@ -14,7 +20,7 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
     "1min": 60 * 1000,
     "5min": 5 * 60 * 1000,
     "30min": 30 * 60 * 1000,
-    "1hr": 60 * 60 * 1000
+    "1hr": 60 * 60 * 1000,
   };
 
   useEffect(() => {
@@ -28,81 +34,86 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
           skipEmptyLines: true,
         });
 
-        const processedData = parsed.data.map((row) => {
-          const [day, month, year] = row.Date.split("/");
-          const timestamp = new Date(`${year}-${month}-${day}T${row.Time}`);
-          return {
-            time: timestamp,
-            value: parseInt(row.Device),
-          };
-        });
+        const processedData = parsed.data
+          .map((row) => {
+            const [day, month, year] = row.Date.split("/");
+            const [h, m, s] = row.Time.split(":");
+            const timestamp = new Date(
+              `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${h.padStart(2, "0")}:${m.padStart(2, "0")}:${s.padStart(2, "0")}`
+            );
+            return {
+              time: timestamp,
+              value: parseInt(row.Device),
+            };
+          })
+          .filter((d) => !isNaN(d.value));
 
         setDataFromCSV(processedData);
       });
   }, [csvUrl]);
 
+  const [fontSize, setFontSize] = useState(12);
+
+useEffect(() => {
+  const handleResize = () => {
+    setFontSize(window.innerWidth < 768 ? 10 : 12);
+  };
+
+  handleResize(); // initial
+  window.addEventListener("resize", handleResize);
+
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
   useEffect(() => {
     if (dataFromCSV.length === 0) return;
 
     const intervalMs = intervalOptions[interval];
+    const sortedData = [...dataFromCSV].sort((a, b) => a.time - b.time);
     const result = [];
-    let lastTime = null;
 
-    dataFromCSV.forEach((point) => {
-      if (!lastTime || point.time - lastTime >= intervalMs) {
-        result.push(point);
-        lastTime = point.time;
-      }
-    });
+    const startTime = new Date(sortedData[0].time);
+    startTime.setSeconds(0, 0); // ปัดให้เริ่มต้นจาก xx:xx:00
+
+    const endTime = new Date(sortedData[sortedData.length - 1].time);
+
+    for (let t = new Date(startTime); t <= endTime; t = new Date(t.getTime() + intervalMs)) {
+      // หาค่าที่ใกล้ที่สุดในช่วงเวลาใกล้ๆ
+      const closest = sortedData.reduce((prev, curr) => {
+        return Math.abs(curr.time - t) < Math.abs(prev.time - t) ? curr : prev;
+      });
+
+      result.push({
+        time: new Date(t),
+        value: closest.value,
+        displayTime: t.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+      });
+    }
 
     setFilteredData(result);
   }, [dataFromCSV, interval]);
 
-  useEffect(() => {
-    if (filteredData.length === 0) return;
-
-    const labels = filteredData.map((d) => d.time.toLocaleTimeString());
-    const values = filteredData.map((d) => d.value);
-
-    const ctx = chartRef.current.getContext("2d");
-
-    if (chartRef.current.chartInstance) {
-      chartRef.current.chartInstance.destroy();
-    }
-
-    chartRef.current.chartInstance = new ChartJS(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [
-          {
-            label: density,
-            data: values,
-            borderColor: "green",
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: (value) => (value % 1 === 0 ? value : ""),
-              stepSize: 1,
-            },
-          },
-        },
-      },
-    });
-  }, [filteredData, density]);
+  // แสดง label บนแกน X เฉพาะเวลาที่เป็นนาที 00
+  const xTickFormatter = (timeStr) => {
+    const [hour, min] = timeStr.split(":");
+    return min === "00" ? timeStr : "";
+  };
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px", marginRight: "50px", gap: "8px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "10px",
+          marginRight: "50px",
+          gap: "8px",
+        }}
+      >
         <label htmlFor="intervalSelect">{filter}:</label>
         <select
           id="intervalSelect"
@@ -116,7 +127,34 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute }) => {
         </select>
       </div>
 
-      <canvas ref={chartRef}></canvas>
+      <ResponsiveContainer width="100%" height={400}>
+  <LineChart data={filteredData}>
+    <CartesianGrid strokeDasharray="1 1" />
+    <XAxis
+      dataKey="displayTime"
+      tick={{ fontSize }}
+      tickFormatter={xTickFormatter}
+      interval={0}
+    />
+    <YAxis 
+      allowDecimals={false} 
+      tick={{ fontSize }}
+    />
+    <Tooltip />
+    <Line type="monotone" dataKey="value" stroke="green" dot={false} contentStyle={{ fontSize: `${fontSize}px` }} />
+
+    {/* 🔍 เพิ่ม Zoom Control */}
+    {interval === "1min" && (
+      <Brush
+        dataKey="displayTime"
+        height={30}
+        stroke="#8884d8"
+        travellerWidth={10}
+      />
+    )}
+  </LineChart>
+</ResponsiveContainer>
+
     </div>
   );
 };
