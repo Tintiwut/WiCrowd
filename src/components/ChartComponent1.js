@@ -65,37 +65,39 @@ useEffect(() => {
   return () => window.removeEventListener("resize", handleResize);
 }, []);
 
-  useEffect(() => {
-    if (dataFromCSV.length === 0) return;
+useEffect(() => {
+  if (dataFromCSV.length === 0) return;
 
-    const intervalMs = intervalOptions[interval];
-    const sortedData = [...dataFromCSV].sort((a, b) => a.time - b.time);
-    const result = [];
+  const grouped = {};
 
-    const startTime = new Date(sortedData[0].time);
-    startTime.setSeconds(0, 0); // ปัดให้เริ่มต้นจาก xx:xx:00
+  dataFromCSV.forEach(({ time, value }) => {
+    const t = new Date(time);
+    t.setSeconds(0, 0); // ปัดวินาทีเป็น 00
+    const key = t.getTime();
 
-    const endTime = new Date(sortedData[sortedData.length - 1].time);
-
-    for (let t = new Date(startTime); t <= endTime; t = new Date(t.getTime() + intervalMs)) {
-      // หาค่าที่ใกล้ที่สุดในช่วงเวลาใกล้ๆ
-      const closest = sortedData.reduce((prev, curr) => {
-        return Math.abs(curr.time - t) < Math.abs(prev.time - t) ? curr : prev;
-      });
-
-      result.push({
-        time: new Date(t),
-        value: closest.value,
-        displayTime: t.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }),
-      });
+    if (!grouped[key]) {
+      grouped[key] = { time: new Date(t), value: value };
+    } else {
+      grouped[key].value = Math.max(grouped[key].value, value);
     }
+  });
 
-    setFilteredData(result);
-  }, [dataFromCSV, interval]);
+  // แปลงเป็น array และ sort ตามเวลา
+  const summarized = Object.values(grouped).sort((a, b) => a.time - b.time);
+
+  // ทำ displayTime สำหรับแกน X
+  const finalData = summarized.map(({ time, value }) => ({
+    time,
+    value,
+    displayTime: time.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }),
+  }));
+
+  setFilteredData(finalData);
+}, [dataFromCSV, interval]);
 
   // แสดง label บนแกน X เฉพาะเวลาที่เป็นนาที 00
   const xTickFormatter = (timeStr) => {
