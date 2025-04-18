@@ -172,14 +172,14 @@ const LocationB4 = ({ language }) => {
                     <span>{translations[language].densityLevelsText}</span>:{" "}
                     {status === "เปิด" || status === "Open"
                       ? getDensityLevel(latestCount)
-                      : "-"}
+                      : <span className="Location-disabled">-</span>}
                   </p>
                   <p>
                     <span>{translations[language].density}</span>:{" "}
                     {status === "เปิด" || status === "Open" ? (
                       <span className={getCountColor(latestCount)}>{latestCount}</span>
                     ) : (
-                      "-"
+                      <span className="Location-disabled">-</span>
                     )}
                   </p>
                   <p>
@@ -190,9 +190,17 @@ const LocationB4 = ({ language }) => {
                   </p>
                   <p>
                     <span>{translations[language].status}</span>:{" "}
-                    {status === "เปิด"
-                      ? translations[language].statusValues.open
-                      : translations[language].statusValues.closed}
+                    <span
+                      className={
+                        status === "เปิด" || status === "Open"
+                          ? "Location-status-open"
+                          : "Location-status-closed"
+                      }
+                    >
+                      {status === "เปิด"
+                        ? translations[language].statusValues.open
+                        : translations[language].statusValues.closed}
+                    </span>
                   </p>
                 </>
               )}

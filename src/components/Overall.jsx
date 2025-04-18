@@ -174,30 +174,36 @@ const Overall = ({ language }) => {
               ) : (
                 <>
                   <p>
-                    <span>{translations[language].densityLevelsText}</span>:{" "}
-                    {locationData.status === "เปิด"
-                      ? getDensityLevel(locationData.count)
-                      : "-"}
-                  </p>
-                  <p>
-                    <span>{translations[language].density}</span>:{" "}
-                    {locationData.status === "เปิด" ? (
-                      <span className={getCountColor(locationData.count)}>
-                        {locationData.count}
-                      </span>
-                    ) : (
-                      "-"
-                    )}
-                  </p>
+                  <span>{translations[language].densityLevelsText}</span>:{" "}
+                  {locationData.status === "เปิด" || locationData.status === "Open"
+                    ? getDensityLevel(locationData.count)
+                    : <span className="Location-disabled">-</span>}
+                </p>
+                <p>
+                  <span>{translations[language].density}</span>:{" "}
+                  {locationData.status === "เปิด" || locationData.status === "Open" ? (
+                    <span className={getCountColor(locationData.count)}>{locationData.count}</span>
+                  ) : (
+                    <span className="Location-disabled">-</span>
+                  )}
+                </p>
                   <p>
                     <span>{translations[language].maxToday}</span>:{" "}
                     {locationData.maxToday}
                   </p>
                   <p>
                     <span>{translations[language].status}</span>:{" "}
-                    {locationData.status === "เปิด"
-                      ? translations[language].statusValues.open
-                      : translations[language].statusValues.closed}
+                    <span
+                      className={
+                        locationData.status === "เปิด" || locationData.status === "Open"
+                          ? "Location-status-open"
+                          : "Location-status-closed"
+                      }
+                    >
+                      {locationData.status === "เปิด"
+                        ? translations[language].statusValues.open
+                        : translations[language].statusValues.closed}
+                    </span>
                   </p>
                 </>
               )}

@@ -155,12 +155,22 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
 
   const displayedTimes = new Set();
   const xTickFormatter = (timeStr) => {
-    const [hour, min] = timeStr.split(":");
-    if (parseInt(min) % 5 === 0 && !displayedTimes.has(timeStr)) {
-      displayedTimes.add(timeStr);
-      return `${hour}:${min}`;
+    if (graphType === "csv") {
+      // สำหรับประเภท CSV แสดงเฉพาะชั่วโมง
+      const [hour, min] = timeStr.split(":");
+      if (min === "00") {
+        return `${hour}:00`;  // แสดงแค่ชั่วโมง
+      }
+      return "";
+    } else {
+      // สำหรับประเภท Realtime แสดงทุก 5 นาที
+      const [hour, min] = timeStr.split(":");
+      if (parseInt(min) % 5 === 0 && !displayedTimes.has(timeStr)) {
+        displayedTimes.add(timeStr);
+        return `${hour}:${min}`;
+      }
+      return "";
     }
-    return "";
   };
 
   return (

@@ -160,19 +160,36 @@ const LocationA3 = ({ language }) => {
               <>
                 <p>
                   <span>{translations[language].densityLevelsText}</span>:{" "}
-                  {status === "เปิด" ? getDensityLevel(latestCount) : "-"}
+                  {status === "เปิด" || status === "Open"
+                    ? getDensityLevel(latestCount)
+                    : <span className="Location-disabled">-</span>}
                 </p>
                 <p>
                   <span>{translations[language].density}</span>:{" "}
-                  {status === "เปิด" ? <span className={getCountColor(latestCount)}>{latestCount}</span> : "-"}
+                  {status === "เปิด" || status === "Open" ? (
+                    <span className={getCountColor(latestCount)}>{latestCount}</span>
+                  ) : (
+                    <span className="Location-disabled">-</span>
+                  )}
                 </p>
                 <p>
                   <span>{translations[language].maxToday}</span>:{" "}
                   <span>{maxToday !== null ? maxToday : "-"}</span>
                 </p>
                 <p>
-                  <span>{translations[language].status}</span>: {status}
-                </p>
+                    <span>{translations[language].status}</span>:{" "}
+                    <span
+                      className={
+                        status === "เปิด" || status === "Open"
+                          ? "Location-status-open"
+                          : "Location-status-closed"
+                      }
+                    >
+                      {status === "เปิด"
+                        ? translations[language].statusValues.open
+                        : translations[language].statusValues.closed}
+                    </span>
+                  </p>
               </>
             )}
           </div>

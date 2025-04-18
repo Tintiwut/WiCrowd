@@ -65,7 +65,7 @@ body {
   .Location-density-medium,
   .Location-count-high,
   .Location-density-high {
-    color: #000;
+    color: #ffffff;
     font-weight: bold;
     padding: 0.25rem 0.625rem;
     font-size: 1.25rem;
@@ -86,6 +86,33 @@ body {
   .Location-count-high,
   .Location-density-high {
     background-color: rgb(255, 0, 0);
+  }
+
+  .Location-disabled {
+    color: #ffffff;
+    background-color: gray;
+    border-radius: 0.9375rem;
+    font-size: 1.25rem;
+    padding: 0.25rem 0.625rem;
+    font-weight: bold;
+  }
+
+  .Location-status-open,
+  .Location-status-closed {
+    color: #ffffff;
+    font-weight: bold;
+    padding: 0.25rem 0.625rem;
+    font-size: 1.25rem;
+    border-radius: 0.9375rem;
+    display: inline-block;
+  }
+
+  .Location-status-open {
+    background-color: green;
+  }
+  
+  .Location-status-closed {
+    background-color: gray;
   }
   
   @media (max-width: 768px) {
