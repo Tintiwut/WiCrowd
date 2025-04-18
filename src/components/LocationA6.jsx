@@ -190,7 +190,7 @@ const LocationA6 = ({ language }) => {
           <ChartComponent1
             graphType="realtime"
             feeds={feeds}
-            csvUrl="/data/14_04_2025_BuildingX.csv"
+            csvFolder="/data/Building_A6_Log"
             density={translations[language].density}
             filter={translations[language].filter}
             hours={translations[language].hours}

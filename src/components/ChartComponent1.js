@@ -11,14 +11,14 @@ import {
   Brush,
 } from "recharts";
 
-const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, language }) => {
+const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, language }) => {
   const [dataFromCSV, setDataFromCSV] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [interval, setInterval] = useState("1min");
   const [graphType, setGraphType] = useState("realtime");
   const [fontSize, setFontSize] = useState(12);
-  const [availableDates, setAvailableDates] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const [selectedFile, setSelectedFile] = useState("");
 
   const translations = {
     th: {
@@ -48,7 +48,7 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
       },
     },
   };
-  
+
   const intervalOptions = {
     "1min": 60 * 1000,
     "5min": 5 * 60 * 1000,
@@ -60,16 +60,28 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
     const handleResize = () => {
       setFontSize(window.innerWidth < 768 ? 10 : 12);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    if (!csvUrl || graphType !== "csv") return;
+    if (graphType !== "csv" || !csvFolder) return;
 
-    fetch(csvUrl)
+    // Load fileList.json เพื่อดูว่าโฟลเดอร์มีไฟล์ CSV อะไรบ้าง
+    fetch(`${csvFolder}/index.json`)
+      .then((res) => res.json())
+      .then((list) => {
+        setFileList(list);
+        setSelectedFile(list[0]);
+      })
+      .catch((err) => console.error("Failed to load fileList.json", err));
+  }, [graphType, csvFolder]);
+
+  useEffect(() => {
+    if (!selectedFile || graphType !== "csv") return;
+
+    fetch(`${csvFolder}/${selectedFile}`)
       .then((response) => response.text())
       .then((csvText) => {
         const parsed = Papa.parse(csvText, {
@@ -83,10 +95,9 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
             const [day, month, year] = row.Date.split("/");
             const [h, m, s] = row.Time.split(":");
             const timestamp = new Date(
-              `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${h.padStart(2, "0")}:${m.padStart(2, "0")}:${s.padStart(2, "0")}`
+              `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${h}:${m}:${s}`
             );
             return {
-              date: row.Date,
               time: timestamp,
               value: parseInt(row.Device),
             };
@@ -94,22 +105,16 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
           .filter((d) => d && !isNaN(d.value));
 
         setDataFromCSV(processedData);
-
-        const uniqueDates = [...new Set(processedData.map((d) => d.date))];
-        setAvailableDates(uniqueDates);
-        setSelectedDate(uniqueDates[0]);
       });
-  }, [csvUrl, graphType]);
+  }, [selectedFile, graphType]);
 
   useEffect(() => {
-    if (dataFromCSV.length === 0 || graphType !== "csv" || !selectedDate) return;
-
-    const filtered = dataFromCSV.filter((d) => d.date === selectedDate);
+    if (dataFromCSV.length === 0 || graphType !== "csv") return;
 
     const grouped = {};
     const intervalMs = intervalOptions[interval];
 
-    filtered.forEach(({ time, value }) => {
+    dataFromCSV.forEach(({ time, value }) => {
       const timestamp = new Date(time).getTime();
       const rounded = Math.floor(timestamp / intervalMs) * intervalMs;
       const roundedTime = new Date(rounded);
@@ -133,9 +138,8 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
     }));
 
     setFilteredData(finalData);
-  }, [dataFromCSV, interval, graphType, selectedDate]);
+  }, [dataFromCSV, interval, graphType]);
 
-  // Realtime data
   const processedRealtimeData = feeds?.map((entry) => {
     const date = new Date(entry.created_at);
     return {
@@ -149,31 +153,14 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
     };
   }) || [];
 
-  const xTickFormatterCSV = (timeStr) => {
-    const [hour, min] = timeStr.split(":");
-    if (min === "00") { // แสดงแค่ชั่วโมงที่เป็น 00 นาที เช่น 11:00, 12:00
-      return `${hour}:${min}`;
-    }
-    return ""; // ไม่แสดงเวลาอื่นๆ
-  };
-
-  // ใช้ Set เพื่อเก็บเวลาและไม่ให้ซ้ำ
   const displayedTimes = new Set();
-
-  const xTickFormatterRealtime = (timeStr) => {
+  const xTickFormatter = (timeStr) => {
     const [hour, min] = timeStr.split(":");
-    if (parseInt(min) % 5 === 0 && !displayedTimes.has(timeStr)) { // แสดงเวลาแค่ทุกๆ 5 นาทีและไม่ซ้ำ
-      displayedTimes.add(timeStr); // เก็บเวลาไว้ใน Set
+    if (parseInt(min) % 5 === 0 && !displayedTimes.has(timeStr)) {
+      displayedTimes.add(timeStr);
       return `${hour}:${min}`;
     }
-    return ""; // ไม่แสดงเวลาอื่นๆ
-  };
-
-  const intervalLabel = {
-    "1min": "1 นาที",
-    "5min": "5 นาที",
-    "30min": "30 นาที",
-    "1hr": "1 ชั่วโมง",
+    return "";
   };
 
   return (
@@ -188,37 +175,25 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
           flexWrap: "wrap",
         }}
       >
-        <label htmlFor="graphTypeSelect">{translations[language].graphType}:</label>
-        <select
-          id="graphTypeSelect"
-          value={graphType}
-          onChange={(e) => setGraphType(e.target.value)}
-        >
+        <label>{translations[language].graphType}:</label>
+        <select value={graphType} onChange={(e) => setGraphType(e.target.value)}>
           <option value="realtime">{translations[language].realtime}</option>
           <option value="csv">{translations[language].csv}</option>
         </select>
 
         {graphType === "csv" && (
           <>
-            <label htmlFor="dateSelect">{translations[language].date}:</label>
-            <select
-              id="dateSelect"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            >
-              {availableDates.map((date) => (
-                <option key={date} value={date}>
-                  {date}
+            <label>{translations[language].date}:</label>
+            <select value={selectedFile} onChange={(e) => setSelectedFile(e.target.value)}>
+              {fileList.map((file) => (
+                <option key={file} value={file}>
+                  {file.replace(".csv", "")}
                 </option>
               ))}
             </select>
 
-            <label htmlFor="intervalSelect">{translations[language].intervalLabel}</label>
-            <select
-              id="intervalSelect"
-              value={interval}
-              onChange={(e) => setInterval(e.target.value)}
-            >
+            <label>{translations[language].intervalLabel}</label>
+            <select value={interval} onChange={(e) => setInterval(e.target.value)}>
               {Object.keys(translations[language].intervalOptions).map((key) => (
                 <option key={key} value={key}>
                   {translations[language].intervalOptions[key]}
@@ -229,32 +204,20 @@ const ChartComponent1 = ({ csvUrl, density, filter, hours, minute, feeds, langua
         )}
       </div>
 
-
       <ResponsiveContainer width="100%" height={400}>
         <LineChart data={graphType === "csv" ? filteredData : processedRealtimeData}>
           <CartesianGrid strokeDasharray="1 1" />
           <XAxis
             dataKey="displayTime"
             tick={{ fontSize }}
-            tickFormatter={graphType === "realtime" ? xTickFormatterRealtime : xTickFormatterCSV} // เลือก formatter ตามประเภทกราฟ
+            tickFormatter={xTickFormatter}
             interval={0}
           />
           <YAxis allowDecimals={false} tick={{ fontSize }} />
           <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke="green"
-            dot={false}
-            contentStyle={{ fontSize: `${fontSize}px` }}
-          />
+          <Line type="monotone" dataKey="value" stroke="green" dot={false} />
           {graphType === "csv" && interval === "1min" && (
-            <Brush
-              dataKey="displayTime"
-              height={30}
-              stroke="#8884d8"
-              travellerWidth={10}
-            />
+            <Brush dataKey="displayTime" height={30} stroke="#8884d8" travellerWidth={10} />
           )}
         </LineChart>
       </ResponsiveContainer>

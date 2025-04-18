@@ -1,20 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";  
 import { MapContainer, ImageOverlay, Marker, Popup } from "react-leaflet";
-import { CRS, LatLngBounds } from "leaflet";
+import { CRS } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import mapImage from "../images/BUMAP.jpg";
 import "./Home.css";
 import L from "leaflet";
 
-
-// กำหนดขอบเขตของรูปแผนที่ (x, y) ให้สัมพันธ์กับภาพจริง
+// ขอบเขตภาพแผนที่ (แก้ตามขนาดภาพจริง)
 const imageBounds = [
   [0, 0],      // มุมซ้ายบน
-  [1000, 2000] // มุมขวาล่าง (ปรับขนาดให้สัมพันธ์กับภาพจริง)
+  [1000, 2000] // มุมขวาล่าง
 ];
 
-// ตำแหน่งของแต่ละตึกในพิกัดของภาพ
+// ตำแหน่งของแต่ละอาคาร
 const locations = [
   { id: "Building A3", position: [290, 420], label: "Building A3" },
   { id: "Building A6", position: [450, 600], label: "Building A6" },
@@ -23,50 +22,62 @@ const locations = [
 
 export default function MapWithMarkers({ setSelectedLocation }) {
   const [data, setData] = useState({});
-  const navigate = useNavigate();  // สร้าง navigate ด้วย useNavigate
+  const navigate = useNavigate();
 
-  // ฟังก์ชันดึงข้อมูลจาก API
   useEffect(() => {
     const apiUrls = {
       "Building A3": "",
-      "Building A6": "",
+      "Building A6": "", // ไม่มี API
       "Building B4": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"
     };
 
     const fetchData = async (building) => {
+      const url = apiUrls[building];
+
+      // ถ้าไม่ใส่ URL หรือเป็นค่าว่าง
+      if (!url) {
+        setData(prev => ({ ...prev, [building]: null }));
+        return;
+      }
+
       try {
-        const response = await fetch(apiUrls[building]);
+        const response = await fetch(url);
         if (!response.ok) throw new Error("Network response was not ok");
         const result = await response.json();
-        const currentCount = parseInt(result.feeds[0]?.field1 || 0, 10);  // ถ้าเป็น null หรือ undefined ให้ใช้ค่า 0
+        const feed = result.feeds[0];
 
-        setData(prevData => ({
-          ...prevData,
-          [building]: currentCount
-        }));
+        if (feed) {
+          const count = parseInt(feed.field1 || 0, 10);
+          const updatedTime = new Date(feed.created_at).getTime();
+          const now = Date.now();
+          const isRecent = now - updatedTime <= 10 * 60 * 1000;
+
+          setData(prev => ({
+            ...prev,
+            [building]: isRecent ? count : null,
+          }));
+        } else {
+          setData(prev => ({ ...prev, [building]: null }));
+        }
       } catch (error) {
         console.error(`Error fetching data for ${building}:`, error);
-
-        // ถ้า API ไม่สามารถดึงข้อมูลได้ ให้ลบข้อมูลเดิมที่อยู่ใน state
-        setData(prevData => ({
-          ...prevData,
-          [building]: "?"  // กำหนดค่าเป็น null เมื่อไม่สามารถดึงข้อมูล
-        }));
+        setData(prev => ({ ...prev, [building]: null }));
       }
     };
 
+    // ดึงข้อมูลครั้งแรก
     Object.keys(apiUrls).forEach(building => fetchData(building));
 
+    // ตั้งเวลาอัปเดตทุก 10 วิ
     const interval = setInterval(() => {
       Object.keys(apiUrls).forEach(building => fetchData(building));
     }, 10000);
 
     return () => clearInterval(interval);
-  }, []); // ทำงานครั้งเดียวตอนเริ่มต้น component
+  }, []);
 
-  // ฟังก์ชันกำหนดระดับความหนาแน่น
   const getDensityLevel = (count) => {
-    if (count === "?" || count === undefined) return "gray";  // ถ้าเป็น null หรือ undefined ให้ใช้สี gray
+    if (count === null || count === undefined) return "gray";
     if (count < 15) return "green";
     if (count < 30) return "yellow";
     return "red";
@@ -74,16 +85,15 @@ export default function MapWithMarkers({ setSelectedLocation }) {
 
   return (
     <MapContainer
-      attributionControl={false}
-      center={[0, 0]} // กำหนดตำแหน่งตรงกลางของแผนที่ (ตามขนาดของภาพ)
-      zoom={0} // ค่า zoom เริ่มต้น
-      minZoom={0}  // ตั้งค่าให้เริ่มซูมที่ 0 (หรือขนาดที่เหมาะสม)
-      maxZoom={0}  // ตั้งค่าให้สูงสุดที่ 2 หรือค่าที่เหมาะสมกับขนาดของแผนที่
-      style={{ height: "100vh", width: "100vw" }} // ให้แผนที่เต็มหน้าจอ
-      crs={L.CRS.Simple} // ใช้พิกัดแบบ Custom Image
-      maxBounds={imageBounds} // กำหนดขอบเขตการซูมให้ไม่เกินขนาดภาพ
-      maxBoundsViscosity={1.0} // ให้การเคลื่อนที่ของแผนที่ไม่ออกนอกขอบเขต
-      zoomControl={false} // ปิดการแสดงปุ่มซูม (บวก/ลบ)
+      center={[0, 0]}
+      zoom={0}
+      minZoom={0}
+      maxZoom={0}
+      style={{ height: "100vh", width: "100vw" }}
+      crs={L.CRS.Simple}
+      maxBounds={imageBounds}
+      maxBoundsViscosity={1.0}
+      zoomControl={false}
     >
       <ImageOverlay url={mapImage} bounds={imageBounds} />
 
@@ -95,7 +105,7 @@ export default function MapWithMarkers({ setSelectedLocation }) {
             className: "custom-marker",
             html: `<div style="
               background-color: ${getDensityLevel(data[loc.id])};
-              width: 40px;  /* เพิ่มขนาด */
+              width: 40px;
               height: 40px;
               border-radius: 50%;
               border: 2px solid black;
@@ -105,22 +115,21 @@ export default function MapWithMarkers({ setSelectedLocation }) {
               color: white;
               font-size: 20px;
               font-weight: bold;
-              ${data[loc.id] !== undefined ? 'animation: blink 2s infinite;' : ''} /* ทำให้กระพริบถ้ามีข้อมูล */
-            ">${data[loc.id] !== undefined ? data[loc.id] : "?"}</div>`,
-            iconSize: [40, 40],  // ขนาดของ Marker icon คงที่ไม่เปลี่ยนแปลง
-            iconAnchor: [20, 20],  // จุดยึดตำแหน่งกลางของ Marker
-            popupAnchor: [0, -20],  // ปรับตำแหน่งของ Popup
+              ${data[loc.id] !== undefined ? 'animation: blink 2s infinite;' : ''}
+            ">${data[loc.id] !== undefined && data[loc.id] !== null ? data[loc.id] : "?"}</div>`,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            popupAnchor: [0, -20],
           })}
           eventHandlers={{
             click: () => {
-              setSelectedLocation(loc.id); // เปลี่ยนค่า selectedLocation
-              navigate('/location', { state: { location: loc.id } });  // นำทางไปหน้า /location พร้อมข้อมูล
+              setSelectedLocation(loc.id);
+              navigate('/location', { state: { location: loc.id } });
             },
           }}
         >
-          <Popup>{loc.label}</Popup>          
+          <Popup>{loc.label}</Popup>
         </Marker>
-
       ))}
     </MapContainer>
   );
