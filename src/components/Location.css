@@ -161,7 +161,10 @@ body {
     .Location-count-medium,
     .Location-density-medium,
     .Location-count-high,
-    .Location-density-high {
+    .Location-density-high,
+    .Location-disabled,
+    .Location-status-open,
+    .Location-status-closed {
       font-size: 0.875rem;
       padding: 0.25rem 0.5rem;
     }
