@@ -18,6 +18,7 @@ const LocationB4 = ({ language }) => {
       density: "Density",
       maxToday: "Maximum Today",
       status: "Status",
+      comingSoon: "Coming soon...",
       statusValues: { open: "Open", closed: "Closed" },
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
       filter: "Filter",
@@ -30,6 +31,7 @@ const LocationB4 = ({ language }) => {
       density: "ความหนาแน่น",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
+      comingSoon: "เร็วๆ นี้..",
       statusValues: { open: "เปิด", closed: "ปิด" },
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
       filter: "ฟิลเตอร์",
@@ -163,7 +165,7 @@ const LocationB4 = ({ language }) => {
 
             <div className="location-info">
               {isComingSoon ? (
-                <p>Coming soon...</p>
+                <p>{translations[language].comingSoon}</p>
               ) : (
                 <>
                   <p>
@@ -201,7 +203,7 @@ const LocationB4 = ({ language }) => {
             <ChartComponent1
               graphType="realtime"
               feeds={feeds}
-              csvUrl=""
+              csvFolder="/data/Building_B4_Log"
               density={translations[language].density}
               filter={translations[language].filter}
               hours={translations[language].hours}

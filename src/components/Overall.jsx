@@ -45,7 +45,7 @@ const Overall = ({ language }) => {
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       statusValues: { open: "เปิด", closed: "ปิด" },
-      comingSoon: "Coming soon...",
+      comingSoon: "เร็วๆ นี้..",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
     },
   };

@@ -18,6 +18,7 @@ const LocationA3 = ({ language }) => {
       density: "Density",
       maxToday: "Maximum Today",
       status: "Status",
+      comingSoon: "Coming soon...",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
     },
     th: {
@@ -26,6 +27,7 @@ const LocationA3 = ({ language }) => {
       density: "ความหนาแน่น",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
+      comingSoon: "เร็วๆ นี้..",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
     },
   };
@@ -153,7 +155,7 @@ const LocationA3 = ({ language }) => {
 
           <div className="location-info">
             {isComingSoon ? (
-              <p>Coming soon...</p>
+              <p>{translations[language].comingSoon}</p>
             ) : (
               <>
                 <p>
