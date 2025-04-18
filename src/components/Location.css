@@ -123,8 +123,8 @@ body {
       min-width: 130px;
     }
   
-    .location-chart canvas {
-      max-width: 100%;
+    .location-chart {
+      max-width: 90%;
       height: auto !important;
     }
   

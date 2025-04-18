@@ -7,6 +7,7 @@ import mapImage from "../images/BUMAP.jpg";
 import "./Home.css";
 import L from "leaflet";
 
+
 // กำหนดขอบเขตของรูปแผนที่ (x, y) ให้สัมพันธ์กับภาพจริง
 const imageBounds = [
   [0, 0],      // มุมซ้ายบน
@@ -27,8 +28,8 @@ export default function MapWithMarkers({ setSelectedLocation }) {
   // ฟังก์ชันดึงข้อมูลจาก API
   useEffect(() => {
     const apiUrls = {
-      "Building A3": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
-      "Building A6": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1",
+      "Building A3": "",
+      "Building A6": "",
       "Building B4": "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=1"
     };
 
@@ -49,7 +50,7 @@ export default function MapWithMarkers({ setSelectedLocation }) {
         // ถ้า API ไม่สามารถดึงข้อมูลได้ ให้ลบข้อมูลเดิมที่อยู่ใน state
         setData(prevData => ({
           ...prevData,
-          [building]: null  // กำหนดค่าเป็น null เมื่อไม่สามารถดึงข้อมูล
+          [building]: "?"  // กำหนดค่าเป็น null เมื่อไม่สามารถดึงข้อมูล
         }));
       }
     };
@@ -65,7 +66,7 @@ export default function MapWithMarkers({ setSelectedLocation }) {
 
   // ฟังก์ชันกำหนดระดับความหนาแน่น
   const getDensityLevel = (count) => {
-    if (count === null || count === undefined) return "gray";  // ถ้าเป็น null หรือ undefined ให้ใช้สี gray
+    if (count === "?" || count === undefined) return "gray";  // ถ้าเป็น null หรือ undefined ให้ใช้สี gray
     if (count < 15) return "green";
     if (count < 30) return "yellow";
     return "red";
@@ -73,6 +74,7 @@ export default function MapWithMarkers({ setSelectedLocation }) {
 
   return (
     <MapContainer
+      attributionControl={false}
       center={[0, 0]} // กำหนดตำแหน่งตรงกลางของแผนที่ (ตามขนาดของภาพ)
       zoom={0} // ค่า zoom เริ่มต้น
       minZoom={0}  // ตั้งค่าให้เริ่มซูมที่ 0 (หรือขนาดที่เหมาะสม)
@@ -116,8 +118,9 @@ export default function MapWithMarkers({ setSelectedLocation }) {
             },
           }}
         >
-          <Popup>{loc.label}</Popup>
+          <Popup>{loc.label}</Popup>          
         </Marker>
+
       ))}
     </MapContainer>
   );
