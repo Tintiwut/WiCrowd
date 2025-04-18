@@ -1,3 +1,4 @@
+// components/Location.js
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LocationA3 from "./LocationA3";
@@ -14,32 +15,13 @@ const Location = ({ language }) => {
     return null;
   }
 
-  // ✅ สร้าง style สำหรับรองรับ touch gesture
-  const touchWrapperStyle = {
-    overflowX: "auto",
-    WebkitOverflowScrolling: "touch", // for iOS
-    touchAction: "pan-x",
-  };
-
   switch (selectedLocation) {
     case "Building A3":
-      return (
-        <div style={touchWrapperStyle}>
-          <LocationA3 language={language} />
-        </div>
-      );
+      return <LocationA3 language={language} />;
     case "Building A6":
-      return (
-        <div style={touchWrapperStyle}>
-          <LocationA6 language={language} />
-        </div>
-      );
+      return <LocationA6 language={language} />;
     case "Building B4":
-      return (
-        <div style={touchWrapperStyle}>
-          <LocationB4 language={language} />
-        </div>
-      );
+      return <LocationB4 language={language} />;
     default:
       return <p>Invalid location</p>;
   }
