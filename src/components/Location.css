@@ -153,6 +153,7 @@ body {
     .location-chart {
       max-width: 90%;
       height: auto !important;
+      touch-action: pan-x;
     }
   
     .Location-count-low,

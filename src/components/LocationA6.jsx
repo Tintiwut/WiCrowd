@@ -20,6 +20,7 @@ const LocationA6 = ({ language }) => {
       status: "Status",
       comingSoon: "Coming soon...",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      statusValues: { open: "Open", closed: "Closed" }
     },
     th: {
       buildingNames: { "Building A6": "อาคาร A6" },
@@ -29,6 +30,7 @@ const LocationA6 = ({ language }) => {
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+      statusValues: { open: "เปิด", closed: "ปิด" }
     },
   };
 

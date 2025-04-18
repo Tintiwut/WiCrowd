@@ -20,6 +20,7 @@ const LocationA3 = ({ language }) => {
       status: "Status",
       comingSoon: "Coming soon...",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      statusValues: { open: "Open", closed: "Closed" }
     },
     th: {
       buildingNames: { "Building A3": "อาคาร A3" },
@@ -29,6 +30,7 @@ const LocationA3 = ({ language }) => {
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+      statusValues: { open: "เปิด", closed: "ปิด" }
     },
   };
 
@@ -48,7 +50,7 @@ const LocationA3 = ({ language }) => {
 
   const fetchDataFromAPI = async () => {
     try {
-      const apiUrl = "";
+      const apiUrl = ""; //API
       const response = await fetch(apiUrl);
       const data = await response.json();
   
