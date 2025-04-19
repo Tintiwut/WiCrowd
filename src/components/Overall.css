@@ -3,14 +3,16 @@ body {
 }
 
 .overall-container {
-  margin-top: 100px;
+  margin-top: 70px;
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
   grid-template-rows: repeat(2, auto); /* 2 แถว */
-  gap: 40px;
+  /* gap: 40px; */
   padding: 20px;
   justify-items: center;
-  max-width: 1920px;
+  max-width: 100%;
+  column-gap: 4rem;
+  row-gap: 2rem;
 }
 
 .overall-card {
@@ -18,19 +20,19 @@ body {
   flex-direction: row;
   align-items: center;
   text-align: center;
-  padding: 30px;
+  padding: 10px;
   border: 2px solid black;
-  border-radius: 15px;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1.25rem;
+  box-shadow: 0.625rem 0.625rem 0.625rem rgba(0, 0, 0, 0.2);
   background-color: #F5F5F5;
-  width: fit-content;
+  width: 100%;
   height: 300px;
   max-width: 750px; /* จำกัดขนาด */
   max-height: 350px;
 }
 
 .overall-card img {
-  width: 404;
+  width: 404px;
   max-width: 404px;
   height: 270px;
   border-radius: 10px;
@@ -66,7 +68,7 @@ body {
 
 .Overall-count-low,
 .Overall-density-low {
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   padding: 10px 10px;
   font-size: 18px;
@@ -79,11 +81,11 @@ body {
 
 .Overall-count-medium,
 .Overall-density-medium {
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   padding: 10px 10px;
   font-size: 18px;
-  background: 10px rgb(255, 242, 0);
+  background: 10px rgb(224, 213, 1);
   padding-top: 2px;
   padding-bottom: 2px;
   font-weight: bold;
@@ -92,7 +94,7 @@ body {
 
 .Overall-count-high,
 .Overall-density-high {
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   padding: 10px 10px;
   font-size: 30px;
@@ -165,7 +167,7 @@ body {
 
   .Overall-count-low,
   .Overall-density-low {
-    color: #000000;
+    color: #ffffff;
     font-weight: 500;
     padding: 10px 10px;
     font-size: 13px;
@@ -178,11 +180,11 @@ body {
 
   .Overall-count-medium,
   .Overall-density-medium {
-    color: #000000;
+    color: #ffffff;
     font-weight: 500;
     padding: 10px 10px;
     font-size: 13px;
-    background: 10px rgb(255, 242, 0);
+    background: 10px rgb(224, 213, 1);
     padding-top: 2px;
     padding-bottom: 2px;
     font-weight: bold;
@@ -191,7 +193,7 @@ body {
 
   .Overall-count-high,
   .Overall-density-high {
-    color: #000000;
+    color: #ffffff;
     font-weight: 500;
     padding: 10px 10px;
     font-size: 13px;
@@ -202,20 +204,3 @@ body {
     border-radius: 15px;
   }
 }
-
-/* @media (max-height: 400px) {
-  .overall-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .overall-card {
-    flex-direction: column;
-    text-align: center;
-    width: 700px;
-    max-width: 400px;
-    height: auto;
-    padding: 10px;
-  }
-} */
