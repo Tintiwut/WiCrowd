@@ -117,11 +117,9 @@ body {
     flex-direction: column;
     text-align: center;
     width: 368px;
-    max-width: auto;
+    max-width: 90%;
     height: auto;
-    margin: auto;
-    margin-top: -40px;
-    margin-bottom: 30px;
+    margin: 0.5rem auto 0.5rem;
     padding: 0%;
     padding-bottom: 20px;
     padding-top: 10px;

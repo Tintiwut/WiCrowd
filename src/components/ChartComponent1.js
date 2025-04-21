@@ -14,11 +14,12 @@ import {
 const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, language }) => {
   const [dataFromCSV, setDataFromCSV] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [interval, setInterval] = useState("1min");
+  const [interval, setInterval] = useState("5min");
   const [graphType, setGraphType] = useState("realtime");
   const [fontSize, setFontSize] = useState(12);
   const [fileList, setFileList] = useState([]);
   const [selectedFile, setSelectedFile] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const translations = {
     th: {
@@ -28,7 +29,6 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
       date: "วันที่",
       intervalLabel: "ในช่วงเวลา :",
       intervalOptions: {
-        "1min": "1 นาที",
         "5min": "5 นาที",
         "30min": "30 นาที",
         "1hr": "1 ชั่วโมง",
@@ -41,7 +41,6 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
       date: "Date",
       intervalLabel: "Interval:",
       intervalOptions: {
-        "1min": "1 minute",
         "5min": "5 minutes",
         "30min": "30 minutes",
         "1hr": "1 hour",
@@ -50,7 +49,6 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
   };
 
   const intervalOptions = {
-    "1min": 60 * 1000,
     "5min": 5 * 60 * 1000,
     "30min": 30 * 60 * 1000,
     "1hr": 60 * 60 * 1000,
@@ -157,13 +155,14 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
   const xTickFormatter = (timeStr) => {
     if (graphType === "csv") {
       // สำหรับประเภท CSV แสดงเฉพาะชั่วโมง
-      const [hour, min] = timeStr.split(":");
-      if (min === "00") {
-        return `${hour}:00`;  // แสดงแค่ชั่วโมง
+      const [hour, min] = timeStr.split(":").map(Number);
+      const interval = isMobile ? 3 : 1;
+      if (min === 0 && hour % interval === 0) {
+        return `${String(hour).padStart(2, "0")}:00`; // แสดง 00:00, 02:00, ...
       }
       return "";
     } else {
-      // สำหรับประเภท Realtime แสดงทุก 5 นาที
+      // สำหรับประเภท Realtime แสดงทุก 10 นาที
       const [hour, min] = timeStr.split(":");
       if (parseInt(min) % 10 === 0 && !displayedTimes.has(timeStr)) {
         displayedTimes.add(timeStr);
@@ -175,12 +174,13 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
 
   return (
     <div>
-      <div
+      <div 
         style={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: isMobile ? "flex-end" : "flex-end",
           marginBottom: "10px",
-          marginRight: "50px",
+          marginLeft: isMobile ? "37px" : "0px",
+          marginRight: isMobile ? "0px" : "5px",
           gap: "8px",
           flexWrap: "wrap",
         }}
@@ -226,9 +226,6 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
           <YAxis allowDecimals={false} tick={{ fontSize }} />
           <Tooltip />
           <Line type="monotone" dataKey="value" stroke="green" dot={false} />
-          {graphType === "csv" && interval === "1min" && (
-            <Brush dataKey="displayTime" height={30} stroke="#8884d8" travellerWidth={10} />
-          )}
         </LineChart>
       </ResponsiveContainer>
     </div>
