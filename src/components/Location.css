@@ -125,7 +125,8 @@ body {
   
     .location-card {
       padding: 1.5rem;
-      width: 368px;
+      width: 330px;
+      max-width: 90%;
       margin: 4rem auto 2rem;
     }
   
@@ -135,7 +136,7 @@ body {
     }
   
     .location-image img {
-      max-width: 100%;
+      max-width: 90%;
       height: auto;
     }
   
@@ -151,9 +152,10 @@ body {
     }
   
     .location-chart {
-      max-width: 90%;
+      margin-left: -60px;
+      margin-top: 10px;
+      width: 400px;
       height: auto !important;
-      touch-action: pan-x;
     }
   
     .Location-count-low,

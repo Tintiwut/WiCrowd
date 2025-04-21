@@ -165,7 +165,7 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
     } else {
       // สำหรับประเภท Realtime แสดงทุก 5 นาที
       const [hour, min] = timeStr.split(":");
-      if (parseInt(min) % 5 === 0 && !displayedTimes.has(timeStr)) {
+      if (parseInt(min) % 10 === 0 && !displayedTimes.has(timeStr)) {
         displayedTimes.add(timeStr);
         return `${hour}:${min}`;
       }

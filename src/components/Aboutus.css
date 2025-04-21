@@ -88,6 +88,7 @@
 
   .team-member h2 {
     font-size: 14px; /* ลดขนาดตัวอักษรชื่อ */
+    white-space: nowrap; /* ป้องกันการขึ้นบรรทัดใหม่ */
   }
 
   .team-member p {

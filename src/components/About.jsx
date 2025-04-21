@@ -21,7 +21,7 @@ const About = ({ language }) => {
     },
     { 
       name: { en: 'Mr.Nuthtawat Siltusaichol', th: 'นายณัฐฏวัฒน์ สินธุสายชล' }, 
-      role: 'QA | Call center', 
+      role: 'QA', 
       No: '1640901177', 
       image: nuthtawat 
     },
