@@ -1,3 +1,8 @@
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+
 html, body {
   margin: 0;
   padding: 0;
