@@ -93,7 +93,7 @@ const LocationA3 = ({ language }) => {
   };
 
   const fetchDataFromCSV = () => {
-    Papa.parse("/data/15_04_2025_BuildingX.csv", {
+    Papa.parse("/data/07_04_2025.csv", {
       download: true,
       header: true,
       complete: (result) => {

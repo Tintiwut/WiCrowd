@@ -93,7 +93,7 @@ const LocationA6 = ({ language }) => {
   };
 
   const fetchDataFromCSV = () => {
-    Papa.parse("/data/14_04_2025_BuildingX.csv", {
+    Papa.parse("/data/12_04_2025.csv", {
       download: true,
       header: true,
       complete: (result) => {
@@ -124,7 +124,6 @@ const LocationA6 = ({ language }) => {
           return item.count > max ? item.count : max;
         }, 0);
         setMaxToday(max);
-
         setStatus("ปิด");
         setLoading(false);
       },
