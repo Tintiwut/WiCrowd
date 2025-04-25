@@ -6,7 +6,7 @@ import "./Location.css";
 
 const LocationA6 = ({ language }) => {
   const [latestCount, setLatestCount] = useState(null);
-  const [maxToday, setMaxToday] = useState(null);
+  const [maxToday, setMaxToday] = useState(0);
   const [status, setStatus] = useState("ปิด");
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ const LocationA6 = ({ language }) => {
       status: "Status",
       comingSoon: "Coming soon...",
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
-      statusValues: { open: "Open", closed: "Closed" }
+      statusValues: { open: "Open", closed: "Closed" },
     },
     th: {
       buildingNames: { "Building A6": "อาคาร A6" },
@@ -30,7 +30,7 @@ const LocationA6 = ({ language }) => {
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
-      statusValues: { open: "เปิด", closed: "ปิด" }
+      statusValues: { open: "เปิด", closed: "ปิด" },
     },
   };
 
@@ -56,31 +56,25 @@ const LocationA6 = ({ language }) => {
 
       const newFeeds = data.feeds || [];
       setFeeds(newFeeds);
-
+      
       if (newFeeds.length > 0) {
         const latestFeed = newFeeds[newFeeds.length - 1];
         const latest = parseInt(latestFeed?.field1 || 0, 10);
         setLatestCount(latest);
 
-        const today = new Date();
-        const todayDateStr = today.toISOString().slice(0, 10);
-        const todayFeeds = newFeeds.filter((entry) =>
-          entry.created_at && entry.created_at.startsWith(todayDateStr)
-        );
+        const today = new Date().toISOString().split("T")[0];
+        const todayFeeds = newFeeds.filter((entry) => entry.created_at?.startsWith(today));
         const max = Math.max(...todayFeeds.map((entry) => parseInt(entry.field1 || 0, 10)));
         setMaxToday(max);
 
         const latestTime = new Date(latestFeed.created_at).getTime();
         const now = Date.now();
         const tenMinutes = 10 * 60 * 1000;
-        if (now - latestTime <= tenMinutes) {
-          setStatus("เปิด");
-        } else {
-          setStatus("ปิด");
-        }
+        const stat = now - latestTime <= tenMinutes ? "เปิด" : "ปิด";
+        setStatus(stat);
       } else {
         setLatestCount(null);
-        setMaxToday(null);
+        setMaxToday(0);
         setStatus("ปิด");
       }
 
@@ -99,6 +93,7 @@ const LocationA6 = ({ language }) => {
       complete: (result) => {
         const raw = result.data;
         const grouped = {};
+
         raw.forEach((row) => {
           if (!row.Date || !row.Time || !row.Device) return;
           const deviceValue = parseInt(row.Device, 10);
@@ -118,13 +113,12 @@ const LocationA6 = ({ language }) => {
           .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
         const latest = summarized[summarized.length - 1];
-        setLatestCount(latest?.count || 0);
+        const latestCount = latest?.count || 0;
+        setLatestCount((prev) => prev === null ? latestCount : prev);
 
-        const max = summarized.reduce((max, item) => {
-          return item.count > max ? item.count : max;
-        }, 0);
-        setMaxToday(max);
-        setStatus("ปิด");
+        const max = summarized.reduce((max, item) => Math.max(max, item.count), 0);
+        setMaxToday((prev) => prev === 0 ? max : prev);
+
         setLoading(false);
       },
     });
@@ -141,8 +135,7 @@ const LocationA6 = ({ language }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // แก้ไขตรงนี้เพื่อตรวจสอบค่า feeds และ latestCount
-  const isComingSoon = feeds.length === 0 || latestCount === null;
+  const isComingSoon = feeds.length === 0;
 
   return (
     <div className="location-container">
@@ -162,39 +155,24 @@ const LocationA6 = ({ language }) => {
             ) : (
               <>
                 <p>
-                  <span>{translations[language].densityLevelsText}</span>:{" "}
-                  {status === "เปิด" || status === "Open"
-                    ? getDensityLevel(latestCount)
-                    : <span className="Location-disabled">-</span>}
+                  <span>{translations[language].densityLevelsText}</span>: {status === "เปิด" || status === "Open" ? getDensityLevel(latestCount) : <span className="Location-disabled">-</span>}
                 </p>
                 <p>
-                  <span>{translations[language].density}</span>:{" "}
-                  {status === "เปิด" || status === "Open" ? (
+                  <span>{translations[language].density}</span>: {status === "เปิด" || status === "Open" ? (
                     <span className={getCountColor(latestCount)}>{latestCount}</span>
                   ) : (
                     <span className="Location-disabled">-</span>
                   )}
                 </p>
                 <p>
-                  <span>{translations[language].maxToday}</span>:{" "}
-                  <span style={{ marginLeft: "8px" }}>
-                    {maxToday !== null ? maxToday : "-"}
-                  </span>
+                  <span>{translations[language].maxToday}</span>: <span>{maxToday !== null ? maxToday : "-"}</span>
                 </p>
                 <p>
-                    <span>{translations[language].status}</span>:{" "}
-                    <span
-                      className={
-                        status === "เปิด" || status === "Open"
-                          ? "Location-status-open"
-                          : "Location-status-closed"
-                      }
-                    >
-                      {status === "เปิด"
-                        ? translations[language].statusValues.open
-                        : translations[language].statusValues.closed}
-                    </span>
-                  </p>
+                  <span>{translations[language].status}</span>: {" "}
+                  <span className={status === "เปิด" ? "Location-status-open" : "Location-status-closed"}>
+                    {status === "เปิด" ? translations[language].statusValues.open : translations[language].statusValues.closed}
+                  </span>
+                </p>
               </>
             )}
           </div>

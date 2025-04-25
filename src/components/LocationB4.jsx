@@ -6,7 +6,7 @@ import "./Location.css";
 
 const LocationB4 = ({ language }) => {
   const [latestCount, setLatestCount] = useState(null);
-  const [maxToday, setMaxToday] = useState(null);
+  const [maxToday, setMaxToday] = useState(0);
   const [status, setStatus] = useState("ปิด");
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,11 +19,11 @@ const LocationB4 = ({ language }) => {
       maxToday: "Maximum Today",
       status: "Status",
       comingSoon: "Coming soon...",
-      statusValues: { open: "Open", closed: "Closed" },
       densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      statusValues: { open: "Open", closed: "Closed" },
       filter: "Filter",
-      minute: "Minute",
       hours: "Hours",
+      minute: "Minutes",
     },
     th: {
       buildingNames: { "Building B4": "อาคาร B4" },
@@ -32,11 +32,11 @@ const LocationB4 = ({ language }) => {
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
-      statusValues: { open: "เปิด", closed: "ปิด" },
       densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
-      filter: "ฟิลเตอร์",
-      minute: "นาที",
+      statusValues: { open: "เปิด", closed: "ปิด" },
+      filter: "กรอง",
       hours: "ชั่วโมง",
+      minute: "นาที",
     },
   };
 
@@ -68,24 +68,19 @@ const LocationB4 = ({ language }) => {
         const latest = parseInt(latestFeed?.field1 || 0, 10);
         setLatestCount(latest);
 
-        const today = new Date().toISOString().slice(0, 10);
-        const todayFeeds = newFeeds.filter((entry) =>
-          entry.created_at && entry.created_at.startsWith(today)
-        );
+        const today = new Date().toISOString().split("T")[0];
+        const todayFeeds = newFeeds.filter((entry) => entry.created_at?.startsWith(today));
         const max = Math.max(...todayFeeds.map((entry) => parseInt(entry.field1 || 0, 10)));
         setMaxToday(max);
 
         const latestTime = new Date(latestFeed.created_at).getTime();
         const now = Date.now();
         const tenMinutes = 10 * 60 * 1000;
-        if (now - latestTime <= tenMinutes) {
-          setStatus("เปิด");
-        } else {
-          setStatus("ปิด");
-        }
+        const stat = now - latestTime <= tenMinutes ? "เปิด" : "ปิด";
+        setStatus(stat);
       } else {
         setLatestCount(null);
-        setMaxToday(null);
+        setMaxToday(0);
         setStatus("ปิด");
       }
 
@@ -98,12 +93,13 @@ const LocationB4 = ({ language }) => {
   };
 
   const fetchDataFromCSV = () => {
-    Papa.parse("", {
+    Papa.parse("/data/07_04_2025.csv", {
       download: true,
       header: true,
       complete: (result) => {
         const raw = result.data;
         const grouped = {};
+
         raw.forEach((row) => {
           if (!row.Date || !row.Time || !row.Device) return;
           const deviceValue = parseInt(row.Device, 10);
@@ -123,14 +119,12 @@ const LocationB4 = ({ language }) => {
           .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
         const latest = summarized[summarized.length - 1];
-        setLatestCount(latest?.count || 0);
+        const latestCount = latest?.count || 0;
+        setLatestCount((prev) => prev === null ? latestCount : prev);
 
-        const max = summarized.reduce((max, item) => {
-          return item.count > max ? item.count : max;
-        }, 0);
-        setMaxToday(max);
+        const max = summarized.reduce((max, item) => Math.max(max, item.count), 0);
+        setMaxToday((prev) => prev === 0 ? max : prev);
 
-        setStatus("ปิด");
         setLoading(false);
       },
     });
@@ -147,80 +141,62 @@ const LocationB4 = ({ language }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // เพิ่มฟังก์ชัน Coming Soon
-  const isComingSoon = feeds.length === 0 || latestCount === null;
+  const isComingSoon = feeds.length === 0;
 
   return (
     <div className="location-container">
-      {!loading && (
-        <div className="location-card">
-          <div className="location-head">
-            <h1>{translations[language].buildingNames["Building B4"]}</h1>
+      <div className="location-card">
+        <div className="location-head">
+          <h1>{translations[language].buildingNames["Building B4"]}</h1>
+        </div>
+
+        <div className="location-content">
+          <div className="location-image">
+            <img src={Building_B4} alt="Building B4" />
           </div>
 
-          <div className="location-content">
-            <div className="location-image">
-              <img src={Building_B4} alt="Building B4" />
-            </div>
-
-            <div className="location-info">
-              {isComingSoon ? (
-                <p>{translations[language].comingSoon}</p>
-              ) : (
-                <>
-                  <p>
-                    <span>{translations[language].densityLevelsText}</span>:{" "}
-                    {status === "เปิด" || status === "Open"
-                      ? getDensityLevel(latestCount)
-                      : <span className="Location-disabled">-</span>}
-                  </p>
-                  <p>
-                    <span>{translations[language].density}</span>:{" "}
-                    {status === "เปิด" || status === "Open" ? (
-                      <span className={getCountColor(latestCount)}>{latestCount}</span>
-                    ) : (
-                      <span className="Location-disabled">-</span>
-                    )}
-                  </p>
-                  <p>
-                    <span>{translations[language].maxToday}</span>:{" "}
-                    <span style={{ marginLeft: "8px" }}>
-                      {maxToday !== null ? maxToday : "-"}
-                    </span>
-                  </p>
-                  <p>
-                    <span>{translations[language].status}</span>:{" "}
-                    <span
-                      className={
-                        status === "เปิด" || status === "Open"
-                          ? "Location-status-open"
-                          : "Location-status-closed"
-                      }
-                    >
-                      {status === "เปิด"
-                        ? translations[language].statusValues.open
-                        : translations[language].statusValues.closed}
-                    </span>
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="location-chart">
-            <ChartComponent1
-              graphType="realtime"
-              feeds={feeds}
-              csvFolder="/data/Building_B4_Log"
-              density={translations[language].density}
-              filter={translations[language].filter}
-              hours={translations[language].hours}
-              minute={translations[language].minute}
-              language={language}
-            />
+          <div className="location-info">
+            {isComingSoon ? (
+              <p>{translations[language].comingSoon}</p>
+            ) : (
+              <>
+                <p>
+                  <span>{translations[language].densityLevelsText}</span>: {status === "เปิด" || status === "Open" ? getDensityLevel(latestCount) : <span className="Location-disabled">-</span>}
+                </p>
+                <p>
+                  <span>{translations[language].density}</span>: {status === "เปิด" || status === "Open" ? (
+                    <span className={getCountColor(latestCount)}>{latestCount}</span>
+                  ) : (
+                    <span className="Location-disabled">-</span>
+                  )}
+                </p>
+                <p>
+                  <span>{translations[language].maxToday}</span>: <span>{maxToday !== null ? maxToday : "-"}</span>
+                </p>
+                <p>
+                  <span>{translations[language].status}</span>:{" "}
+                  <span className={status === "เปิด" ? "Location-status-open" : "Location-status-closed"}>
+                    {status === "เปิด" ? translations[language].statusValues.open : translations[language].statusValues.closed}
+                  </span>
+                </p>
+              </>
+            )}
           </div>
         </div>
-      )}
+
+        <div className="location-chart">
+          <ChartComponent1
+            graphType="realtime"
+            feeds={feeds}
+            csvFolder="/data/Building_B4_Log"
+            density={translations[language].density}
+            filter={translations[language].filter}
+            hours={translations[language].hours}
+            minute={translations[language].minute}
+            language={language}
+          />
+        </div>
+      </div>
     </div>
   );
 };
