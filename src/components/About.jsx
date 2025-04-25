@@ -79,7 +79,7 @@ const About = ({ language }) => {
       {/* ฟุตเตอร์ของหน้า About Us */}
       <footer className="about-us-footer">
         {/* แสดงฟุตเตอร์ที่แปลตามภาษาที่เลือก */}
-        <p>&copy; {translations[language].footer}</p>
+        <p>{translations[language].footer}</p>
       </footer>
     </div>
   );
