@@ -136,7 +136,7 @@ const LocationB4 = ({ language }) => {
 
     const interval = setInterval(() => {
       fetchDataFromAPI();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
