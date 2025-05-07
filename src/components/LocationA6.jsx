@@ -50,23 +50,39 @@ const LocationA6 = ({ language }) => {
 
   const fetchDataFromAPI = async () => {
     try {
-      const apiUrl = "";
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-
-      const newFeeds = data.feeds || [];
-      setFeeds(newFeeds);
-      
-      if (newFeeds.length > 0) {
-        const latestFeed = newFeeds[newFeeds.length - 1];
+      // 🔹 Load recent data (last 100) for chart
+      const chartUrl = "";
+      const chartResponse = await fetch(chartUrl);
+      const chartData = await chartResponse.json();
+      const chartFeeds = chartData.feeds || [];
+      setFeeds(chartFeeds); // ✅ ใช้ชุดนี้กับกราฟ
+  
+      // 🔹 Load full day data for maxToday
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const startDate = `${yyyy}-${mm}-${dd}%2000:00:00`;
+      const endDate = `${yyyy}-${mm}-${dd}%2023:59:59`;
+  
+      const fullUrl = ``;
+      const fullResponse = await fetch(fullUrl);
+      const fullData = await fullResponse.json();
+      const fullFeeds = fullData.feeds || [];
+  
+      // 🔹 Calculate maxToday
+      const todayMax = fullFeeds.reduce((max, entry) => {
+        const val = parseInt(entry.field1 || 0, 10);
+        return isNaN(val) ? max : Math.max(max, val);
+      }, 0);
+      setMaxToday(todayMax);
+  
+      // 🔹 Get latest count and status from chart data
+      if (chartFeeds.length > 0) {
+        const latestFeed = chartFeeds[chartFeeds.length - 1];
         const latest = parseInt(latestFeed?.field1 || 0, 10);
         setLatestCount(latest);
-
-        const today = new Date().toISOString().split("T")[0];
-        const todayFeeds = newFeeds.filter((entry) => entry.created_at?.startsWith(today));
-        const max = Math.max(...todayFeeds.map((entry) => parseInt(entry.field1 || 0, 10)));
-        setMaxToday(max);
-
+  
         const latestTime = new Date(latestFeed.created_at).getTime();
         const now = Date.now();
         const tenMinutes = 10 * 60 * 1000;
@@ -74,10 +90,9 @@ const LocationA6 = ({ language }) => {
         setStatus(stat);
       } else {
         setLatestCount(null);
-        setMaxToday(0);
         setStatus("ปิด");
       }
-
+  
       setLoading(false);
     } catch (err) {
       console.error(err);
@@ -85,6 +100,7 @@ const LocationA6 = ({ language }) => {
       setLoading(false);
     }
   };
+  
 
   const fetchDataFromCSV = () => {
     Papa.parse("/data/12_04_2025.csv", {
