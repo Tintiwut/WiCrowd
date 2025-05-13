@@ -15,7 +15,7 @@ const LocationA6 = ({ language }) => {
     en: {
       buildingNames: { "Building A6": "Building A6" },
       densityLevelsText: "Density Levels",
-      density: "Density",
+      density: "No. Devices",
       maxToday: "Maximum Today",
       status: "Status",
       comingSoon: "Coming soon...",
@@ -25,7 +25,7 @@ const LocationA6 = ({ language }) => {
     th: {
       buildingNames: { "Building A6": "อาคาร A6" },
       densityLevelsText: "ระดับความหนาแน่น",
-      density: "ความหนาแน่น",
+      density: "จำนวนอุปกรณ์",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
@@ -37,14 +37,14 @@ const LocationA6 = ({ language }) => {
   const getDensityLevel = (count) => {
     if (count < 20)
       return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
-    if (count < 35)
+    if (count < 57)
       return <span className="Location-density-medium">{translations[language].densityLevels.medium}</span>;
     return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
   };
 
   const getCountColor = (count) => {
     if (count < 20) return "Location-count-low";
-    if (count < 35) return "Location-count-medium";
+    if (count < 57) return "Location-count-medium";
     return "Location-count-high";
   };
 
@@ -171,7 +171,15 @@ const LocationA6 = ({ language }) => {
             ) : (
               <>
                 <p>
-                  <span>{translations[language].densityLevelsText}</span>: {status === "เปิด" || status === "Open" ? getDensityLevel(latestCount) : <span className="Location-disabled">-</span>}
+                  <span>{translations[language].densityLevelsText}</span>:{" "}
+                  {status === "เปิด" || status === "Open" ? getDensityLevel(latestCount) : <span className="Location-disabled">-</span>}
+                  <span className="tooltip-icon" tabIndex="0">?
+                    <span className="tooltip-text">
+                      {language === "th"
+                        ? "ระดับน้อย: ~0-19 คน\nระดับปานกลาง: ~20-57 คน\nระดับมาก: มากกว่า 57 คน"
+                        : "Low: ~0-19 people\nMedium: ~20-57 people\nHigh: more than 57 people"}
+                    </span>
+                  </span>
                 </p>
                 <p>
                   <span>{translations[language].density}</span>: {status === "เปิด" || status === "Open" ? (
@@ -181,7 +189,12 @@ const LocationA6 = ({ language }) => {
                   )}
                 </p>
                 <p>
-                  <span>{translations[language].maxToday}</span>: <span>{maxToday !== null ? maxToday : "-"}</span>
+                  <span>{translations[language].maxToday}</span>:{" "}
+                  {status === "เปิด" || status === "Open" ? (
+                    <span>{maxToday}</span>
+                  ) : (
+                    <span className="Location-disabled">-</span>
+                  )}
                 </p>
                 <p>
                   <span>{translations[language].status}</span>: {" "}

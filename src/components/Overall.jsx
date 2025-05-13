@@ -29,7 +29,7 @@ const Overall = ({ language }) => {
       buildingA6: "Building A6",
       buildingB4: "Building B4",
       densityLevelsText: "Density Levels",
-      density: "Density",
+      density: "No. Devices",
       maxToday: "Maximum Today",
       status: "Status",
       statusValues: { open: "Open", closed: "Closed" },
@@ -41,7 +41,7 @@ const Overall = ({ language }) => {
       buildingA6: "อาคาร A6",
       buildingB4: "อาคาร B4",
       densityLevelsText: "ระดับความหนาแน่น",
-      density: "ความหนาแน่น",
+      density: "จำนวนอุปกรณ์",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       statusValues: { open: "เปิด", closed: "ปิด" },
@@ -91,7 +91,7 @@ const Overall = ({ language }) => {
           feeds,
           count,
           status,
-          maxToday: max,
+          maxToday: isFinite(max) ? max : 0,
         };
       });
 
@@ -189,7 +189,11 @@ const Overall = ({ language }) => {
                 </p>
                   <p>
                     <span>{translations[language].maxToday}</span>:{" "}
-                    {locationData.maxToday}
+                    {locationData.status === "เปิด" || locationData.status === "Open" ? (
+                      <span>{locationData.maxToday}</span>
+                    ) : (
+                      <span className="Location-disabled">-</span>
+                    )}
                   </p>
                   <p>
                     <span>{translations[language].status}</span>:{" "}

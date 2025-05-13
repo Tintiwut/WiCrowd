@@ -10,12 +10,13 @@ const LocationB4 = ({ language }) => {
   const [status, setStatus] = useState("ปิด");
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [maxTime, setMaxTime] = useState("");
 
   const translations = {
     en: {
       buildingNames: { "Building B4": "Building B4" },
       densityLevelsText: "Density Levels",
-      density: "Density",
+      density: "No. Devices",
       maxToday: "Maximum Today",
       status: "Status",
       comingSoon: "Coming soon...",
@@ -28,7 +29,7 @@ const LocationB4 = ({ language }) => {
     th: {
       buildingNames: { "Building B4": "อาคาร B4" },
       densityLevelsText: "ระดับความหนาแน่น",
-      density: "ความหนาแน่น",
+      density: "จำนวนอุปกรณ์",
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
@@ -41,16 +42,16 @@ const LocationB4 = ({ language }) => {
   };
 
   const getDensityLevel = (count) => {
-    if (count < 20)
+    if (count < 0)
       return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
-    if (count < 35)
+    if (count < 118)
       return <span className="Location-density-medium">{translations[language].densityLevels.medium}</span>;
     return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
   };
 
   const getCountColor = (count) => {
-    if (count < 20) return "Location-count-low";
-    if (count < 35) return "Location-count-medium";
+    if (count < 40) return "Location-count-low";
+    if (count < 118) return "Location-count-medium";
     return "Location-count-high";
   };
 
@@ -77,11 +78,19 @@ const LocationB4 = ({ language }) => {
       const fullFeeds = fullData.feeds || [];
   
       // 🔹 Calculate maxToday
-      const todayMax = fullFeeds.reduce((max, entry) => {
+      let todayMax = 0;
+      let maxTimestamp = "";
+
+      fullFeeds.forEach((entry) => {
         const val = parseInt(entry.field1 || 0, 10);
-        return isNaN(val) ? max : Math.max(max, val);
-      }, 0);
+        if (!isNaN(val) && val > todayMax) {
+          todayMax = val;
+          maxTimestamp = entry.created_at;
+        }
+      });
+
       setMaxToday(todayMax);
+      setMaxTime(maxTimestamp);
   
       // 🔹 Get latest count and status from chart data
       if (chartFeeds.length > 0) {
@@ -177,7 +186,15 @@ const LocationB4 = ({ language }) => {
             ) : (
               <>
                 <p>
-                  <span>{translations[language].densityLevelsText}</span>: {status === "เปิด" || status === "Open" ? getDensityLevel(latestCount) : <span className="Location-disabled">-</span>}
+                  <span>{translations[language].densityLevelsText}</span>:{" "}
+                  {status === "เปิด" || status === "Open" ? getDensityLevel(latestCount) : <span className="Location-disabled">-</span>}
+                  <span className="tooltip-icon" tabIndex="0">?
+                    <span className="tooltip-text">
+                      {language === "th"
+                        ? "ระดับน้อย: ~0-39 คน\nระดับปานกลาง: ~40-117 คน\nระดับมาก: มากกว่า 117 คน"
+                        : "Low: ~0-39 people\nMedium: ~40-117 people\nHigh: more than 117 people"}
+                    </span>
+                  </span>
                 </p>
                 <p>
                   <span>{translations[language].density}</span>: {status === "เปิด" || status === "Open" ? (
@@ -187,7 +204,24 @@ const LocationB4 = ({ language }) => {
                   )}
                 </p>
                 <p>
-                  <span>{translations[language].maxToday}</span>: <span>{maxToday !== null ? maxToday : "-"}</span>
+                  <span>{translations[language].maxToday}</span>:{" "}
+                  {status === "เปิด" || status === "Open" ? (
+                    <>
+                      <span>{maxToday}</span>
+                      {maxTime && (
+                        <span className="tooltip-icon" tabIndex="0">
+                          <i className="fas fa-eye"></i>
+                          <span className="tooltip-text">
+                            {language === "th"
+                              ? `เกิดเมื่อเวลา ${new Date(maxTime).toLocaleTimeString("th-TH")}`
+                              : `Occurred at ${new Date(maxTime).toLocaleTimeString("en-US")}`}
+                          </span>
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="Location-disabled">-</span>
+                  )}
                 </p>
                 <p>
                   <span>{translations[language].status}</span>:{" "}

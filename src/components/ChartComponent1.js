@@ -8,7 +8,7 @@ import {
   Tooltip,
   CartesianGrid,
   ResponsiveContainer,
-  Brush,
+  Label,
 } from "recharts"; // นำเข้าไลบรารี Recharts สำหรับการแสดงกราฟ
 
 // กำหนดฟังก์ชัน ChartComponent1 ที่รับ props หลายตัว
@@ -227,15 +227,37 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
 
       {/* แสดงกราฟ */}
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={graphType === "csv" ? filteredData : processedRealtimeData}>
+        <LineChart
+          data={graphType === "csv" ? filteredData : processedRealtimeData}
+          margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+        >
           <CartesianGrid strokeDasharray="1 1" />
           <XAxis
             dataKey="displayTime"
             tick={{ fontSize }}
             tickFormatter={xTickFormatter}
             interval={0}
-          />
-          <YAxis allowDecimals={false} tick={{ fontSize }} />
+          >
+            <Label
+              value={language === "th" ? "เวลา" : "Time"}
+              offset={-5}
+              position="insideBottom"
+              style={{ textAnchor: "middle", fontSize }}
+            />
+          </XAxis>
+
+          <YAxis
+            allowDecimals={false}
+            tick={{ fontSize }}
+          >
+            <Label
+              value={language === "th" ? "จำนวนอุปกรณ์" : "Number of Devices"}
+              angle={-90}
+              position="insideLeft"
+              style={{ textAnchor: "middle", fontSize }}
+            >
+            </Label>
+          </YAxis>
           <Tooltip />
           <Line type="monotone" dataKey="value" stroke="green" dot={false} />
         </LineChart>

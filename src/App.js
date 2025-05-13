@@ -5,6 +5,7 @@ import Overall from './components/Overall';
 import Location from './components/Location';
 import About from './components/About';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
   const [selectedLocation, setSelectedLocation] = useState(() => {
