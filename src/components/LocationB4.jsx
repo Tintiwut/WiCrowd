@@ -42,7 +42,7 @@ const LocationB4 = ({ language }) => {
   };
 
   const getDensityLevel = (count) => {
-    if (count < 0)
+    if (count < 40)
       return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
     if (count < 118)
       return <span className="Location-density-medium">{translations[language].densityLevels.medium}</span>;
