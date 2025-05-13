@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Building_A3 from "../images/Building_A3.jpg";
 import Building_A6 from "../images/Building_A6.jpg";
 import Building_B4 from "../images/Building_B4.jpg";
 import "./Overall.css";
 
 const Overall = ({ language }) => {
+  const navigate = useNavigate();
   const getTodayDateString = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -119,24 +121,33 @@ const Overall = ({ language }) => {
   }, []);
 
   const locations = [
-    { key: "buildingA3", image: Building_A3 },
-    { key: "buildingA6", image: Building_A6 },
-    { key: "buildingB4", image: Building_B4 },
+    { key: "buildingA3", image: Building_A3, Navi: "Building A3"},
+    { key: "buildingA6", image: Building_A6, Navi: "Building A6" },
+    { key: "buildingB4", image: Building_B4, Navi: "Building B4" },
   ];
 
-  const getDensityLevel = (count) => {
-    if (count < 20)
-      return (
-        <span className="Overall-density-low">
-          {translations[language].densityLevels.low}
-        </span>
-      );
-    if (count < 35)
-      return (
-        <span className="Overall-density-medium">
-          {translations[language].densityLevels.medium}
-        </span>
-      );
+
+  const densityThresholds = {
+    buildingA3: { low: 226, medium: 678 },
+    buildingA6: { low: 20, medium: 57 },
+    buildingB4: { low: 40, medium: 118 },
+  };
+
+  const getDensityLevel = (locationKey, count) => {
+  const { low, medium } = densityThresholds[locationKey];
+
+  if (count < low)
+    return (
+      <span className="Overall-density-low">
+        {translations[language].densityLevels.low}
+      </span>
+    );
+  if (count < medium)
+    return (
+      <span className="Overall-density-medium">
+        {translations[language].densityLevels.medium}
+      </span>
+    );
     return (
       <span className="Overall-density-high">
         {translations[language].densityLevels.high}
@@ -144,9 +155,10 @@ const Overall = ({ language }) => {
     );
   };
 
-  const getCountColor = (count) => {
-    if (count < 20) return "Overall-count-low";
-    if (count < 35) return "Overall-count-medium";
+  const getCountColor = (locationKey, count) => {
+    const { low, medium } = densityThresholds[locationKey];
+    if (count < low) return "Overall-count-low";
+    if (count < medium) return "Overall-count-medium";
     return "Overall-count-high";
   };
 
@@ -161,7 +173,14 @@ const Overall = ({ language }) => {
           !locationData.feeds || locationData.feeds.length === 0;
 
         return (
-          <div key={index} className="overall-card">
+          <div
+            key={index}
+            className="overall-card"
+            onClick={() => {
+              navigate('/location', { state: { location: location.Navi } }); // ใช้ navigate แบบนี้
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <img
               src={location.image}
               alt={translations[language][location.key]}
@@ -176,13 +195,13 @@ const Overall = ({ language }) => {
                   <p>
                   <span>{translations[language].densityLevelsText}</span>:{" "}
                   {locationData.status === "เปิด" || locationData.status === "Open"
-                    ? getDensityLevel(locationData.count)
+                    ? getDensityLevel(location.key, locationData.count)
                     : <span className="Location-disabled">-</span>}
                 </p>
                 <p>
                   <span>{translations[language].density}</span>:{" "}
                   {locationData.status === "เปิด" || locationData.status === "Open" ? (
-                    <span className={getCountColor(locationData.count)}>{locationData.count}</span>
+                    <span className={getCountColor(location.key, locationData.count)}>{locationData.count}</span>
                   ) : (
                     <span className="Location-disabled">-</span>
                   )}
