@@ -20,7 +20,7 @@ const LocationB4 = ({ language }) => {
       maxToday: "Maximum Today",
       status: "Status",
       comingSoon: "Coming soon...",
-      densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      densityLevels: { low: "Low", medium: "Medium", high: "High", dangerous: "Dangerous"  },
       statusValues: { open: "Open", closed: "Closed" },
       filter: "Filter",
       hours: "Hours",
@@ -33,7 +33,7 @@ const LocationB4 = ({ language }) => {
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
-      densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+      densityLevels: { low: "ต่ำ", medium: "ปานกลาง", high: "สูง", dangerous: "อันตราย" },
       statusValues: { open: "เปิด", closed: "ปิด" },
       filter: "กรอง",
       hours: "ชั่วโมง",
@@ -42,17 +42,20 @@ const LocationB4 = ({ language }) => {
   };
 
   const getDensityLevel = (count) => {
-    if (count < 40)
+    if (count < 78)
       return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
-    if (count < 118)
+    if (count < 156)
       return <span className="Location-density-medium">{translations[language].densityLevels.medium}</span>;
-    return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
+    if (count < 312)
+      return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
+    return <span className="Location-density-dangerous">{translations[language].densityLevels.dangerous}</span>;
   };
 
   const getCountColor = (count) => {
-    if (count < 40) return "Location-count-low";
-    if (count < 118) return "Location-count-medium";
-    return "Location-count-high";
+    if (count < 78) return "Location-count-low";
+    if (count < 156) return "Location-count-medium";
+    if (count < 312) return "Location-count-high";
+    return "Location-count-dangerous";
   };
 
   const fetchDataFromAPI = async () => {
@@ -191,8 +194,8 @@ const LocationB4 = ({ language }) => {
                   <span className="tooltip-icon" tabIndex="0">?
                     <span className="tooltip-text">
                       {language === "th"
-                        ? "ระดับน้อย: ~0-39 คน\nระดับปานกลาง: ~40-117 คน\nระดับมาก: มากกว่า 117 คน"
-                        : "Low: ~0-39 people\nMedium: ~40-117 people\nHigh: more than 117 people"}
+                        ? "ระดับต่ำ: 0-78 คน\nระดับปานกลาง: 79-156 คน\nระดับมาก: 157-312 คน\nระดับอันตราย: มากกว่า 312 คน"
+                        : "Low: 0-78 people\nMedium: 79-156 people\nHigh: 157-312 people\nDangerous: more than 312 people"}
                     </span>
                   </span>
                 </p>

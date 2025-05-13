@@ -10,6 +10,7 @@ const LocationA6 = ({ language }) => {
   const [status, setStatus] = useState("ปิด");
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [maxTime, setMaxTime] = useState("");
 
   const translations = {
     en: {
@@ -19,8 +20,11 @@ const LocationA6 = ({ language }) => {
       maxToday: "Maximum Today",
       status: "Status",
       comingSoon: "Coming soon...",
-      densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      densityLevels: { low: "Low", medium: "Medium", high: "High", dangerous: "Dangerous"  },
       statusValues: { open: "Open", closed: "Closed" },
+      filter: "Filter",
+      hours: "Hours",
+      minute: "Minutes",
     },
     th: {
       buildingNames: { "Building A6": "อาคาร A6" },
@@ -29,29 +33,35 @@ const LocationA6 = ({ language }) => {
       maxToday: "จำนวนสูงสุดของวันนี้",
       status: "สถานะ",
       comingSoon: "เร็วๆ นี้..",
-      densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+      densityLevels: { low: "ต่ำ", medium: "ปานกลาง", high: "สูง", dangerous: "อันตราย" },
       statusValues: { open: "เปิด", closed: "ปิด" },
+      filter: "กรอง",
+      hours: "ชั่วโมง",
+      minute: "นาที",
     },
   };
 
   const getDensityLevel = (count) => {
-    if (count < 20)
+    if (count < 38)
       return <span className="Location-density-low">{translations[language].densityLevels.low}</span>;
-    if (count < 57)
+    if (count < 76)
       return <span className="Location-density-medium">{translations[language].densityLevels.medium}</span>;
-    return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
+    if (count < 152)
+      return <span className="Location-density-high">{translations[language].densityLevels.high}</span>;
+    return <span className="Location-density-dangerous">{translations[language].densityLevels.dangerous}</span>;
   };
 
   const getCountColor = (count) => {
-    if (count < 20) return "Location-count-low";
-    if (count < 57) return "Location-count-medium";
-    return "Location-count-high";
+    if (count < 38) return "Location-count-low";
+    if (count < 76) return "Location-count-medium";
+    if (count < 152) return "Location-count-high";
+    return "Location-count-dangerous";
   };
 
   const fetchDataFromAPI = async () => {
     try {
       // 🔹 Load recent data (last 100) for chart
-      const chartUrl = "";
+      const chartUrl = ""; //API
       const chartResponse = await fetch(chartUrl);
       const chartData = await chartResponse.json();
       const chartFeeds = chartData.feeds || [];
@@ -65,17 +75,25 @@ const LocationA6 = ({ language }) => {
       const startDate = `${yyyy}-${mm}-${dd}%2000:00:00`;
       const endDate = `${yyyy}-${mm}-${dd}%2023:59:59`;
   
-      const fullUrl = ``;
+      const fullUrl = ``; //API Format `https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&start=${startDate}&end=${endDate}`
       const fullResponse = await fetch(fullUrl);
       const fullData = await fullResponse.json();
       const fullFeeds = fullData.feeds || [];
   
       // 🔹 Calculate maxToday
-      const todayMax = fullFeeds.reduce((max, entry) => {
+      let todayMax = 0;
+      let maxTimestamp = "";
+
+      fullFeeds.forEach((entry) => {
         const val = parseInt(entry.field1 || 0, 10);
-        return isNaN(val) ? max : Math.max(max, val);
-      }, 0);
+        if (!isNaN(val) && val > todayMax) {
+          todayMax = val;
+          maxTimestamp = entry.created_at;
+        }
+      });
+
       setMaxToday(todayMax);
+      setMaxTime(maxTimestamp);
   
       // 🔹 Get latest count and status from chart data
       if (chartFeeds.length > 0) {
@@ -146,7 +164,7 @@ const LocationA6 = ({ language }) => {
 
     const interval = setInterval(() => {
       fetchDataFromAPI();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -176,8 +194,8 @@ const LocationA6 = ({ language }) => {
                   <span className="tooltip-icon" tabIndex="0">?
                     <span className="tooltip-text">
                       {language === "th"
-                        ? "ระดับน้อย: ~0-19 คน\nระดับปานกลาง: ~20-57 คน\nระดับมาก: มากกว่า 57 คน"
-                        : "Low: ~0-19 people\nMedium: ~20-57 people\nHigh: more than 57 people"}
+                        ? "ระดับต่ำ: 0-38 คน\nระดับปานกลาง: 39-76 คน\nระดับมาก: 77-152 คน\nระดับอันตราย: มากกว่า 152 คน"
+                        : "Low: 0-38 people\nMedium: 39-76 people\nHigh: 77-152 people\nDangerous: more than 152 people"}
                     </span>
                   </span>
                 </p>
@@ -191,7 +209,19 @@ const LocationA6 = ({ language }) => {
                 <p>
                   <span>{translations[language].maxToday}</span>:{" "}
                   {status === "เปิด" || status === "Open" ? (
-                    <span>{maxToday}</span>
+                    <>
+                      <span>{maxToday}</span>
+                      {maxTime && (
+                        <span className="tooltip-icon" tabIndex="0">
+                          <i className="fas fa-eye"></i>
+                          <span className="tooltip-text">
+                            {language === "th"
+                              ? `เกิดเมื่อเวลา ${new Date(maxTime).toLocaleTimeString("th-TH")}`
+                              : `Occurred at ${new Date(maxTime).toLocaleTimeString("en-US")}`}
+                          </span>
+                        </span>
+                      )}
+                    </>
                   ) : (
                     <span className="Location-disabled">-</span>
                   )}

@@ -36,7 +36,7 @@ const Overall = ({ language }) => {
       status: "Status",
       statusValues: { open: "Open", closed: "Closed" },
       comingSoon: "Coming soon...",
-      densityLevels: { low: "Low", medium: "Medium", high: "High" },
+      densityLevels: { low: "Low", medium: "Medium", high: "High", dangerous: "Dangerous" },
     },
     th: {
       buildingA3: "อาคาร A3",
@@ -48,7 +48,7 @@ const Overall = ({ language }) => {
       status: "สถานะ",
       statusValues: { open: "เปิด", closed: "ปิด" },
       comingSoon: "เร็วๆ นี้..",
-      densityLevels: { low: "น้อย", medium: "ปานกลาง", high: "มาก" },
+      densityLevels: { low: "ต่ำ", medium: "ปานกลาง", high: "สูง", dangerous: "อันตราย" },
     },
   };
 
@@ -128,13 +128,13 @@ const Overall = ({ language }) => {
 
 
   const densityThresholds = {
-    buildingA3: { low: 226, medium: 678 },
-    buildingA6: { low: 20, medium: 57 },
-    buildingB4: { low: 40, medium: 118 },
+    buildingA3: { low: 153, medium: 306, high: 612},
+    buildingA6: { low: 38, medium: 77, high: 152 },
+    buildingB4: { low: 78, medium: 156, high: 312 },
   };
 
   const getDensityLevel = (locationKey, count) => {
-  const { low, medium } = densityThresholds[locationKey];
+  const { low, medium, high } = densityThresholds[locationKey];
 
   if (count < low)
     return (
@@ -148,18 +148,25 @@ const Overall = ({ language }) => {
         {translations[language].densityLevels.medium}
       </span>
     );
+    if (count < high)
     return (
       <span className="Overall-density-high">
         {translations[language].densityLevels.high}
       </span>
     );
+    return (
+      <span className="Overall-density-dangerous">
+        {translations[language].densityLevels.dangerous}
+      </span>
+    );
   };
 
   const getCountColor = (locationKey, count) => {
-    const { low, medium } = densityThresholds[locationKey];
+    const { low, medium, high } = densityThresholds[locationKey];
     if (count < low) return "Overall-count-low";
     if (count < medium) return "Overall-count-medium";
-    return "Overall-count-high";
+    if (count < high) return "Overall-count-high";
+    return "Overall-count-dangerous";
   };
 
   return (

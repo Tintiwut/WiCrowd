@@ -64,7 +64,9 @@ body {
   .Location-count-medium,
   .Location-density-medium,
   .Location-count-high,
-  .Location-density-high {
+  .Location-density-high,
+  .Location-count-dangerous,
+  .Location-density-dangerous {
     color: #ffffff;
     font-weight: bold;
     padding: 0.25rem 0.625rem;
@@ -86,6 +88,11 @@ body {
   .Location-count-high,
   .Location-density-high {
     background-color: rgb(255, 0, 0);
+  }
+
+  .Location-count-dangerous,
+  .Location-density-dangerous {
+    background-color: rgb(0, 0, 0);
   }
 
   .Location-disabled {
@@ -214,6 +221,8 @@ body {
     .Location-density-medium,
     .Location-count-high,
     .Location-density-high,
+    .Location-count-dangerous,
+    .Location-density-dangerous,
     .Location-disabled,
     .Location-status-open,
     .Location-status-closed {

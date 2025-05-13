@@ -105,6 +105,19 @@ body {
   border-radius: 15px;
 }
 
+.Overall-count-dangerous,
+.Overall-density-dangerous {
+  color: #ffffff;
+  font-weight: 500;
+  padding: 10px 10px;
+  font-size: 30px;
+  background: 10px rgb(0, 0, 0);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  border-radius: 15px;
+}
+
 /* ทำให้แสดง 1 คอลัมน์ในจอมือถือ */
 @media (max-width: 768px) {
   .overall-container {
@@ -196,6 +209,19 @@ body {
     padding: 10px 10px;
     font-size: 13px;
     background: 10px rgb(255, 0, 0);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-weight: bold;
+    border-radius: 15px;
+  }
+
+  .Overall-count-dangerous,
+  .Overall-density-dangerous {
+    color: #ffffff;
+    font-weight: 500;
+    padding: 10px 10px;
+    font-size: 13px;
+    background: 10px rgb(0, 0, 0);
     padding-top: 2px;
     padding-bottom: 2px;
     font-weight: bold;
