@@ -7,23 +7,8 @@ import "./Overall.css";
 
 const Overall = ({ language }) => {
   const navigate = useNavigate();
-  const getTodayDateString = () => {
-    const today = new Date();
-    return today.toISOString().split("T")[0];
-  };
-
   const [data, setData] = useState([]);
-  const [maxToday, setMaxToday] = useState(() => {
-    const savedDate = localStorage.getItem("maxTodayDate");
-    const savedMax = parseInt(localStorage.getItem("maxToday") || "0", 10);
-    const today = getTodayDateString();
-    if (savedDate !== today) {
-      localStorage.setItem("maxTodayDate", today);
-      localStorage.setItem("maxToday", "0");
-      return 0;
-    }
-    return savedMax;
-  });
+  const [maxToday, setMaxToday] = useState(0);
 
   const translations = {
     en: {
@@ -52,21 +37,49 @@ const Overall = ({ language }) => {
     },
   };
 
-  const calculateMaxToday = (feeds) => {
-    const todayDateStr = getTodayDateString();
-    const todayFeeds = feeds.filter((entry) =>
-      entry.created_at.startsWith(todayDateStr)
-    );
-    const max = Math.max(...todayFeeds.map((entry) => parseInt(entry.field1 || 0, 10)));
-    return max;
+  const baseUrls = {
+    A3: "", // ยังไม่มี API
+    A6: "", // ยังไม่มี API
+    B4: "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27",
+  };
+
+  const getMaxTodayFromAPI = async (url) => {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const startDate = `${yyyy}-${mm}-${dd}%2000:00:00`;
+    const endDate = `${yyyy}-${mm}-${dd}%2023:59:59`;
+
+    const fullUrl = `${url}&start=${startDate}&end=${endDate}`;
+
+    const res = await fetch(fullUrl);
+    const data = await res.json();
+    const feeds = data.feeds || [];
+
+    let todayMax = 0;
+    feeds.forEach((entry) => {
+      const val = parseInt(entry.field1 || 0, 10);
+      if (!isNaN(val) && val > todayMax) {
+        todayMax = val;
+      }
+    });
+
+    return todayMax;
   };
 
   const fetchData = async () => {
     try {
+      const [a3Max, a6Max, b4Max] = await Promise.all([
+        baseUrls.A3 ? getMaxTodayFromAPI(baseUrls.A3) : Promise.resolve(0),
+        baseUrls.A6 ? getMaxTodayFromAPI(baseUrls.A6) : Promise.resolve(0),
+        baseUrls.B4 ? getMaxTodayFromAPI(baseUrls.B4) : Promise.resolve(0),
+      ]);
+
       const urls = [
-        "", // A3 (API ยังไม่ใส่)
-        "", // A6 (API ยังไม่ใส่)
-        "https://api.thingspeak.com/channels/2809694/feeds.json?api_key=7Q1U13DVE9ZXUX27&results=100", // B4
+        baseUrls.A3 ? `${baseUrls.A3}&results=1` : "",
+        baseUrls.A6 ? `${baseUrls.A6}&results=1` : "",
+        baseUrls.B4 ? `${baseUrls.B4}&results=1` : "",
       ];
 
       const responses = await Promise.all(
@@ -77,7 +90,7 @@ const Overall = ({ language }) => {
         responses.map((res) => (res ? res.json() : { feeds: [] }))
       );
 
-      const newData = jsonData.map((data) => {
+      const newData = jsonData.map((data, index) => {
         const feeds = data.feeds || [];
         const latestFeed = feeds[feeds.length - 1];
         const count = parseInt(latestFeed?.field1 || 0, 10);
@@ -87,28 +100,24 @@ const Overall = ({ language }) => {
         const tenMinutes = 10 * 60 * 1000;
         const status = now - latestTime <= tenMinutes ? "เปิด" : "ปิด";
 
-        const max = calculateMaxToday(feeds);
+        const maxToday = [a3Max, a6Max, b4Max][index];
 
         return {
           feeds,
           count,
           status,
-          maxToday: isFinite(max) ? max : 0,
+          maxToday,
         };
       });
+
+      const newMax = Math.max(...[a3Max, a6Max, b4Max]);
+      setMaxToday(newMax);
 
       setData([
         { key: "buildingA3", ...newData[0] },
         { key: "buildingA6", ...newData[1] },
         { key: "buildingB4", ...newData[2] },
       ]);
-
-      const newMax = Math.max(...newData.map((item) => item.maxToday || 0));
-      if (newMax > maxToday) {
-        setMaxToday(newMax);
-        localStorage.setItem("maxToday", newMax);
-        localStorage.setItem("maxTodayDate", getTodayDateString());
-      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -126,34 +135,33 @@ const Overall = ({ language }) => {
     { key: "buildingB4", image: Building_B4, Navi: "Building B4" },
   ];
 
-
   const densityThresholds = {
-    buildingA3: { low: 153, medium: 306, high: 612},
+    buildingA3: { low: 153, medium: 306, high: 612 },
     buildingA6: { low: 38, medium: 77, high: 152 },
     buildingB4: { low: 78, medium: 156, high: 312 },
   };
 
   const getDensityLevel = (locationKey, count) => {
-  const { low, medium, high } = densityThresholds[locationKey];
+    const { low, medium, high } = densityThresholds[locationKey];
 
-  if (count < low)
-    return (
-      <span className="Overall-density-low">
-        {translations[language].densityLevels.low}
-      </span>
-    );
-  if (count < medium)
-    return (
-      <span className="Overall-density-medium">
-        {translations[language].densityLevels.medium}
-      </span>
-    );
+    if (count < low)
+      return (
+        <span className="Overall-density-low">
+          {translations[language].densityLevels.low}
+        </span>
+      );
+    if (count < medium)
+      return (
+        <span className="Overall-density-medium">
+          {translations[language].densityLevels.medium}
+        </span>
+      );
     if (count < high)
-    return (
-      <span className="Overall-density-high">
-        {translations[language].densityLevels.high}
-      </span>
-    );
+      return (
+        <span className="Overall-density-high">
+          {translations[language].densityLevels.high}
+        </span>
+      );
     return (
       <span className="Overall-density-dangerous">
         {translations[language].densityLevels.dangerous}
@@ -184,7 +192,7 @@ const Overall = ({ language }) => {
             key={index}
             className="overall-card"
             onClick={() => {
-              navigate('/location', { state: { location: location.Navi } }); // ใช้ navigate แบบนี้
+              navigate("/location", { state: { location: location.Navi } });
             }}
             style={{ cursor: "pointer" }}
           >
@@ -200,19 +208,19 @@ const Overall = ({ language }) => {
               ) : (
                 <>
                   <p>
-                  <span>{translations[language].densityLevelsText}</span>:{" "}
-                  {locationData.status === "เปิด" || locationData.status === "Open"
-                    ? getDensityLevel(location.key, locationData.count)
-                    : <span className="Location-disabled">-</span>}
-                </p>
-                <p>
-                  <span>{translations[language].density}</span>:{" "}
-                  {locationData.status === "เปิด" || locationData.status === "Open" ? (
-                    <span className={getCountColor(location.key, locationData.count)}>{locationData.count}</span>
-                  ) : (
-                    <span className="Location-disabled">-</span>
-                  )}
-                </p>
+                    <span>{translations[language].densityLevelsText}</span>:{" "}
+                    {locationData.status === "เปิด" || locationData.status === "Open"
+                      ? getDensityLevel(location.key, locationData.count)
+                      : <span className="Location-disabled">-</span>}
+                  </p>
+                  <p>
+                    <span>{translations[language].density}</span>:{" "}
+                    {locationData.status === "เปิด" || locationData.status === "Open" ? (
+                      <span className={getCountColor(location.key, locationData.count)}>{locationData.count}</span>
+                    ) : (
+                      <span className="Location-disabled">-</span>
+                    )}
+                  </p>
                   <p>
                     <span>{translations[language].maxToday}</span>:{" "}
                     {locationData.status === "เปิด" || locationData.status === "Open" ? (
