@@ -22,6 +22,7 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
   const [fileList, setFileList] = useState([]); // ใช้เก็บรายการไฟล์ CSV ในโฟลเดอร์
   const [selectedFile, setSelectedFile] = useState(""); // ใช้เก็บไฟล์ที่เลือกจากรายการ
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // ตรวจสอบว่าเป็นหน้าจอมือถือหรือไม่
+  const [latestDate, setLatestDate] = useState("");
 
   // ข้อความแปล (translations) สำหรับภาษาไทยและอังกฤษ
   const translations = {
@@ -149,17 +150,32 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
 
   // แปลงข้อมูล Realtime
   const processedRealtimeData = feeds?.map((entry) => {
-    const date = new Date(entry.created_at); // แปลงวันที่จาก Feeds
-    return {
-      time: date,
-      value: entry.field1 ? parseInt(entry.field1) : 0, // ถ้ามีข้อมูลให้แปลงเป็นตัวเลข
-      displayTime: date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }),
-    };
-  }) || []; // ถ้าไม่มีข้อมูลให้ใช้เป็นอาร์เรย์ว่าง
+  const date = new Date(entry.created_at);
+  return {
+    time: date,
+    value: entry.field1 ? parseInt(entry.field1) : 0,
+    displayTime: date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }),
+    displayDate: date.toLocaleDateString(), // เพิ่มเพื่อใช้แสดงวันที่
+  };
+}) || [];
+
+useEffect(() => {
+  if (graphType === "realtime" && feeds?.length) {
+    const lastFeed = feeds[feeds.length - 1];
+    const date = new Date(lastFeed.created_at);
+    const formattedDate = date.toLocaleDateString(language === "th" ? "th-TH" : "en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setLatestDate(formattedDate);
+  }
+}, [feeds, graphType, language]);
+
 
   const displayedTimes = new Set(); // ใช้เก็บเวลาที่แสดงแล้วเพื่อป้องกันการซ้ำ
   const xTickFormatter = (timeStr) => {
@@ -181,6 +197,7 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
       return "";
     }
   };
+ 
 
   return (
     <div>
@@ -191,7 +208,7 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
           justifyContent: isMobile ? "flex-end" : "flex-end",
           marginBottom: "10px",
           marginLeft: isMobile ? "37px" : "0px",
-          marginRight: isMobile ? "0px" : "5px",
+          marginRight: isMobile ? "0px" : "30px",
           gap: "8px",
           flexWrap: "wrap",
         }}
@@ -224,6 +241,13 @@ const ChartComponent1 = ({ csvFolder, density, filter, hours, minute, feeds, lan
           </>
         )}
       </div>
+      
+      {/* แสดงวันที่ของข้อมูล Realtime */}
+      {graphType === "realtime" && latestDate && (
+        <div style={{ textAlign: "right", marginRight: isMobile ? "10px" : "30px", fontSize }}>
+          {language === "th" ? "ข้อมูลวันที่" : "Data Date"}: {latestDate}
+        </div>
+      )}
 
       {/* แสดงกราฟ */}
       <ResponsiveContainer width="100%" height={400}>
